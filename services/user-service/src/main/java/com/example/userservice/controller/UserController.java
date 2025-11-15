@@ -1,30 +1,50 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.dto.UserDTO;
+import com.example.userservice.dto.LoginRequest;
+import com.example.userservice.dto.RegisterRequest;
+import com.example.userservice.dto.UserListResponse;
+import com.example.userservice.dto.UserResponse;
 import com.example.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserService userService;
 
     @GetMapping("/findUserByUserId/{userId}")
-    public ResponseEntity<UserDTO> findUserByUserId(@PathVariable("userId") String userId)
-    throws Exception {
-        UserDTO user = userService.findByUserId(userId);
-        if (user != null) {
-            return ResponseEntity.ok(user); // Trả về UserDTO nếu tìm thấy
+    public ResponseEntity<UserResponse> findUserByUserId(@PathVariable("userId") String userId) {
+        Optional<UserResponse> user = userService.findByUserId(userId);
+        if (user.isPresent()) {
+            return ResponseEntity.ok(user.get());
         } else {
-            return ResponseEntity.notFound().build(); // Trả về 404 nếu không tìm thấy
+            UserResponse notFoundResponse = new UserResponse();
+            notFoundResponse.setStatus(false);
+            notFoundResponse.setMessage("User not found");
+            notFoundResponse.setResult(null);
+            return ResponseEntity.ok(notFoundResponse);
         }
+    }
+    @GetMapping("/findAllUsers")
+    public ResponseEntity<UserListResponse> findAllUsers() {
+        UserListResponse response = userService.findAllUsers();
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserResponse> register(@RequestBody RegisterRequest registerRequest) {
+        UserResponse response = userService.register(registerRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> login(@RequestBody LoginRequest loginRequest) {
+        UserResponse response = userService.login(loginRequest);
+        return ResponseEntity.ok(response);
     }
 }
