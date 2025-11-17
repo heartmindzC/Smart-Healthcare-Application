@@ -12,10 +12,25 @@ services:
       - "3307:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./docker-init/init-databases.sql:/docker-entrypoint-initdb.d/init-databases.sql
     networks:
       - healthcare-network
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123456"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - healthcare-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -34,27 +49,39 @@ services:
       SPRING_DATASOURCE_PASSWORD: 123456
       SPRING_APPLICATION_NAME: user-service
       SERVER_PORT: 8080
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
     depends_on:
       mysql-db:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     networks:
       - healthcare-network
 
-#  # Patient Service
-#  patient-service:
-#    build:
-#      context: ./services/patient-service
-#      dockerfile: Dockerfile
-#    container_name: patient-service
-#    ports:
-#      - "8081:8081"
-#    environment:
-#      SPRING_APPLICATION_NAME: patient-service
-#      SERVER_PORT: 8081
-#    depends_on:
-#      - mysql-db
-#    networks:
-#      - healthcare-network
+  # Patient Service
+  patient-service:
+    build:
+      context: ./services/patient-service
+      dockerfile: Dockerfile
+    container_name: patient-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_APPLICATION_NAME: patient-service
+      SERVER_PORT: 8081
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/patientsdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+    depends_on:
+      mysql-db:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    networks:
+      - healthcare-network
 
 volumes:
   mysql-data:
