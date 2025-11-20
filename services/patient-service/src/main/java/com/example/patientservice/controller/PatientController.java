@@ -22,6 +22,16 @@ public class PatientController {
         return ResponseEntity.ok(patient);
     }
     
+    @GetMapping("/get-patient-by-user-id/{userId}")
+    public ResponseEntity<Patient> findPatientByUserId(@PathVariable String userId) {
+        Patient patient = patientService.findByUserId(userId);
+        if (patient != null) {
+            return ResponseEntity.ok(patient);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+    
     @PutMapping("/update/{userId}")
     public ResponseEntity<Patient> updatePatientInfo(
             @PathVariable String userId,

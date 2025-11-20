@@ -28,6 +28,10 @@ public class PatientService {
         return patientRepo.findById(id).get();
     }
     
+    public Patient findByUserId(String userId) {
+        return patientRepo.findByUserId(userId);
+    }
+    
     public Patient updatePatientInfoByUserId(String userId, UpdatePatientRequest request) {
         Patient patient = patientRepo.findByUserId(userId);
         
