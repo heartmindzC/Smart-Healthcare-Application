@@ -1,42 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="d2fb019f-2f45-4ca7-bba2-7a57a7e9864a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/patient-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/patient-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/patient-service/src/main/java/com/example/patientservice/model/Patient.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/patient-service/src/main/java/com/example/patientservice/model/Patient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/patient-service/src/main/java/com/example/patientservice/repository/PatientRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/patient-service/src/main/java/com/example/patientservice/repository/PatientRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/patient-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/services/patient-service/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/user-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "heartmindzC"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;heartmindzC&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/heartmindzC/Smart-Healthcare-Application.git",
-    "accountId": "b887bd3b-f809-47a1-b60c-0f64a4fd7bfd"
+    "accountId": "f9b4f167-1928-47e7-9a1a-46512220d7f8"
   }
 }]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="35b8N1NMA7uF9OJ0uRlrvUlP91i" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -46,22 +44,29 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "master",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/AD/Desktop/TDTU 2023-2024/Mobile/new/Smart Healthcare System",
+    "last_opened_file_path": "C:/Users/AD/Desktop/TDTU 2023-2024/Mobile/new/Midterm Mobile/Pokemon",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.pluginManager",
+    "show.migrate.to.gradle.popup": "false",
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Spring Boot.UserServiceApplication">
+  <component name="RunManager">
     <configuration name="PatientServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="patient-service" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.patientservice.PatientServiceApplication" />
@@ -85,6 +90,7 @@
       </set>
     </attachedChunks>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="d2fb019f-2f45-4ca7-bba2-7a57a7e9864a" name="Changes" comment="" />
@@ -92,7 +98,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1763367366995</updated>
-      <workItem from="1763367368299" duration="306000" />
+      <workItem from="1763367368299" duration="900000" />
     </task>
     <servers />
   </component>
