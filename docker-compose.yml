@@ -133,6 +133,26 @@ services:
     networks:
       - healthcare-network
 
+  # Hospital Service
+  hospital-service:
+    build:
+      context: ./services/hospital-service
+      dockerfile: Dockerfile
+    container_name: hospital-service
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_APPLICATION_NAME: hospital-service
+      SERVER_PORT: 8084
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/hospitalsdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: 123456
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    networks:
+      - healthcare-network
+
   # API Gateway Service
   api-gateway-service:
     build:
@@ -148,6 +168,7 @@ services:
       PATIENT_SERVICE_URI: http://patient-service:8081
       DOCTOR_SERVICE_URI: http://doctor-service:8082
       EHR_SERVICE_URI: http://ehr-service:8083
+      HOSPITAL_SERVICE_URI: http://hospital-service:8084
     depends_on:
       user-service:
         condition: service_started
@@ -156,6 +177,8 @@ services:
       doctor-service:
         condition: service_started
       ehr-service:
+        condition: service_started
+      hospital-service:
         condition: service_started
     networks:
       - healthcare-network

@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d2fb019f-2f45-4ca7-bba2-7a57a7e9864a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/api-gateway-service/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/services/api-gateway-service/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/doctor-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/services/doctor-service/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +16,11 @@
     <option name="formatViaClangd" value="false" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="docker-compose" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -52,7 +55,7 @@
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;docker-compose&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;doctor-service&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/AD/Desktop/TDTU 2023-2024/Mobile/new/Smart Healthcare System&quot;,
@@ -104,6 +107,8 @@
       <workItem from="1763798475722" duration="3079000" />
       <workItem from="1763806841601" duration="1817000" />
       <workItem from="1763824758573" duration="57000" />
+      <workItem from="1763833399565" duration="421000" />
+      <workItem from="1763833844835" duration="19000" />
     </task>
     <servers />
   </component>
