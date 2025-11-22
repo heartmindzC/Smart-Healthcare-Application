@@ -83,6 +83,26 @@ services:
     networks:
       - healthcare-network
 
+  # Doctor Service
+  doctor-service:
+    build:
+      context: ./services/doctor-service
+      dockerfile: Dockerfile
+    container_name: doctor-service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_APPLICATION_NAME: doctor-service
+      SERVER_PORT: 8082
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/doctorsdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: 123456
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    networks:
+      - healthcare-network
+
   # EHR Service
   ehr-service:
     build:
@@ -100,11 +120,13 @@ services:
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
       SERVICES_PATIENT_URL: http://patient-service:8081
-      # SERVICES_DOCTOR_URL: http://doctor-service:8082
+      SERVICES_DOCTOR_URL: http://doctor-service:8082
     depends_on:
       mysql-db:
         condition: service_healthy
       patient-service:
+        condition: service_started
+      doctor-service:
         condition: service_started
       redis:
         condition: service_healthy
@@ -124,11 +146,14 @@ services:
       SERVER_PORT: 8085
       USER_SERVICE_URI: http://user-service:8080
       PATIENT_SERVICE_URI: http://patient-service:8081
+      DOCTOR_SERVICE_URI: http://doctor-service:8082
       EHR_SERVICE_URI: http://ehr-service:8083
     depends_on:
       user-service:
         condition: service_started
       patient-service:
+        condition: service_started
+      doctor-service:
         condition: service_started
       ehr-service:
         condition: service_started
