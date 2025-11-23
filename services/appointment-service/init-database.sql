@@ -22,6 +22,10 @@ CREATE TABLE IF NOT EXISTS appointments (
     hospital_id INT NOT NULL COMMENT 'Reference to hospital in hospital-service',
     hospital_name VARCHAR(255) COMMENT 'Denormalized for quick access',
     
+    -- Department Information
+    department_id INT COMMENT 'Reference to department in hospital-service',
+    department_name VARCHAR(255) COMMENT 'Denormalized for quick access',
+    
     -- Time Slot Reference
     time_slot_id INT COMMENT 'Reference to time_slot in doctor-service',
     
@@ -36,11 +40,6 @@ CREATE TABLE IF NOT EXISTS appointments (
     -- Metadata
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    
-    -- Indexes
-    INDEX idx_doctor_id (doctor_id),
-    INDEX idx_patient_id (patient_id),
-    INDEX idx_status (status),
     
     -- Constraints
     CONSTRAINT chk_status 
@@ -72,6 +71,7 @@ INSERT INTO appointments (
     doctor_id, doctor_name, 
     patient_id, patient_name,
     hospital_id, hospital_name,
+    department_id, department_name,
     time_slot_id, appointment_date_time,
     status, notes, reason
 )
@@ -81,6 +81,7 @@ VALUES
         1, 'Dr. Nguyen Van A',
         101, 'Nguyen Thi Lan',
         1, 'Bach Mai Hospital',
+        1, 'Cardiology Department',
         1, '2024-11-25 08:00:00',
         'CONFIRMED', 'Bệnh nhân đến đúng giờ', 'Khám tim mạch định kỳ'
     ),
@@ -90,6 +91,7 @@ VALUES
         1, 'Dr. Nguyen Van A',
         102, 'Tran Van Minh',
         1, 'Bach Mai Hospital',
+        1, 'Cardiology Department',
         2, '2024-11-25 08:30:00',
         'PENDING', NULL, 'Đau ngực, khó thở'
     ),
@@ -99,6 +101,7 @@ VALUES
         2, 'Dr. Tran Thi B',
         103, 'Le Thi Hoa',
         1, 'Bach Mai Hospital',
+        2, 'Neurology Department',
         41, '2024-11-25 14:00:00',
         'CONFIRMED', NULL, 'Đau đầu kéo dài'
     ),
@@ -108,6 +111,7 @@ VALUES
         1, 'Dr. Nguyen Van A',
         104, 'Pham Van Tuan',
         1, 'Bach Mai Hospital',
+        1, 'Cardiology Department',
         NULL, '2024-11-20 09:00:00',
         'COMPLETED', 'Khám xong, kê đơn thuốc', 'Tái khám sau phẫu thuật'
     ),
@@ -117,6 +121,7 @@ VALUES
         2, 'Dr. Tran Thi B',
         105, 'Hoang Thi Mai',
         1, 'Bach Mai Hospital',
+        2, 'Neurology Department',
         NULL, '2024-11-22 15:00:00',
         'CANCELLED', 'Bệnh nhân hủy do bận việc gấp', 'Khám tổng quát'
     ),
@@ -126,6 +131,7 @@ VALUES
         3, 'Dr. Le Van C',
         106, 'Nguyen Van Hai',
         2, 'Cho Ray Hospital',
+        3, 'Pediatrics Department',
         NULL, '2024-11-21 10:00:00',
         'NO_SHOW', 'Bệnh nhân không đến và không thông báo', 'Khám nhi khoa'
     ),
@@ -135,6 +141,7 @@ VALUES
         3, 'Dr. Le Van C',
         107, 'Tran Thi Huong',
         2, 'Cho Ray Hospital',
+        3, 'Pediatrics Department',
         NULL, '2024-11-26 10:30:00',
         'PENDING', NULL, 'Tiêm chủng cho trẻ'
     ),
@@ -144,6 +151,7 @@ VALUES
         4, 'Dr. Pham Thi D',
         108, 'Le Van Khanh',
         2, 'Cho Ray Hospital',
+        4, 'Dermatology Department',
         NULL, '2024-11-27 09:00:00',
         'CONFIRMED', NULL, 'Khám da liễu, mụn trứng cá'
     )

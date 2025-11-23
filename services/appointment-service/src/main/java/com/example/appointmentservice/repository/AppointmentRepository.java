@@ -20,6 +20,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
     // Tìm appointments theo hospital ID
     List<Appointment> findByHospitalId(int hospitalId);
     
+    // Tìm appointments theo department ID
+    List<Appointment> findByDepartmentId(int departmentId);
+    
+    // Tìm appointments theo department và status
+    List<Appointment> findByDepartmentIdAndStatus(int departmentId, AppointmentStatus status);
+    
     // Tìm appointments theo status
     List<Appointment> findByStatus(AppointmentStatus status);
     

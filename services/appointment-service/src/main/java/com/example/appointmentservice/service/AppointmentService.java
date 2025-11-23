@@ -36,6 +36,14 @@ public class AppointmentService {
         return appointmentRepository.findByHospitalId(hospitalId);
     }
     
+    public List<Appointment> findByDepartmentId(int departmentId) {
+        return appointmentRepository.findByDepartmentId(departmentId);
+    }
+    
+    public List<Appointment> findByDepartmentIdAndStatus(int departmentId, AppointmentStatus status) {
+        return appointmentRepository.findByDepartmentIdAndStatus(departmentId, status);
+    }
+    
     public List<Appointment> findByStatus(AppointmentStatus status) {
         return appointmentRepository.findByStatus(status);
     }

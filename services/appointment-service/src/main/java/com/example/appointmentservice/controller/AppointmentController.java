@@ -144,6 +144,56 @@ public class AppointmentController {
         }
     }
     
+    // Lấy appointments theo department
+    @GetMapping("/department/{departmentId}")
+    public ResponseEntity<AppointmentResponse> getAppointmentsByDepartment(@PathVariable int departmentId) {
+        AppointmentResponse response = new AppointmentResponse();
+        try {
+            List<Appointment> appointments = appointmentService.findByDepartmentId(departmentId);
+            if (appointments.isEmpty()) {
+                response.setStatus(false);
+                response.setMessage("No appointments found for department ID: " + departmentId);
+                response.setResult(null);
+            } else {
+                response.setStatus(true);
+                response.setMessage("Appointments found: " + appointments.size());
+                response.setResult(appointments);
+            }
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.setStatus(false);
+            response.setMessage("Failed to retrieve appointments: " + e.getMessage());
+            response.setResult(null);
+            return ResponseEntity.ok(response);
+        }
+    }
+    
+    // Lấy appointments theo department và status
+    @GetMapping("/department/{departmentId}/status/{status}")
+    public ResponseEntity<AppointmentResponse> getAppointmentsByDepartmentAndStatus(
+            @PathVariable int departmentId,
+            @PathVariable AppointmentStatus status) {
+        AppointmentResponse response = new AppointmentResponse();
+        try {
+            List<Appointment> appointments = appointmentService.findByDepartmentIdAndStatus(departmentId, status);
+            if (appointments.isEmpty()) {
+                response.setStatus(false);
+                response.setMessage("No appointments found for department ID: " + departmentId + " with status: " + status);
+                response.setResult(null);
+            } else {
+                response.setStatus(true);
+                response.setMessage("Appointments found: " + appointments.size());
+                response.setResult(appointments);
+            }
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.setStatus(false);
+            response.setMessage("Failed to retrieve appointments: " + e.getMessage());
+            response.setResult(null);
+            return ResponseEntity.ok(response);
+        }
+    }
+    
     // Lấy appointments theo status
     @GetMapping("/status/{status}")
     public ResponseEntity<AppointmentResponse> getAppointmentsByStatus(@PathVariable AppointmentStatus status) {
@@ -258,6 +308,8 @@ public class AppointmentController {
             appointment.setPatientName(request.getPatientName());
             appointment.setHospitalId(request.getHospitalId());
             appointment.setHospitalName(request.getHospitalName());
+            appointment.setDepartmentId(request.getDepartmentId());
+            appointment.setDepartmentName(request.getDepartmentName());
             appointment.setTimeSlotId(request.getTimeSlotId());
             appointment.setAppointmentDateTime(request.getAppointmentDateTime());
             appointment.setStatus(AppointmentStatus.PENDING);
@@ -309,6 +361,12 @@ public class AppointmentController {
                 }
                 if (request.getHospitalName() != null) {
                     appointment.setHospitalName(request.getHospitalName());
+                }
+                if (request.getDepartmentId() != null) {
+                    appointment.setDepartmentId(request.getDepartmentId());
+                }
+                if (request.getDepartmentName() != null) {
+                    appointment.setDepartmentName(request.getDepartmentName());
                 }
                 if (request.getTimeSlotId() != null) {
                     appointment.setTimeSlotId(request.getTimeSlotId());

@@ -16,6 +16,8 @@ public class AppointmentCreateRequest {
     private String patientName;
     private int hospitalId;
     private String hospitalName;
+    private Integer departmentId;
+    private String departmentName;
     private Integer timeSlotId;
     private LocalDateTime appointmentDateTime;
     private String notes;

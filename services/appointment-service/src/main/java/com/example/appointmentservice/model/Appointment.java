@@ -29,6 +29,10 @@ public class Appointment {
     private int hospitalId;
     private String hospitalName;
     
+    // Department Information
+    private Integer departmentId;  // Reference to department in hospital-service
+    private String departmentName;  // Denormalized for quick access
+    
     private Integer timeSlotId;  // Reference đến time slot trong Doctor Service
     
     private LocalDateTime appointmentDateTime;  // Thời gian hẹn
