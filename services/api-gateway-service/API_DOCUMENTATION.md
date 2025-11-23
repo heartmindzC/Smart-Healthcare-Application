@@ -16,6 +16,8 @@
    - [User Service](#user-service)
    - [Patient Service](#patient-service)
    - [Doctor Service](#doctor-service)
+   - [Time Slot Service](#time-slot-service)
+   - [Appointment Service](#appointment-service)
    - [EHR Service](#ehr-service)
 4. [Response Format](#response-format)
 5. [CORS Configuration](#cors-configuration)
@@ -41,9 +43,11 @@ http://localhost:8085/api/{service}/{endpoint}
 | User Service | user-service | `/api/users/**` | `http://user-service:8080` | 8080 |
 | Patient Service | patient-service | `/api/patients/**` | `http://patient-service:8081` | 8081 |
 | Doctor Service | doctor-service | `/api/doctors/**` | `http://doctor-service:8082` | 8082 |
+| Time Slot Service | time-slot-service | `/api/time-slots/**` | `http://doctor-service:8082` | 8082 |
 | EHR Service | ehr-service | `/api/ehr/**` | `http://ehr-service:8083` | 8083 |
 | Hospital Service | hospital-service | `/api/hospitals/**` | `http://hospital-service:8084` | 8084 |
 | Department Service | department-service | `/api/departments/**` | `http://hospital-service:8084` | 8084 |
+| Appointment Service | appointment-service | `/api/appointments/**` | `http://appointment-service:8086` | 8086 |
 
 ---
 
@@ -354,6 +358,311 @@ Base Path: `/api/doctors`
 
 **Service URI**: `http://doctor-service:8082`  
 **Gateway Path**: `/api/doctors/**` → `/doctors/**`
+
+---
+
+### Time Slot Service
+
+Base Path: `/api/time-slots`
+
+**Service URI**: `http://doctor-service:8082`  
+**Gateway Path**: `/api/time-slots/**` → `/time-slots/**`
+
+Quản lý khung giờ làm việc của bác sĩ (Time Slots).
+
+#### 1. Lấy tất cả time slots
+```http
+GET /api/time-slots/all
+```
+
+**Response:**
+```json
+{
+  "status": true,
+  "message": "Time slots found: 58",
+  "result": [
+    {
+      "timeSlotId": 1,
+      "doctorId": 1,
+      "dayOfWeek": "MONDAY",
+      "startTime": "08:00:00",
+      "endTime": "08:30:00",
+      "isAvailable": true,
+      "specificDate": null,
+      "createdAt": "2024-11-23T10:00:00"
+    }
+  ]
+}
+```
+
+#### 2. Lấy time slots của bác sĩ
+```http
+GET /api/time-slots/doctor/{doctorId}
+```
+
+**Path Parameters:**
+- `doctorId` (int): ID của bác sĩ
+
+#### 3. Lấy time slots còn trống
+```http
+GET /api/time-slots/doctor/{doctorId}/available
+```
+
+**Path Parameters:**
+- `doctorId` (int): ID của bác sĩ
+
+#### 4. Lấy time slots trống theo ngày
+```http
+GET /api/time-slots/doctor/{doctorId}/available-by-date?date={date}
+```
+
+**Path Parameters:**
+- `doctorId` (int): ID của bác sĩ
+
+**Query Parameters:**
+- `date` (string): Ngày cần xem lịch (format: YYYY-MM-DD, ví dụ: 2024-11-25)
+
+**Example:**
+```http
+GET /api/time-slots/doctor/1/available-by-date?date=2024-11-25
+```
+
+#### 5. Tạo time slot mới
+```http
+POST /api/time-slots/create
+```
+
+**Request Body:**
+```json
+{
+  "doctorId": 1,
+  "dayOfWeek": "MONDAY",
+  "startTime": "08:00",
+  "endTime": "08:30",
+  "isAvailable": true,
+  "specificDate": null
+}
+```
+
+#### 6. Cập nhật time slot
+```http
+PUT /api/time-slots/update/{timeSlotId}
+```
+
+**Path Parameters:**
+- `timeSlotId` (int): ID của time slot
+
+**Request Body:**
+```json
+{
+  "isAvailable": false
+}
+```
+
+#### 7. Cập nhật availability
+```http
+PATCH /api/time-slots/update-availability/{timeSlotId}?isAvailable={boolean}
+```
+
+**Path Parameters:**
+- `timeSlotId` (int): ID của time slot
+
+**Query Parameters:**
+- `isAvailable` (boolean): true = còn trống, false = đã đặt
+
+#### 8. Xóa time slot
+```http
+DELETE /api/time-slots/delete/{timeSlotId}
+```
+
+**Path Parameters:**
+- `timeSlotId` (int): ID của time slot
+
+---
+
+### Appointment Service
+
+Base Path: `/api/appointments`
+
+**Service URI**: `http://appointment-service:8086`  
+**Gateway Path**: `/api/appointments/**` → `/appointments/**`
+
+Quản lý lịch hẹn khám bệnh (Appointments).
+
+#### 1. Lấy tất cả appointments
+```http
+GET /api/appointments/all
+```
+
+**Response:**
+```json
+{
+  "status": true,
+  "message": "Appointments found: 8",
+  "result": [
+    {
+      "appointmentId": 1,
+      "doctorId": 1,
+      "doctorName": "Dr. Nguyen Van A",
+      "patientId": 101,
+      "patientName": "Nguyen Thi Lan",
+      "hospitalId": 1,
+      "hospitalName": "Bach Mai Hospital",
+      "timeSlotId": 1,
+      "appointmentDateTime": "2024-11-25T08:00:00",
+      "status": "CONFIRMED",
+      "notes": "Khám định kỳ",
+      "reason": "Khám tim mạch",
+      "createdAt": "2024-11-20T10:00:00",
+      "updatedAt": "2024-11-20T10:00:00"
+    }
+  ]
+}
+```
+
+#### 2. Lấy appointment theo ID
+```http
+GET /api/appointments/{appointmentId}
+```
+
+**Path Parameters:**
+- `appointmentId` (int): ID của appointment
+
+#### 3. Lấy appointments của bệnh nhân
+```http
+GET /api/appointments/patient/{patientId}
+```
+
+**Path Parameters:**
+- `patientId` (int): ID của bệnh nhân
+
+#### 4. Lấy appointments của bác sĩ
+```http
+GET /api/appointments/doctor/{doctorId}
+```
+
+**Path Parameters:**
+- `doctorId` (int): ID của bác sĩ
+
+#### 5. Lấy appointments của bệnh viện
+```http
+GET /api/appointments/hospital/{hospitalId}
+```
+
+**Path Parameters:**
+- `hospitalId` (int): ID của bệnh viện
+
+#### 6. Lấy appointments theo status
+```http
+GET /api/appointments/status/{status}
+```
+
+**Path Parameters:**
+- `status` (string): PENDING | CONFIRMED | CANCELLED | COMPLETED | NO_SHOW
+
+#### 7. Lấy appointments theo bệnh nhân và status
+```http
+GET /api/appointments/patient/{patientId}/status/{status}
+```
+
+#### 8. Lấy appointments theo bác sĩ và status
+```http
+GET /api/appointments/doctor/{doctorId}/status/{status}
+```
+
+#### 9. Lấy appointments theo khoảng thời gian
+```http
+GET /api/appointments/date-range?start={startDateTime}&end={endDateTime}
+```
+
+**Query Parameters:**
+- `start` (string): Thời gian bắt đầu (ISO format: 2024-11-25T00:00:00)
+- `end` (string): Thời gian kết thúc (ISO format: 2024-11-30T23:59:59)
+
+**Example:**
+```http
+GET /api/appointments/date-range?start=2024-11-25T00:00:00&end=2024-11-30T23:59:59
+```
+
+#### 10. Tạo appointment mới
+```http
+POST /api/appointments/create
+```
+
+**Request Body:**
+```json
+{
+  "doctorId": 1,
+  "doctorName": "Dr. Nguyen Van A",
+  "patientId": 101,
+  "patientName": "Nguyen Thi Lan",
+  "hospitalId": 1,
+  "hospitalName": "Bach Mai Hospital",
+  "timeSlotId": 1,
+  "appointmentDateTime": "2024-11-25T08:00:00",
+  "notes": "Khám định kỳ",
+  "reason": "Đau đầu, khó thở"
+}
+```
+
+#### 11. Cập nhật appointment
+```http
+PUT /api/appointments/update/{appointmentId}
+```
+
+**Path Parameters:**
+- `appointmentId` (int): ID của appointment
+
+**Request Body:**
+```json
+{
+  "notes": "Cập nhật ghi chú",
+  "status": "CONFIRMED"
+}
+```
+
+#### 12. Cập nhật status
+```http
+PATCH /api/appointments/update-status/{appointmentId}?status={status}
+```
+
+**Path Parameters:**
+- `appointmentId` (int): ID của appointment
+
+**Query Parameters:**
+- `status` (string): PENDING | CONFIRMED | CANCELLED | COMPLETED | NO_SHOW
+
+#### 13. Xác nhận appointment
+```http
+PATCH /api/appointments/confirm/{appointmentId}
+```
+
+**Path Parameters:**
+- `appointmentId` (int): ID của appointment
+
+#### 14. Hủy appointment
+```http
+PATCH /api/appointments/cancel/{appointmentId}
+```
+
+**Path Parameters:**
+- `appointmentId` (int): ID của appointment
+
+#### 15. Hoàn thành appointment
+```http
+PATCH /api/appointments/complete/{appointmentId}
+```
+
+**Path Parameters:**
+- `appointmentId` (int): ID của appointment
+
+#### 16. Xóa appointment
+```http
+DELETE /api/appointments/delete/{appointmentId}
+```
+
+**Path Parameters:**
+- `appointmentId` (int): ID của appointment
 
 ---
 

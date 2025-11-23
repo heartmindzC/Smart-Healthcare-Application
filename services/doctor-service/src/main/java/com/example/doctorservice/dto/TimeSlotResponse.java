@@ -1,6 +1,6 @@
-package com.example.hospitalservice.dto;
+package com.example.doctorservice.dto;
 
-import com.example.hospitalservice.model.Department;
+import com.example.doctorservice.model.TimeSlot;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,10 +10,9 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DepartmentResponse {
+public class TimeSlotResponse {
     private boolean status;
     private String message;
-    private List<Department> result;
+    private List<TimeSlot> result;
 }
-
 

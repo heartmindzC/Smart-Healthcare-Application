@@ -14,3 +14,4 @@ public class DepartmentCreateRequest {
     private int hospitalId;
 }
 
+

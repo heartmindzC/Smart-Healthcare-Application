@@ -14,3 +14,4 @@ public class HospitalCreateRequest {
     private String hospitalEmail;
 }
 
+

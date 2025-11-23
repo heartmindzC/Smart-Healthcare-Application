@@ -65,6 +65,48 @@
 
 ---
 
+## ⏰ Time Slot Service
+
+| Method | Endpoint | Mô tả |
+|--------|----------|-------|
+| GET | `/api/time-slots/all` | Lấy tất cả time slots |
+| GET | `/api/time-slots/doctor/{doctorId}` | Lấy time slots của bác sĩ |
+| GET | `/api/time-slots/doctor/{doctorId}/available` | Lấy time slots còn trống |
+| GET | `/api/time-slots/doctor/{doctorId}/available-by-date?date={date}` | Lấy lịch trống theo ngày |
+| POST | `/api/time-slots/create` | Tạo time slot mới |
+| PUT | `/api/time-slots/update/{id}` | Cập nhật time slot |
+| PATCH | `/api/time-slots/update-availability/{id}?isAvailable={bool}` | Cập nhật availability |
+| DELETE | `/api/time-slots/delete/{id}` | Xóa time slot |
+
+**Service Port**: 8082
+
+---
+
+## 📅 Appointment Service
+
+| Method | Endpoint | Mô tả |
+|--------|----------|-------|
+| GET | `/api/appointments/all` | Lấy tất cả appointments |
+| GET | `/api/appointments/{id}` | Lấy appointment theo ID |
+| GET | `/api/appointments/patient/{patientId}` | Lấy appointments của bệnh nhân |
+| GET | `/api/appointments/doctor/{doctorId}` | Lấy appointments của bác sĩ |
+| GET | `/api/appointments/hospital/{hospitalId}` | Lấy appointments của bệnh viện |
+| GET | `/api/appointments/status/{status}` | Lấy theo status |
+| GET | `/api/appointments/patient/{patientId}/status/{status}` | Lấy theo bệnh nhân & status |
+| GET | `/api/appointments/doctor/{doctorId}/status/{status}` | Lấy theo bác sĩ & status |
+| GET | `/api/appointments/date-range?start={start}&end={end}` | Lấy theo khoảng thời gian |
+| POST | `/api/appointments/create` | Tạo appointment mới |
+| PUT | `/api/appointments/update/{id}` | Cập nhật appointment |
+| PATCH | `/api/appointments/update-status/{id}?status={status}` | Cập nhật status |
+| PATCH | `/api/appointments/confirm/{id}` | Xác nhận appointment |
+| PATCH | `/api/appointments/cancel/{id}` | Hủy appointment |
+| PATCH | `/api/appointments/complete/{id}` | Hoàn thành appointment |
+| DELETE | `/api/appointments/delete/{id}` | Xóa appointment |
+
+**Service Port**: 8086
+
+---
+
 ## 📋 EHR Service
 
 | Method | Endpoint | Mô tả |
@@ -109,8 +151,10 @@ Content-Type: application/json
 | User Service | 8080 |
 | Patient Service | 8081 |
 | Doctor Service | 8082 |
+| Time Slot Service | 8082 |
 | EHR Service | 8083 |
 | Hospital Service | 8084 |
+| Appointment Service | 8086 |
 
 ---
 
