@@ -47,4 +47,8 @@ public class UserController {
         UserResponse response = userService.login(loginRequest);
         return ResponseEntity.ok(response);
     }
+    @PutMapping("/update-password") 
+    public ResponseEntity<UpdatePasswordResponse> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRequest) {
+        UpdatePasswordResponse response = userService.updatePassword(updatePasswordRequest);
+        return ResponseEntity.ok(response); }
 }
