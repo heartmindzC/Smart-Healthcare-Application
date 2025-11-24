@@ -1,11 +1,6 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.dto.LoginRequest;
-import com.example.userservice.dto.RegisterRequest;
-import com.example.userservice.dto.UserListResponse;
-import com.example.userservice.dto.UpdatePasswordRequest;
-import com.example.userservice.dto.UpdatePasswordRepsonse;
-import com.example.userservice.dto.UserResponse;
+import com.example.userservice.dto.*;
 import com.example.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

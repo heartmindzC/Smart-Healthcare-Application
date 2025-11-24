@@ -1,12 +1,6 @@
 package com.example.userservice.service;
 
-import com.example.userservice.dto.RegisterRequest;
-import com.example.userservice.dto.LoginRequest;
-import com.example.userservice.dto.UserDTO;
-import com.example.userservice.dto.UpdatePasswordRequest;
-import com.example.userservice.dto.UpdatePasswordRepsonse;
-import com.example.userservice.dto.UserListResponse;
-import com.example.userservice.dto.UserResponse;
+import com.example.userservice.dto.*;
 import com.example.userservice.model.Role;
 import com.example.userservice.model.User;
 import com.example.userservice.repository.UserRepository;
