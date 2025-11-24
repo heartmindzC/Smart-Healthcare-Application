@@ -10,6 +10,8 @@ import com.example.patientservice.repository.PatientRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,6 +21,17 @@ import java.util.List;
 public class PatientService {
     @Autowired
     private PatientRepo patientRepo;
+
+    public Optional<Patient> findByPatientId(Integer patientId){
+        return patientRepo.findByPatientId(patientId);
+    }
+    public Optional<Patient> findByUserId(Integer userId){
+        return patientRepo.findByUserId(userId);
+    }
+    public Optional<List<Patient>> findByFullName(String fullName){
+        return patientRepo.findByFullName(fullName);
+    }
+
     
     public List<Patient> findAll(){
         return patientRepo.findAll();

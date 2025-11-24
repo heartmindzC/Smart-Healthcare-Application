@@ -49,6 +49,9 @@ services:
       SPRING_DATASOURCE_PASSWORD: 123456
       SPRING_APPLICATION_NAME: user-service
       SERVER_PORT: 8080
+    depends_on:
+      mysql-db:
+        condition: service_healthy
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
     depends_on:
@@ -70,6 +73,8 @@ services:
     environment:
       SPRING_APPLICATION_NAME: patient-service
       SERVER_PORT: 8081
+    depends_on:
+      - mysql-db
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/patientsdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 123456
@@ -152,7 +157,25 @@ services:
         condition: service_healthy
     networks:
       - healthcare-network
-
+ # Appointment Service
+  appointment-service:
+    build:
+      context: ./services/appointment-service
+      dockerfile: Dockerfile
+    container_name: appointment-service
+    ports:
+      - "8086:8086"
+    environment:
+      SPRING_APPLICATION_NAME: appointment-service
+      SERVER_PORT: 8086
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/appointmentsdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: 123456
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    networks:
+     - healthcare-network
   # API Gateway Service
   api-gateway-service:
     build:
@@ -169,6 +192,7 @@ services:
       DOCTOR_SERVICE_URI: http://doctor-service:8082
       EHR_SERVICE_URI: http://ehr-service:8083
       HOSPITAL_SERVICE_URI: http://hospital-service:8084
+      APPOINTMENT_SERVICE_URI: http://appointment-service:8086
     depends_on:
       user-service:
         condition: service_started
@@ -180,6 +204,8 @@ services:
         condition: service_started
       hospital-service:
         condition: service_started
+      appointment-service:
+        condition: service_started
     networks:
       - healthcare-network
 
@@ -189,3 +215,4 @@ volumes:
 networks:
   healthcare-network:
     driver: bridge
+
