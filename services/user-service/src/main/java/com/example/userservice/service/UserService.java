@@ -3,6 +3,8 @@ package com.example.userservice.service;
 import com.example.userservice.dto.RegisterRequest;
 import com.example.userservice.dto.LoginRequest;
 import com.example.userservice.dto.UserDTO;
+import com.example.userservice.dto.UpdatePasswordRequest;
+import com.example.userservice.dto.UpdatePasswordRepsonse;
 import com.example.userservice.dto.UserListResponse;
 import com.example.userservice.dto.UserResponse;
 import com.example.userservice.model.Role;
@@ -144,6 +146,21 @@ public class UserService {
         
         return response;
     }
+    public UpdatePasswordResponse updatePassword(UpdatePasswordRequest updatePasswordRequest) {
+        UpdatePasswordResponse response = new UpdatePasswordResponse();
+        Optional<User> userOpt = userRepository.findByUserId(updatePasswordRequest.getUserId());
+        if (userOpt.isEmpty()) { response.setStatus(false);
+            response.setMessage("User not found");
+            return response; }
+        User user = userOpt.get();
+        if (!passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.getPassword()))
+        { response.setStatus(false);
+            response.setMessage("Invalid old password");
+            return response; }
+        user.setPassword(passwordEncoder.encode(updatePasswordRequest.getNewPassword()));
+        userRepository.save(user); response.setStatus(true);
+        response.setMessage("Password updated successfully");
+        return response; }
 
     private UserResponse convertToUserResponse(User user) {
         UserResponse response = new UserResponse();
