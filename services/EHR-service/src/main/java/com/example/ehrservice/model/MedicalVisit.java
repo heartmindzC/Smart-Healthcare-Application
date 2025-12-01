@@ -22,7 +22,7 @@ public class MedicalVisit {
     private Integer patientId;
     
     @Column(nullable = false)
-    private String doctorId;
+    private Integer doctorId;
     
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)

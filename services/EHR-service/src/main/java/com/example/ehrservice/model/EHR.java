@@ -38,7 +38,7 @@ public class EHR {
     public static class MedicalVisitInfo {
         private Long visitId;
         private String doctorName;
-        private String doctorId;
+        private Integer doctorId;
         private Date visitDate;
         private String hospital;
         private String department;
