@@ -27,6 +27,9 @@ public class AppointmentController {
     @Autowired
     private EmailService emailService;
     
+    @Autowired
+    private com.example.appointmentservice.client.HospitalServiceClient hospitalServiceClient;
+    
     // Lấy tất cả appointments
     @GetMapping("/all")
     public ResponseEntity<AppointmentResponse> getAllAppointments() {
@@ -520,7 +523,14 @@ public class AppointmentController {
             //     return ResponseEntity.ok(response);
             // }
 
-            emailService.sendAppointmentConfirmationEmail(email, appointment);
+            // Lấy địa chỉ bệnh viện từ Hospital Service (không bắt buộc)
+            String hospitalAddress = null;
+            if (appointment.getHospitalId() > 0) {
+                hospitalAddress = hospitalServiceClient.getHospitalAddress(appointment.getHospitalId())
+                        .orElse(null);
+            }
+
+            emailService.sendAppointmentConfirmationEmail(email, appointment, hospitalAddress);
 
             response.setStatus(true);
             response.setMessage("Confirmation email sent successfully to " + email);
