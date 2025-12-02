@@ -100,11 +100,11 @@ public class EmailService {
                     <div class="container">
                         <div class="header">
                             <div class="title">Smart Healthcare System</div>
-                            <div>Xác nhận đặt lịch khám thành công</div>
+                            <div>Appointment Scheduled Successful</div>
                         </div>
                         <div class="content">
                             <p>Xin chào <strong>%s</strong>,</p>
-                            <p>Lịch khám của bạn đã được đặt thành công với thông tin như sau:</p>
+                            <p>Your appointment was confirmed with the following details information:</p>
 
                             <div class="info-box">
                                 <p><span class="label"> Patient Name:</span> %s</p>
@@ -115,13 +115,13 @@ public class EmailService {
                                 <p><span class="label"> Department:</span> %s</p>
                             </div>
 
-                            <p>Vui lòng đến đúng giờ và mang theo giấy tờ cần thiết.</p>
-                            <p>Chúc bạn một ngày tốt lành!</p>
+                            <p>Please arrive on time and bring the necessary documents.</p>
+                            <p>Have a nice day!</p>
 
-                            <p>Trân trọng,<br><strong>Smart Healthcare System</strong></p>
+                            <p>Regards,<br><strong>Smart Healthcare System</strong></p>
                         </div>
                         <div class="footer">
-                            Email được gửi tự động. Vui lòng không phản hồi email này.
+                            This email is automatically. Do not reply this email.
                         </div>
                     </div>
                 </body>
