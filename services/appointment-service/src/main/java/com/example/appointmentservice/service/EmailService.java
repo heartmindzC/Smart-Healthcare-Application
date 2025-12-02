@@ -30,7 +30,7 @@ public class EmailService {
             helper.setTo(toEmail);
             helper.setSubject("Xác nhận lịch khám - Smart Healthcare System");
 
-            String htmlContent = """
+            String htmlTemplate = """
                 <html>
                 <head>
                    <style>
@@ -126,15 +126,29 @@ public class EmailService {
                     </div>
                 </body>
                 </html>
-                """.formatted(
+                """;
+            
+            // Build address section with Google Maps link
+            String addressSection = "";
+            if (hospitalAddress != null && !hospitalAddress.trim().isEmpty()) {
+                try {
+                    String encodedAddress = java.net.URLEncoder.encode(hospitalAddress, "UTF-8");
+                    String mapsUrl = "https://www.google.com/maps/search/?api=1&query=" + encodedAddress;
+                    addressSection = "<p><span class=\"label\"> Địa chỉ:</span> " + hospitalAddress + 
+                                   " <a href=\"" + mapsUrl + "\" style=\"color: #1E88E5; text-decoration: none;\">[Xem trên Google Maps 🗺️]</a></p>";
+                } catch (Exception e) {
+                    // Fallback without link if encoding fails
+                    addressSection = "<p><span class=\"label\"> Địa chỉ:</span> " + hospitalAddress + "</p>";
+                }
+            }
+            
+            String htmlContent = String.format(htmlTemplate,
                     appointment.getPatientName(),
                     appointment.getPatientName(),
                     appointment.getDoctorName(),
                     appointment.getAppointmentDateTime(),
                     appointment.getHospitalName(),
-                    hospitalAddress != null && !hospitalAddress.trim().isEmpty() 
-                        ? "<p><span class=\"label\"> Địa chỉ:</span> " + hospitalAddress + "</p>" 
-                        : "",
+                    addressSection,
                     appointment.getDepartmentName()
             );
 
@@ -147,5 +161,3 @@ public class EmailService {
     }
 
 }
-
-
