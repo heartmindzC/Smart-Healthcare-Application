@@ -107,12 +107,12 @@ public class EmailService {
                             <p>Lịch khám của bạn đã được đặt thành công với thông tin như sau:</p>
 
                             <div class="info-box">
-                                <p><span class="label"> Bệnh nhân:</span> %s</p>
-                                <p><span class="label"> Bác sĩ:</span> %s</p>
-                                <p><span class="label"> Thời gian:</span> %s</p>
-                                <p><span class="label"> Bệnh viện:</span> %s</p>
+                                <p><span class="label"> Patient Name:</span> %s</p>
+                                <p><span class="label"> Doctor:</span> %s</p>
+                                <p><span class="label"> Time at:</span> %s</p>
+                                <p><span class="label"> Hospital:</span> %s</p>
                                 %s
-                                <p><span class="label"> Khoa:</span> %s</p>
+                                <p><span class="label"> Department:</span> %s</p>
                             </div>
 
                             <p>Vui lòng đến đúng giờ và mang theo giấy tờ cần thiết.</p>
@@ -134,11 +134,11 @@ public class EmailService {
                 try {
                     String encodedAddress = java.net.URLEncoder.encode(hospitalAddress, "UTF-8");
                     String mapsUrl = "https://www.google.com/maps/search/?api=1&query=" + encodedAddress;
-                    addressSection = "<p><span class=\"label\"> Địa chỉ:</span> " + hospitalAddress + 
+                    addressSection = "<p><span class=\"label\"> Address:</span> " + hospitalAddress + 
                                    " <a href=\"" + mapsUrl + "\" style=\"color: #1E88E5; text-decoration: none;\">[Xem trên Google Maps 🗺️]</a></p>";
                 } catch (Exception e) {
                     // Fallback without link if encoding fails
-                    addressSection = "<p><span class=\"label\"> Địa chỉ:</span> " + hospitalAddress + "</p>";
+                    addressSection = "<p><span class=\"label\"> Address:</span> " + hospitalAddress + "</p>";
                 }
             }
             
