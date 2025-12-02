@@ -28,7 +28,7 @@ public class EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
             helper.setTo(toEmail);
-            helper.setSubject("Xác nhận lịch khám - Smart Healthcare System");
+            helper.setSubject("Appointment Confirmation - Smart Healthcare System");
 
             String htmlTemplate = """
                 <html>
