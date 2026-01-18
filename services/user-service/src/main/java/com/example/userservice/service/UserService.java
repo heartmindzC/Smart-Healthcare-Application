@@ -4,23 +4,24 @@ import com.example.userservice.dto.*;
 import com.example.userservice.model.Role;
 import com.example.userservice.model.User;
 import com.example.userservice.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     @Autowired
     private UserRepository userRepository;
     
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    private final List<LoginMethod> loginMethods;
 
     public Optional<UserResponse> findByUserId(String userId) {
         Optional<User> user = userRepository.findByUserId(userId);
@@ -140,6 +141,7 @@ public class UserService {
         
         return response;
     }
+
     public UpdatePasswordResponse updatePassword(UpdatePasswordRequest updatePasswordRequest) {
         UpdatePasswordResponse response = new UpdatePasswordResponse();
         Optional<User> userOpt = userRepository.findByUserId(updatePasswordRequest.getUserId());
@@ -176,4 +178,23 @@ public class UserService {
         userDTO.setRoles(user.getRoles());
         return userDTO;
     }
+
+//    public UserResponse authenticate(LoginRequest loginRequest) {
+//        LoginApplication loginApplication = new LoginApplication(new EmailLoginImp());
+//        User user = loginApplication.login(loginRequest.getUserId(), loginRequest.getPassword());
+//
+//        return UserResponse.builder()
+//                .status(true)
+//                .message("Login successful")
+//                .result(UserDTO.builder()
+//                        .userId(user.getUserId())
+//                        .fullname(user.getFullname())
+//                        .phone(user.getPhone())
+//                        .email(user.getEmail())
+//                        .birth(user.getBirth())
+//                        .gender(user.getGender())
+//                        .roles(user.getRoles())
+//                        .build())
+//                .build();
+//    }
 }

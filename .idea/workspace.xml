@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2fb019f-2f45-4ca7-bba2-7a57a7e9864a" name="Changes" comment="" />
+    <list default="true" id="d2fb019f-2f45-4ca7-bba2-7a57a7e9864a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/service/EmailLoginImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/service/LoginApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/service/LoginMethod.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/service/NationalIdLoginImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/service/PhoneNumberLoginImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/user-service/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/dto/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/dto/UserDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/dto/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/dto/UserResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/service/UserService.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,6 +28,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -23,7 +36,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="docker-compose" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -72,10 +85,10 @@
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;DP__HK2__25__26&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/thanhtu/HK1_25_26/soa/final/services/Smart-Healthcare-Application&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/thanhtu/HK2_25_26/dp/project/Smart-Helthycare-Application&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -136,10 +149,23 @@
       <workItem from="1767632925334" duration="14254000" />
       <workItem from="1767801076362" duration="5000" />
       <workItem from="1767971651775" duration="316000" />
+      <workItem from="1768368410780" duration="6068000" />
+      <workItem from="1768551855752" duration="8803000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
