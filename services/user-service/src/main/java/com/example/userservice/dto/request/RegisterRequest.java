@@ -1,4 +1,4 @@
-package com.example.userservice.dto;
+package com.example.userservice.dto.request;
 
 import com.example.userservice.model.Gender;
 import lombok.AllArgsConstructor;

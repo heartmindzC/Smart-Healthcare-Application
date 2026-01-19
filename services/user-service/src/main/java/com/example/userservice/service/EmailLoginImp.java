@@ -16,7 +16,6 @@ public class EmailLoginImp implements LoginMethod {
     @Autowired
     private UserRepository userRepository;
 
-
     @Override
     public User login(String username, String password) {
         System.out.println("Login with email: " + username);

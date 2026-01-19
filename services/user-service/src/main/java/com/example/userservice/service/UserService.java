@@ -1,6 +1,10 @@
 package com.example.userservice.service;
 
-import com.example.userservice.dto.*;
+import com.example.userservice.dto.request.LoginRequest;
+import com.example.userservice.dto.request.RegisterRequest;
+import com.example.userservice.dto.request.UpdatePasswordRequest;
+import com.example.userservice.dto.response.UserResponse;
+import com.example.userservice.mapper.UserMapper;
 import com.example.userservice.model.Role;
 import com.example.userservice.model.User;
 import com.example.userservice.repository.UserRepository;
@@ -10,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,180 +24,91 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private final List<LoginMethod> loginMethods;
+    @Autowired
+    private UserMapper userMapper;
 
-    public Optional<UserResponse> findByUserId(String userId) {
-        Optional<User> user = userRepository.findByUserId(userId);
-        return user.map(this::convertToUserResponse);
+    private final List<LoginMethod>  loginMethods;
+
+    public UserResponse findByUserId(String userId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(()-> new RuntimeException("User not found"));
+        return userMapper.toUserResponse(user);
     }
 
-    public Optional<UserResponse> findByEmail(String email) {
-        Optional<User> user = userRepository.findByEmail(email);
-        return user.map(this::convertToUserResponse);
-    }
+//    public Optional<UserResponses> findByEmail(String email) {
+//        Optional<User> user = userRepository.findByEmail(email);
+//        return user.map(this::convertToUserResponse);
+//    }
+//
+//    public Optional<UserResponses> findByPhone(String phone) {
+//        Optional<User> user = userRepository.findByPhone(phone);
+//        return user.map(this::convertToUserResponse);
+//    }
 
-    public Optional<UserResponse> findByPhone(String phone) {
-        Optional<User> user = userRepository.findByPhone(phone);
-        return user.map(this::convertToUserResponse);
-    }
-
-    public UserListResponse findAllUsers() {
+    public List<UserResponse> findAllUsers() {
         List<User> users = userRepository.findAll();
-        
-        UserListResponse response = new UserListResponse();
-        if (users.isEmpty()) {
-            response.setStatus(false);
-            response.setMessage("No users found");
-            response.setResults(null);
-        } else {
-            response.setStatus(true);
-            response.setMessage("Users found: " + users.size());
-            
-            // Convert List<User> sang List<UserDTO>
-            List<UserDTO> userDTOs = users.stream()
-                .map(this::convertToUserDTO)
-                .collect(Collectors.toList());
-            
-            response.setResults(userDTOs);
+
+        List<UserResponse> userResponses = new ArrayList<>();
+        for (User  user : users) {
+            userResponses.add(userMapper.toUserResponse(user));
         }
-        return response;
+
+        return userResponses;
     }
 
     public UserResponse register(RegisterRequest registerRequest) {
-        UserResponse response = new UserResponse();
-        
-        // Kiểm tra userId đã tồn tại chưa
-        if (userRepository.findByUserId(registerRequest.getUserId()).isPresent()) {
-            response.setStatus(false);
-            response.setMessage("User ID already exists");
-            response.setResult(null);
-            return response;
-        }
-        
-        // Kiểm tra email đã tồn tại chưa
-        if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
-            response.setStatus(false);
-            response.setMessage("Email already exists");
-            response.setResult(null);
-            return response;
-        }
-        
-        // Kiểm tra phone đã tồn tại chưa
-        if (userRepository.findByPhone(registerRequest.getPhone()).isPresent()) {
-            response.setStatus(false);
-            response.setMessage("Phone number already exists");
-            response.setResult(null);
-            return response;
-        }
-        
-        // Tạo user mới
-        User newUser = new User();
-        newUser.setUserId(registerRequest.getUserId());
-        newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword())); // Hash password
-        newUser.setPhone(registerRequest.getPhone());
-        newUser.setEmail(registerRequest.getEmail());
-        newUser.setFullname(registerRequest.getFullname());
-        newUser.setAddress(registerRequest.getAddress());
-        newUser.setBirth(registerRequest.getBirth());
-        newUser.setGender(registerRequest.getGender());
-        
-        // Set role là PATIENT cho bệnh nhân
+        // code check valid
+        // ...
+
+        User user = userMapper.toUser(registerRequest);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
         roles.add(Role.PATIENT);
-        newUser.setRoles(roles);
-        
-        // Lưu user vào database
-        User savedUser = userRepository.save(newUser);
-        
-        // Trả về response
-        response.setStatus(true);
-        response.setMessage("Registration successful");
-        response.setResult(convertToUserDTO(savedUser));
-        
-        return response;
+        user.setRoles(roles);
+        return userMapper.toUserResponse(userRepository.save(user));
     }
 
-    public UserResponse login(LoginRequest loginRequest) {
-        Optional<User> userOptional = userRepository.findByUserId(loginRequest.getUserId());
-        
-        UserResponse response = new UserResponse();
-        
-        if (userOptional.isEmpty()) {
-            response.setStatus(false);
-            response.setMessage("User not found");
-            response.setResult(null);
-            return response;
-        }
-        
-        User user = userOptional.get();
-        
-        // Kiểm tra password: so sánh password từ request với password đã hash trong database
-        if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            response.setStatus(true);
-            response.setMessage("Login successful");
-            response.setResult(convertToUserDTO(user));
-        } else {
-            response.setStatus(false);
-            response.setMessage("Invalid password");
-            response.setResult(null);
-        }
-        
-        return response;
-    }
+    public UserResponse updatePassword(UpdatePasswordRequest updatePasswordRequest) {
+        User user = userRepository.findByUserId(updatePasswordRequest.getUserId())
+                .orElseThrow(()-> new RuntimeException("User not found"));
 
-    public UpdatePasswordResponse updatePassword(UpdatePasswordRequest updatePasswordRequest) {
-        UpdatePasswordResponse response = new UpdatePasswordResponse();
-        Optional<User> userOpt = userRepository.findByUserId(updatePasswordRequest.getUserId());
-        if (userOpt.isEmpty()) { response.setStatus(false);
-            response.setMessage("User not found");
-            return response; }
-        User user = userOpt.get();
-        if (!passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.getPassword()))
-        { response.setStatus(false);
-            response.setMessage("Invalid old password");
-            return response; }
+        if (!passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.getPassword())) {
+            throw new RuntimeException("Old password doesn't match");
+        }
+
         user.setPassword(passwordEncoder.encode(updatePasswordRequest.getNewPassword()));
-        userRepository.save(user); response.setStatus(true);
-        response.setMessage("Password updated successfully");
-        return response; }
-
-    private UserResponse convertToUserResponse(User user) {
-        UserResponse response = new UserResponse();
-        response.setStatus(true);
-        response.setMessage("User found");
-        response.setResult(convertToUserDTO(user));
-        return response;
+        userRepository.save(user);
+        return userMapper.toUserResponse(user);
     }
 
-    private UserDTO convertToUserDTO(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUserId(user.getUserId());
-        userDTO.setPhone(user.getPhone());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setFullname(user.getFullname());
-        userDTO.setAddress(user.getAddress());
-        userDTO.setBirth(user.getBirth());
-        userDTO.setGender(user.getGender());
-        userDTO.setRoles(user.getRoles());
-        return userDTO;
-    }
-
-//    public UserResponse authenticate(LoginRequest loginRequest) {
-//        LoginApplication loginApplication = new LoginApplication(new EmailLoginImp());
-//        User user = loginApplication.login(loginRequest.getUserId(), loginRequest.getPassword());
-//
-//        return UserResponse.builder()
-//                .status(true)
-//                .message("Login successful")
-//                .result(UserDTO.builder()
-//                        .userId(user.getUserId())
-//                        .fullname(user.getFullname())
-//                        .phone(user.getPhone())
-//                        .email(user.getEmail())
-//                        .birth(user.getBirth())
-//                        .gender(user.getGender())
-//                        .roles(user.getRoles())
-//                        .build())
-//                .build();
+//    private UserResponses convertToUserResponse(User user) {
+//        UserResponses response = new UserResponses();
+//        response.setStatus(true);
+//        response.setMessage("User found");
+//        response.setResult(convertToUserDTO(user));
+//        return response;
 //    }
+//
+//    private UserDTO convertToUserDTO(User user) {
+//        UserDTO userDTO = new UserDTO();
+//        userDTO.setUserId(user.getUserId());
+//        userDTO.setPhone(user.getPhone());
+//        userDTO.setEmail(user.getEmail());
+//        userDTO.setFullname(user.getFullname());
+//        userDTO.setAddress(user.getAddress());
+//        userDTO.setBirth(user.getBirth());
+//        userDTO.setGender(user.getGender());
+//        userDTO.setRoles(user.getRoles());
+//        return userDTO;
+//    }
+//
+    public UserResponse login(LoginRequest loginRequest) {
+        LoginMethod loginMethod = loginMethods.stream()
+                .filter(s -> s.checkType(loginRequest.getType()))
+                .findFirst()
+                .orElseThrow(()-> new RuntimeException("Invalid login type"));
+
+        User user = loginMethod.login(loginRequest.getUsername(), loginRequest.getPassword());
+
+        return userMapper.toUserResponse(user);
+    }
 }

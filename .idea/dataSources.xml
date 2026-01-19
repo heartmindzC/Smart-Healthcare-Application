@@ -1,27 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="patientsdb@localhost" uuid="cb1e5d3b-2c87-48a7-ac63-cea24d28f557">
+    <data-source source="LOCAL" name="usersdb@localhost" uuid="35049163-99e3-4d5e-b85d-4b18ed0c1def">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>$PROJECT_DIR$/services/patient-service/src/main/resources/application.properties</remarks>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3308/patientsdb?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
-      </jdbc-additional-properties>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="usersdb@localhost" uuid="074d4102-d5d3-4e3d-8f1f-70f4d4f2d937">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>$PROJECT_DIR$/services/user-service/src/main/resources/application.properties</remarks>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/usersdb?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:55000/usersdb</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
