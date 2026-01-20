@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 public class PhoneNumberLoginImp implements LoginMethod {
     private final String type = "phone";
     private final String MESSAGE = "Username or password is wrong";
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public User login(String username, String password) {
