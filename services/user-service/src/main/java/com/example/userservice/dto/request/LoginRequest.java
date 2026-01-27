@@ -1,4 +1,4 @@
-package com.example.userservice.dto;
+package com.example.userservice.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginRequest {
-    private String userId;
+    private String username;
     private String password;
+    private String type;
 }
 

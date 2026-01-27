@@ -1,29 +1,34 @@
-package com.example.userservice.dto;
+package com.example.userservice.dto.response;
 
 import com.example.userservice.model.Gender;
 import com.example.userservice.model.Role;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.Set;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+@Builder
+@Data
+public class UserResponse {
+    @Id
     private String userId;
     private String phone;
-    private String email;
     private String fullname;
     private String address;
-    
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "UTC")
     private Date birth;
-    
+    private String email;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @Column(name = "role")
     private Set<Role> roles;
 }
-
