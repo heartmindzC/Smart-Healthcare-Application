@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface HospitalRepository extends CrudRepository<Hospital, Integer> {
+public interface HospitalRepository extends CrudRepository<Hospital, String> {
     List<Hospital> findHospitalByHospitalName(String hospitalName);
     List<Hospital> findHospitalByHospitalNameIgnoreCase(String hospitalName);
     List<Hospital> findHospitalByHospitalNameContainingIgnoreCase(String hospitalName);

@@ -6,6 +6,7 @@ import com.example.userservice.dto.request.UpdatePasswordRequest;
 import com.example.userservice.dto.response.ApiResponse;
 import com.example.userservice.dto.response.UserResponse;
 import com.example.userservice.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ApiResponse<UserResponse> register(@RequestBody RegisterRequest registerRequest) {
+    public ApiResponse<UserResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
         UserResponse response = userService.register(registerRequest);
 
         ApiResponse<UserResponse> apiResponse = ApiResponse.<UserResponse>builder()

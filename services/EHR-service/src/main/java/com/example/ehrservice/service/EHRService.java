@@ -38,7 +38,7 @@ public class EHRService {
     
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     
-    public EHRResponse getEHRByPatientId(Integer patientId) {
+    public EHRResponse getEHRByPatientId(String patientId) {
         EHRResponse response = new EHRResponse();
         EHR ehr = new EHR();
         StringBuilder messageBuilder = new StringBuilder();
@@ -168,7 +168,7 @@ public class EHRService {
                 // Không tìm thấy patient với userId này, nhưng vẫn thử lấy visits và prescriptions nếu có patientId từ database
                 // Tìm patientId từ medical_visits hoặc prescriptions
                 List<MedicalVisit> visits = visitRepository.findAll();
-                Integer foundPatientId = visits.stream()
+                String foundPatientId = visits.stream()
                     .filter(v -> v.getPatientId() != null)
                     .map(MedicalVisit::getPatientId)
                     .findFirst()
@@ -196,7 +196,7 @@ public class EHRService {
             // Tìm patientId từ database
             try {
                 List<MedicalVisit> visits = visitRepository.findAll();
-                Integer foundPatientId = visits.stream()
+                String foundPatientId = visits.stream()
                     .filter(v -> v.getPatientId() != null)
                     .map(MedicalVisit::getPatientId)
                     .findFirst()

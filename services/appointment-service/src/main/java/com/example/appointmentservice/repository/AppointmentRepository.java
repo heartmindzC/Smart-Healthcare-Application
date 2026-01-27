@@ -9,41 +9,41 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
+public interface AppointmentRepository extends JpaRepository<Appointment, String> {
     
     // Tìm appointments theo patient ID
-    List<Appointment> findByPatientId(int patientId);
+    List<Appointment> findByPatientId(String patientId);
     
     // Tìm appointments theo doctor ID
-    List<Appointment> findByDoctorId(int doctorId);
+    List<Appointment> findByDoctorId(String doctorId);
     
     // Tìm appointments theo hospital ID
-    List<Appointment> findByHospitalId(int hospitalId);
+    List<Appointment> findByHospitalId(String hospitalId);
     
     // Tìm appointments theo department ID
-    List<Appointment> findByDepartmentId(int departmentId);
+    List<Appointment> findByDepartmentId(String departmentId);
     
     // Tìm appointments theo department và status
-    List<Appointment> findByDepartmentIdAndStatus(int departmentId, AppointmentStatus status);
+    List<Appointment> findByDepartmentIdAndStatus(String departmentId, AppointmentStatus status);
     
     // Tìm appointments theo status
     List<Appointment> findByStatus(AppointmentStatus status);
     
     // Tìm appointments theo patient và status
-    List<Appointment> findByPatientIdAndStatus(int patientId, AppointmentStatus status);
+    List<Appointment> findByPatientIdAndStatus(String patientId, AppointmentStatus status);
     
     // Tìm appointments theo doctor và status
-    List<Appointment> findByDoctorIdAndStatus(int doctorId, AppointmentStatus status);
+    List<Appointment> findByDoctorIdAndStatus(String doctorId, AppointmentStatus status);
     
     // Tìm appointments theo khoảng thời gian
     List<Appointment> findByAppointmentDateTimeBetween(LocalDateTime start, LocalDateTime end);
     
     // Tìm appointments theo doctor trong khoảng thời gian
     List<Appointment> findByDoctorIdAndAppointmentDateTimeBetween(
-        int doctorId, LocalDateTime start, LocalDateTime end);
+        String doctorId, LocalDateTime start, LocalDateTime end);
     
     // Tìm appointments theo patient trong khoảng thời gian
     List<Appointment> findByPatientIdAndAppointmentDateTimeBetween(
-        int patientId, LocalDateTime start, LocalDateTime end);
+        String patientId, LocalDateTime start, LocalDateTime end);
 }
 

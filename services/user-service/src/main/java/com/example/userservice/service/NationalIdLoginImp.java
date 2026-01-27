@@ -1,5 +1,8 @@
 package com.example.userservice.service;
 
+import com.example.common_exception.AppException;
+import com.example.common_exception.ErrorCode;
+import com.example.userservice.exception.UserErrorCode;
 import com.example.userservice.model.User;
 import com.example.userservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class NationalIdLoginImp implements LoginMethod {
     private final String type = "nationalId";
-    private final String MESSAGE = "Username or password is wrong";
+    private final ErrorCode MESSAGE = UserErrorCode.LOGIN_FAILED;
     
     @Autowired
     private UserRepository userRepository;
@@ -22,10 +25,10 @@ public class NationalIdLoginImp implements LoginMethod {
     public User login(String username, String password) {
         System.out.println("Login with national ID: " + username);
         User user = userRepository.findByUserId(username)
-                .orElseThrow(() -> new RuntimeException(MESSAGE));
+                .orElseThrow(() -> new AppException(MESSAGE));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException(MESSAGE);
+            throw new AppException(MESSAGE);
         }
 
         return user;

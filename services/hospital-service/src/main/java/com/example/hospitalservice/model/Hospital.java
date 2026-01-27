@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
+
 @Entity
 @Table(name = "hospitals")
 @Data
@@ -12,8 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Hospital {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int hospitalId;
+    @UuidGenerator
+    private String hospitalId;
     private String hospitalName;
     private String hospitalAddress;
     private String hospitalPhone;

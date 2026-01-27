@@ -19,7 +19,7 @@ public class EHR {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PatientInfo {
-        private Integer patientId;
+        private String patientId;
         private String fullName;
         private String userId;
         private String birth;
@@ -36,9 +36,9 @@ public class EHR {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MedicalVisitInfo {
-        private Long visitId;
+        private String visitId;
         private String doctorName;
-        private Integer doctorId;
+        private String doctorId;
         private Date visitDate;
         private String hospital;
         private String department;
@@ -50,7 +50,7 @@ public class EHR {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PrescriptionInfo {
-        private Long prescriptionId;
+        private String prescriptionId;
         private String medicationName;
         private String dosage;
         private String frequency;

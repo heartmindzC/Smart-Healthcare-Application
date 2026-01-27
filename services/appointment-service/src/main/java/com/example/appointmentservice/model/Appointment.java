@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
 
@@ -17,23 +18,23 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Appointment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int appointmentId;
+    @UuidGenerator
+    private String appointmentId;
     
-    private int doctorId;
+    private String doctorId;
     private String doctorName;
     
-    private int patientId;
+    private String patientId;
     private String patientName;
     
-    private int hospitalId;
+    private String hospitalId;
     private String hospitalName;
     
     // Department Information
-    private Integer departmentId;  // Reference to department in hospital-service
+    private String departmentId;  // Reference to department in hospital-service
     private String departmentName;  // Denormalized for quick access
     
-    private Integer timeSlotId;  // Reference đến time slot trong Doctor Service
+    private String timeSlotId;  // Reference đến time slot trong Doctor Service
     
     private LocalDateTime appointmentDateTime;  // Thời gian hẹn
     

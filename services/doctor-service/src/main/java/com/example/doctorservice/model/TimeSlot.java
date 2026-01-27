@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,10 +18,10 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class TimeSlot {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int timeSlotId;
+    @UuidGenerator
+    private String timeSlotId;
     
-    private int doctorId;
+    private String doctorId; //
     
     @Enumerated(EnumType.STRING)
     private DayOfWeek dayOfWeek; // MON, TUE, WED, etc.

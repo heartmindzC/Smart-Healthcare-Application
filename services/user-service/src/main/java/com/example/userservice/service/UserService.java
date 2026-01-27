@@ -1,9 +1,12 @@
 package com.example.userservice.service;
 
+import com.example.common_exception.AppException;
+import com.example.common_exception.ErrorCode;
 import com.example.userservice.dto.request.LoginRequest;
 import com.example.userservice.dto.request.RegisterRequest;
 import com.example.userservice.dto.request.UpdatePasswordRequest;
 import com.example.userservice.dto.response.UserResponse;
+import com.example.userservice.exception.UserErrorCode;
 import com.example.userservice.mapper.UserMapper;
 import com.example.userservice.model.Role;
 import com.example.userservice.model.User;
@@ -30,19 +33,9 @@ public class UserService {
     private final List<LoginMethod>  loginMethods;
 
     public UserResponse findByUserId(String userId) {
-        User user = userRepository.findByUserId(userId).orElseThrow(()-> new RuntimeException("User not found"));
+        User user = userRepository.findByUserId(userId).orElseThrow(()-> new AppException(UserErrorCode.NOT_FOUND));
         return userMapper.toUserResponse(user);
     }
-
-//    public Optional<UserResponses> findByEmail(String email) {
-//        Optional<User> user = userRepository.findByEmail(email);
-//        return user.map(this::convertToUserResponse);
-//    }
-//
-//    public Optional<UserResponses> findByPhone(String phone) {
-//        Optional<User> user = userRepository.findByPhone(phone);
-//        return user.map(this::convertToUserResponse);
-//    }
 
     public List<UserResponse> findAllUsers() {
         List<User> users = userRepository.findAll();
@@ -57,7 +50,17 @@ public class UserService {
 
     public UserResponse register(RegisterRequest registerRequest) {
         // code check valid
-        // ...
+        if (userRepository.existsById(registerRequest.getUserId())) {
+            throw new AppException(UserErrorCode.ID_EXISTS);
+        }
+
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
+            throw new AppException(UserErrorCode.EMAIL_EXISTS);
+        }
+
+        if  (userRepository.existsByPhone(registerRequest.getPhone())) {
+            throw new AppException(UserErrorCode.PHONE_EXISTS);
+        }
 
         User user = userMapper.toUser(registerRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -69,10 +72,10 @@ public class UserService {
 
     public UserResponse updatePassword(UpdatePasswordRequest updatePasswordRequest) {
         User user = userRepository.findByUserId(updatePasswordRequest.getUserId())
-                .orElseThrow(()-> new RuntimeException("User not found"));
+                .orElseThrow(()-> new AppException(UserErrorCode.NOT_FOUND));
 
         if (!passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.getPassword())) {
-            throw new RuntimeException("Old password doesn't match");
+            throw new AppException(UserErrorCode.PASSWORD_INVALID);
         }
 
         user.setPassword(passwordEncoder.encode(updatePasswordRequest.getNewPassword()));
@@ -80,32 +83,11 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
-//    private UserResponses convertToUserResponse(User user) {
-//        UserResponses response = new UserResponses();
-//        response.setStatus(true);
-//        response.setMessage("User found");
-//        response.setResult(convertToUserDTO(user));
-//        return response;
-//    }
-//
-//    private UserDTO convertToUserDTO(User user) {
-//        UserDTO userDTO = new UserDTO();
-//        userDTO.setUserId(user.getUserId());
-//        userDTO.setPhone(user.getPhone());
-//        userDTO.setEmail(user.getEmail());
-//        userDTO.setFullname(user.getFullname());
-//        userDTO.setAddress(user.getAddress());
-//        userDTO.setBirth(user.getBirth());
-//        userDTO.setGender(user.getGender());
-//        userDTO.setRoles(user.getRoles());
-//        return userDTO;
-//    }
-//
     public UserResponse login(LoginRequest loginRequest) {
         LoginMethod loginMethod = loginMethods.stream()
                 .filter(s -> s.checkType(loginRequest.getType()))
                 .findFirst()
-                .orElseThrow(()-> new RuntimeException("Invalid login type"));
+                .orElseThrow(()-> new AppException(UserErrorCode.LOGIN_METHOD_INVALID));
 
         User user = loginMethod.login(loginRequest.getUsername(), loginRequest.getPassword());
 
