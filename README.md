@@ -10,3 +10,4 @@ Applying Design Pattern for Optimization coding structure
     - appointment --
     - Doctor --
     - Ehr
+5. Simple Factory: Pending Solution
