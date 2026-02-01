@@ -18,6 +18,7 @@ public class EmailLoginImp implements LoginMethod {
     @Autowired
     private UserRepository userRepository;
 
+    //Use @Autowired to inject the share instance into
     @Autowired
     private PasswordEncoder passwordEncoder;
 
