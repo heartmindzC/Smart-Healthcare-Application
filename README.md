@@ -35,4 +35,5 @@ Lợi ích: Đảm bảo tính nhất quán, dễ thêm trạng thái mới, t�
     - appointment --
     - Doctor --
     - Ehr
-5. Simple Factory: Pending Solution
+5. Simple Factory: CRUD user/patient/doctor
+6. Commmand Pattern: Pending Solution
