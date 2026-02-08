@@ -1,0 +1,96 @@
+{
+  "timestamp": 1769548146763,
+  "baseUrl": "http://localhost:8084",
+  "tests": {
+    "findAllHospitals": {
+      "endpoint": "GET /hospitals/",
+      "status": "PASSED",
+      "timestamp": 1769548146363,
+      "responseCode": 200,
+      "resultCount": 3,
+      "message": "Successfully retrieved hospitals"
+    },
+    "createHospital": {
+      "endpoint": "POST /hospitals/",
+      "status": "PASSED",
+      "timestamp": 1769548146470,
+      "responseCode": 200,
+      "createdHospitalId": "7b36ca73-3d80-4ade-a1db-21411ec26ef7",
+      "hospitalName": "Test Hospital"
+    },
+    "findHospitalById": {
+      "endpoint": "GET /hospitals/7b36ca73-3d80-4ade-a1db-21411ec26ef7",
+      "status": "PASSED",
+      "timestamp": 1769548146500,
+      "responseCode": 200,
+      "hospitalId": "7b36ca73-3d80-4ade-a1db-21411ec26ef7",
+      "hospitalName": "Test Hospital"
+    },
+    "updateHospital": {
+      "endpoint": "PUT /hospitals/7b36ca73-3d80-4ade-a1db-21411ec26ef7",
+      "status": "PASSED",
+      "timestamp": 1769548146532,
+      "responseCode": 200,
+      "updatedHospitalName": "Updated Test Hospital"
+    },
+    "findAllDepartments": {
+      "endpoint": "GET /departments/",
+      "status": "PASSED",
+      "timestamp": 1769548146559,
+      "responseCode": 200,
+      "resultCount": 12,
+      "message": "Successfully retrieved departments"
+    },
+    "createDepartment": {
+      "endpoint": "POST /departments/",
+      "status": "PASSED",
+      "timestamp": 1769548146578,
+      "responseCode": 200,
+      "createdDepartmentId": "29222372-44dc-45bd-9866-d419f1dcb90d",
+      "departmentName": "Test Department"
+    },
+    "findDepartmentById": {
+      "endpoint": "GET /departments/29222372-44dc-45bd-9866-d419f1dcb90d",
+      "status": "PASSED",
+      "timestamp": 1769548146596,
+      "responseCode": 200,
+      "departmentId": "29222372-44dc-45bd-9866-d419f1dcb90d",
+      "departmentName": "Test Department"
+    },
+    "findDepartmentsByHospitalId": {
+      "endpoint": "GET /departments/hospital/7b36ca73-3d80-4ade-a1db-21411ec26ef7",
+      "status": "PASSED",
+      "timestamp": 1769548146635,
+      "responseCode": 200,
+      "resultCount": 1
+    },
+    "updateDepartment": {
+      "endpoint": "PUT /departments/29222372-44dc-45bd-9866-d419f1dcb90d",
+      "status": "PASSED",
+      "timestamp": 1769548146685,
+      "responseCode": 200,
+      "updatedDepartmentName": "Updated Test Department"
+    },
+    "deleteDepartment": {
+      "endpoint": "DELETE /departments/29222372-44dc-45bd-9866-d419f1dcb90d",
+      "status": "PASSED",
+      "timestamp": 1769548146729,
+      "responseCode": 200,
+      "message": "Department 29222372-44dc-45bd-9866-d419f1dcb90d deleted successfully"
+    },
+    "deleteHospital": {
+      "endpoint": "DELETE /hospitals/7b36ca73-3d80-4ade-a1db-21411ec26ef7",
+      "status": "PASSED",
+      "timestamp": 1769548146754,
+      "responseCode": 200,
+      "message": "Hospital 7b36ca73-3d80-4ade-a1db-21411ec26ef7 deleted successfully"
+    }
+  },
+  "summary": {
+    "total": 11,
+    "passed": 11,
+    "failed": 0,
+    "skipped": 0,
+    "successRate": 100.0
+  }
+}
