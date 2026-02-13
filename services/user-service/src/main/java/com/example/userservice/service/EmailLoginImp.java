@@ -15,6 +15,7 @@ public class EmailLoginImp implements LoginMethod {
     private final String type = "email";
     private final ErrorCode MESSAGE = UserErrorCode.LOGIN_FAILED;
 
+    //User @Autowired to inject the share instance
     @Autowired
     private UserRepository userRepository;
 
