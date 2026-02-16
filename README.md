@@ -23,7 +23,7 @@ Các bước khác nhau:
 Confirm: Mark time slot unavailable, send confirmation email
 Cancel: Restore time slot, send cancellation email, record reason
 Complete: Create EHR entry, send completion notification
-Lợi ích: Đảm bảo tính nhất quán, dễ thêm trạng thái mới, tập trung logic nghiệp vụ.
+
 
 
 
