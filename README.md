@@ -1,4 +1,4 @@
-# Smart-Healthcare-Application
+# Smart-Healthcare-Application--
 Applying Design Pattern for Optimization coding structure
 1. Singleton: Log
 2. Strategy: Authen & User
