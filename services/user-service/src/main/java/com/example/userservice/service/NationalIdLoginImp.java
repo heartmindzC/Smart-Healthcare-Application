@@ -15,9 +15,11 @@ public class NationalIdLoginImp implements LoginMethod {
     private final String type = "nationalId";
     private final ErrorCode MESSAGE = UserErrorCode.LOGIN_FAILED;
     
+    //Use @Autowired to inject the share instance into
     @Autowired
     private UserRepository userRepository;
 
+    //Use @Autowired to inject the share instance into
     @Autowired
     private PasswordEncoder passwordEncoder;
 
