@@ -15,9 +15,11 @@ public class PhoneNumberLoginImp implements LoginMethod {
     private final String type = "phone";
     private final ErrorCode MESSAGE = UserErrorCode.LOGIN_FAILED;
 
+     //Use @Autowired to inject the share instance into
     @Autowired
     private UserRepository userRepository;
 
+    //User @Autowired to inject the share instance into
     @Autowired
     private PasswordEncoder passwordEncoder;
 
