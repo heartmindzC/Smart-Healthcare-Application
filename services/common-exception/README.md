@@ -1,7 +1,7 @@
 #  Common Library
 
 Thư viện lõi chứa các module dùng chung cho hệ thống Smart Healthcare Microservices.
-
+abfdjhabdhjqbjhebqjheqwjhe
 ##  Modules chính
 | Module | Mô tả | Tài liệu chi tiết |
 | :--- | :--- | :--- |
