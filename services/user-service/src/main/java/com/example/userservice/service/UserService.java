@@ -25,11 +25,11 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    //Use @Autowired to inject the share instance into
+    //Use @Autowired to inject
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    //Use @Autowired to inject the share instance into
+    //Autowired
     @Autowired
     private UserMapper userMapper;
 
