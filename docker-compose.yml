@@ -38,8 +38,8 @@ services:
   # User Service
   user-service:
     build:
-      context: ./services/user-service
-      dockerfile: Dockerfile
+      context: ./services
+      dockerfile: user-service/Dockerfile
     container_name: user-service
     ports:
       - "8080:8080"
