@@ -1,18 +1,21 @@
 # Build stage
 FROM maven:3.9-eclipse-temurin-21 AS build
-WORKDIR /app
 
-COPY services/doctor-service/pom.xml .
-COPY services/doctor-service/src ./src
+# --- BƯỚC 1: Cài đặt common-exception ---
+WORKDIR /app/common-exception
+COPY common-exception/pom.xml .
+COPY common-exception/src ./src
+RUN mvn clean install -DskipTests
 
-#COPY pom.xml .
-#COPY src ./src
+WORKDIR /app/doctor-service
+COPY doctor-service/pom.xml .
+COPY doctor-service/src ./src
 RUN mvn clean package -DskipTests
 
 # Run stage
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/doctor-service/target/*.jar app.jar
+
 EXPOSE 8082
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
