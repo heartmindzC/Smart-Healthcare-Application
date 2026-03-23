@@ -22,7 +22,7 @@
             android:id="@+id/etFullname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Họ và tên"
+            android:hint="Họ và tên (*)"
             android:inputType="textPersonName"
             android:minHeight="48dp" />
 
@@ -30,7 +30,7 @@
             android:id="@+id/etUserId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Số CCCD (12 số)"
+            android:hint="Số CCCD (12 số) (*)"
             android:inputType="number"
             android:maxLength="12"
             android:layout_marginTop="12dp"
@@ -40,7 +40,17 @@
             android:id="@+id/etPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Số điện thoại (10 số)"
+            android:hint="Số điện thoại (10 số) (*)"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:layout_marginTop="12dp"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/etEmergencyPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="SĐT khẩn cấp (10 số) (*)"
             android:inputType="phone"
             android:maxLength="10"
             android:layout_marginTop="12dp"
@@ -65,10 +75,65 @@
             android:minHeight="48dp" />
 
         <EditText
+            android:id="@+id/etJob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Công việc (Tùy chọn)"
+            android:inputType="text"
+            android:layout_marginTop="12dp"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/etHealthInsurance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Số bảo hiểm y tế (Tùy chọn)"
+            android:inputType="text"
+            android:layout_marginTop="12dp"
+            android:minHeight="48dp" />
+
+        <EditText
+            android:id="@+id/etBloodType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhóm máu (Tùy chọn)"
+            android:inputType="text"
+            android:layout_marginTop="12dp"
+            android:minHeight="48dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:weightSum="2">
+
+            <EditText
+                android:id="@+id/etWeight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:hint="Cân nặng (kg) (*)"
+                android:inputType="numberDecimal"
+                android:minHeight="48dp" />
+
+            <EditText
+                android:id="@+id/etHeight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:hint="Chiều cao (cm) (*)"
+                android:inputType="numberDecimal"
+                android:minHeight="48dp" />
+        </LinearLayout>
+
+        <EditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Mật khẩu"
+            android:hint="Mật khẩu (*)"
             android:inputType="textPassword"
             android:layout_marginTop="12dp"
             android:minHeight="48dp" />
@@ -77,7 +142,7 @@
             android:id="@+id/tvBirthDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Chọn ngày sinh"
+            android:text="Chọn ngày sinh (*)"
             android:textSize="16sp"
             android:padding="12dp"
             android:layout_marginTop="12dp"
@@ -88,7 +153,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Giới tính:"
+            android:text="Giới tính (*):"
             android:layout_marginTop="16dp"
             android:textSize="16sp"/>
 
@@ -104,19 +169,34 @@
                 android:text="Nam" />
             <RadioButton
                 android:id="@+id/rbFemale"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nữ"
                 android:layout_marginStart="24dp"/>
         </RadioGroup>
 
-        <Button
-            android:id="@+id/btnSubmitRegister"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#009688"
-            android:text="Đăng Ký &amp; Vào App"
-            android:layout_marginTop="24dp"/>
+            android:layout_marginTop="24dp">
+
+            <Button
+                android:id="@+id/btnSubmitRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#009688"
+                android:text="Đăng Ký &amp; Vào App"
+                android:textColor="@android:color/white"/>
+
+            <ProgressBar
+                android:id="@+id/progressBarRegister"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:indeterminateTint="@android:color/white"
+                android:visibility="gone"
+                android:elevation="4dp"/>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tvBackToLogin"

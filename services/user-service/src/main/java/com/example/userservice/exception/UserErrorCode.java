@@ -25,7 +25,12 @@ public enum UserErrorCode implements ErrorCode {
     TYPE_NULL(1018, "Type Is Null", HttpStatus.BAD_REQUEST),
     EMAIL_EXISTS(1019, "Email Exists", HttpStatus.BAD_REQUEST),
     ID_EXISTS(1020, "Id Exists", HttpStatus.BAD_REQUEST),
-    PHONE_EXISTS(1021, "Phone Exists", HttpStatus.BAD_REQUEST),;
+    PHONE_EXISTS(1021, "Phone Exists", HttpStatus.BAD_REQUEST),
+    SEND_OTP_FAILED(1022, "Send OTP Failed", HttpStatus.BAD_REQUEST),
+    CONNECTION_REFUSE(1023, "Connection Refuse", HttpStatus.BAD_REQUEST),
+    OTP_EXPIRED(1024, "OTP Expired", HttpStatus.BAD_REQUEST),
+    OTP_INVALID(1024, "OTP Invalid", HttpStatus.BAD_REQUEST),
+    UNAUTHORIZED_RESET(1025, "Unauthorized Reset", HttpStatus.UNAUTHORIZED),;
 
     private int code;
     private String message;

@@ -41,7 +41,6 @@
         android:text="Thời gian còn lại: 05:00"
         android:textColor="#F44336"
         android:textStyle="bold"
-        android:backgroundTint="#009688"
         android:layout_marginTop="16dp"
         android:textSize="16sp"/>
 
@@ -50,7 +49,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Xác Nhận OTP"
+        android:backgroundTint="#009688"
+        android:textColor="@android:color/white"
         android:layout_marginTop="24dp"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        android:indeterminateTint="#009688"/>
 
     <TextView
         android:id="@+id/tvResendOtp"

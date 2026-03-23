@@ -68,21 +68,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:hint="Số CCCD">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etCCCD"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:paddingStart="12dp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
                 android:hint="Ngày sinh (DD/MM/YYYY)">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -264,16 +249,30 @@
                 android:layout_height="56dp"
                 android:background="@drawable/spinner_border" />
 
-            <Button
-                android:id="@+id/btnSaveProfile"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:layout_marginBottom="32dp"
-                android:backgroundTint="@color/primary_color"
-                android:text="LƯU THÔNG TIN"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                android:layout_marginBottom="32dp">
+
+                <Button
+                    android:id="@+id/btnSaveProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:backgroundTint="@color/primary_color"
+                    android:text="LƯU THÔNG TIN"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarBtn"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:indeterminateTint="@android:color/white"
+                    android:elevation="2dp" />
+            </FrameLayout>
 
         </LinearLayout>
     </ScrollView>

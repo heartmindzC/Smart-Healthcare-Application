@@ -59,9 +59,6 @@ public class PatientService {
         if (request.getEmergencyCallingNumber() != null) {
             patient.setEmergencyCallingNumber(request.getEmergencyCallingNumber());
         }
-        if (request.getJob() != null) {
-            patient.setJob(request.getJob());
-        }
         if (request.getBloodType() != null) {
             patient.setBloodType(request.getBloodType());
         }

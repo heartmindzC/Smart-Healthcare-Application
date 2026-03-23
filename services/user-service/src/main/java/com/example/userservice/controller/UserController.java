@@ -1,13 +1,13 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.dto.request.LoginRequest;
-import com.example.userservice.dto.request.RegisterRequest;
-import com.example.userservice.dto.request.UpdatePasswordRequest;
+import com.example.userservice.dto.request.*;
 import com.example.userservice.dto.response.ApiResponse;
 import com.example.userservice.dto.response.UserResponse;
+import com.example.userservice.model.User;
 import com.example.userservice.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -64,5 +64,38 @@ public class UserController {
                 .result(response)
                 .build();
         return apiResponse;
+    }
+
+    @PutMapping("/{userId}")
+    public ApiResponse<UserResponse> updateUser(@PathVariable("userId") String userId,
+                                                @Valid @RequestBody UserEdittingRequest request) {
+        UserResponse response = userService.editUser(userId, request);
+        return ApiResponse.<UserResponse>builder()
+                .result(response)
+                .build();
+    }
+
+    @PostMapping("/forgot-password")
+    public ApiResponse<Boolean> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        boolean result = userService.processForgotPassword(request);
+        return ApiResponse.<Boolean>builder()
+                .result(result)
+                .build();
+    }
+
+    @PostMapping("/verify-otp")
+    public ApiResponse<Boolean> verifyOtp(@RequestBody VerifyOtpRequest request) {
+        boolean result = userService.verifyOtp(request);
+        return ApiResponse.<Boolean>builder()
+                .result(result)
+                .build();
+    }
+
+    @PostMapping("/reset-password")
+    public ApiResponse<Boolean> resetPassword(@RequestBody ResetPasswordRequest request) {
+        boolean result = userService.resetPassword(request);
+        return ApiResponse.<Boolean>builder()
+                .result(result)
+                .build();
     }
 }

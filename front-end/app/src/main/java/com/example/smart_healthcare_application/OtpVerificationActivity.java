@@ -1,13 +1,20 @@
 package com.example.smart_healthcare_application;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.smart_healthcare_application.api.api_config.ApiCallback;
+import com.example.smart_healthcare_application.api.repository.UserRepository;
+import com.example.smart_healthcare_application.models.User;
+
 import java.util.Locale;
 
 public class OtpVerificationActivity extends AppCompatActivity {
@@ -16,6 +23,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
     private EditText etOtpCode;
     private Button btnVerifyOtp;
     private CountDownTimer countDownTimer;
+    private ProgressBar progressBar;
 
     // 5 phút = 5 * 60 * 1000 = 300000 ms
     private static final long START_TIME_IN_MILLIS = 300000;
@@ -30,6 +38,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
         tvOtpMessage = findViewById(R.id.tvOtpMessage);
         etOtpCode = findViewById(R.id.etOtpCode);
         btnVerifyOtp = findViewById(R.id.btnVerifyOtp);
+        progressBar = findViewById(R.id.progressBar);
 
         // Lấy email từ màn hình trước truyền sang để hiển thị cho thân thiện
         String email = getIntent().getStringExtra("EMAIL_EXTRA");
@@ -44,12 +53,10 @@ public class OtpVerificationActivity extends AppCompatActivity {
         btnVerifyOtp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showLoading(true);
                 String otp = etOtpCode.getText().toString().trim();
                 if (otp.length() == 6) {
-                    // TODO: Gửi OTP lên server để kiểm tra
-                    Toast.makeText(OtpVerificationActivity.this, "Xác thực thành công!", Toast.LENGTH_SHORT).show();
-                    // Chuyển sang màn hình Đặt lại mật k121hẩu mới (Tạo thêm ResetPasswordActivity nếu cần)
-
+                    validateOTP(email, otp);
                 } else {
                     etOtpCode.setError("Vui lòng nhập đủ 6 số OTP");
                 }
@@ -60,15 +67,57 @@ public class OtpVerificationActivity extends AppCompatActivity {
         tvResendOtp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Gọi API gửi lại email ở đây
                 Toast.makeText(OtpVerificationActivity.this, "Đã gửi lại mã OTP", Toast.LENGTH_SHORT).show();
-                startTimer(); // Chạy lại bộ đếm
+                startTimer();
             }
         });
     }
 
+    private void validateOTP(String email, String otp) {
+        UserRepository userRepository = UserRepository.getInstance();
+        userRepository.verifyOTP(email, otp, new ApiCallback<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                if (result) {
+                    showLoading(false);
+                    Intent intent = new Intent(OtpVerificationActivity.this, PasswordRecoveryActivity.class);
+                    intent.putExtra("USER_EMAIL", email);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    showLoading(false);
+                    Toast.makeText(OtpVerificationActivity.this, "Đã xảy ra lỗi, vui lòng thử lại", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                etOtpCode.setError(errorMessage);
+                showLoading(false);
+            }
+        });
+    }
+
+    private void showLoading(boolean isLoading) {
+        if (isLoading) {
+            progressBar.setVisibility(View.VISIBLE);
+            btnVerifyOtp.setEnabled(false);
+            btnVerifyOtp.setText("Đang xác nhận...");
+            // Vô hiệu hóa cả nút gửi lại mã và ô nhập liệu trong lúc chờ
+            tvResendOtp.setEnabled(false);
+            etOtpCode.setEnabled(false);
+        } else {
+            progressBar.setVisibility(View.GONE);
+            btnVerifyOtp.setEnabled(true);
+            btnVerifyOtp.setText("Xác Nhận OTP");
+            // Mở khóa lại
+            tvResendOtp.setEnabled(true);
+            etOtpCode.setEnabled(true);
+        }
+    }
+
     private void startTimer() {
-        // Vô hiệu hóa nút gửi lại khi đang đếm ngược
         tvResendOtp.setEnabled(false);
         tvResendOtp.setTextColor(getResources().getColor(android.R.color.darker_gray));
 
@@ -78,7 +127,6 @@ public class OtpVerificationActivity extends AppCompatActivity {
                 int minutes = (int) (millisUntilFinished / 1000) / 60;
                 int seconds = (int) (millisUntilFinished / 1000) % 60;
 
-                // Định dạng thời gian hiển thị dạng MM:SS
                 String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
                 tvTimer.setText("Thời gian còn lại: " + timeLeftFormatted);
             }
@@ -96,7 +144,6 @@ public class OtpVerificationActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Hủy timer để tránh rò rỉ bộ nhớ (memory leak) khi thoát màn hình
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }

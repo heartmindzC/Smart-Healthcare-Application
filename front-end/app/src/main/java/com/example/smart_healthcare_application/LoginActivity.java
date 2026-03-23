@@ -47,10 +47,6 @@ public class LoginActivity extends AppCompatActivity {
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
                 login(username, password);
-                // Giả lập đăng nhập thành công, chuyển sang màn hình chính
-//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                startActivity(intent);
-//                finish(); // Đóng LoginActivity
             }
         });
 
@@ -108,6 +104,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onError(String errorMessage) {
+                Toast.makeText(LoginActivity.this, "Lỗi: " + errorMessage, Toast.LENGTH_SHORT).show();
                 Log.d("Login", "Login failed: " + errorMessage);
                 showLoading(false);
             }

@@ -15,8 +15,6 @@ public class UpdatePatientRequest {
     @NotNull
     private String emergencyCallingNumber;
     @NotNull
-    private String job;
-    @NotNull
     private BloodType bloodType;
     @NotNull
     private Double heights;

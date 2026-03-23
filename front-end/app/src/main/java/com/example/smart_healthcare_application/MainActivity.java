@@ -3,13 +3,18 @@ package com.example.smart_healthcare_application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.example.smart_healthcare_application.models.User;
+import com.example.smart_healthcare_application.utils.LoginManager;
+
 public class MainActivity extends AppCompatActivity {
 
     private CardView cvProfile, cvHistory, cvBooking, cvEHR;
+    TextView tvWelcomeTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,10 +22,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Ánh xạ View
-        cvProfile = findViewById(R.id.cvProfile);
-        cvHistory = findViewById(R.id.cvHistory);
-        cvBooking = findViewById(R.id.cvBooking);
-        cvEHR = findViewById(R.id.cvEHR);
+        initViews();
+
+        User user = LoginManager.getInstance(MainActivity.this).getUser();
+        if (user == null) {
+            Intent intent = new Intent(MainActivity.this, LoginManager.class);
+            startActivity(intent);
+            finish();
+        }
+        tvWelcomeTitle.setText("Xin chào, " + user.getFullname());
 
         // 1. Chức năng Xem thông tin cá nhân
         cvProfile.setOnClickListener(new View.OnClickListener() {
@@ -61,5 +71,13 @@ public class MainActivity extends AppCompatActivity {
                  startActivity(intent);
             }
         });
+    }
+
+    public void initViews() {
+        cvProfile = findViewById(R.id.cvProfile);
+        cvHistory = findViewById(R.id.cvHistory);
+        cvBooking = findViewById(R.id.cvBooking);
+        cvEHR = findViewById(R.id.cvEHR);
+        tvWelcomeTitle = findViewById(R.id.tvWelcomeTitle);
     }
 }

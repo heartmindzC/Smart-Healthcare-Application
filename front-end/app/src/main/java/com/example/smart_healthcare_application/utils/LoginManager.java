@@ -33,14 +33,12 @@ public class LoginManager {
         return instance;
     }
 
-    // --- 1. LƯU THÔNG TIN ĐĂNG NHẬP (Chỉ lưu User) ---
     public void saveLoginSession(User user) {
         String userJson = gson.toJson(user);
         editor.putString(KEY_USER, userJson);
         editor.apply();
     }
 
-    // --- 2. LẤY THÔNG TIN USER ---
     public User getUser() {
         String userJson = sharedPreferences.getString(KEY_USER, null);
         if (userJson != null) {
@@ -49,12 +47,10 @@ public class LoginManager {
         return null;
     }
 
-    // --- 3. KIỂM TRA ĐÃ ĐĂNG NHẬP CHƯA ---
     public boolean isLoggedIn() {
         return sharedPreferences.contains(KEY_USER);
     }
 
-    // --- 4. ĐĂNG XUẤT ---
     public void logout() {
         editor.clear();
         editor.apply();
