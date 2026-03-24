@@ -28,7 +28,6 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class UserProfileUpdatingActivity extends AppCompatActivity {
-
     private TextInputEditText etName, etBirth, etEmail, etPhone, etAddress, etInsurance, etEmergencyPhone, etWeight, etHeight;
     private RadioGroup rgGender;
     private Spinner spBloodType;
@@ -266,9 +265,6 @@ public class UserProfileUpdatingActivity extends AppCompatActivity {
         }
         showLoading(true);
 
-        // ==========================================
-        // GỌI API LƯU LÊN SERVER
-        // ==========================================
         UserRepository.getInstance().updateUser(user.getUserId(), userRequest, new ApiCallback<User>() {
             @Override
             public void onSuccess(User result) {
