@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class EHR {
-
     @SerializedName("patientInfo")
     private Patient patientInfo;
 

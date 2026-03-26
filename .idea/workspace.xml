@@ -12,26 +12,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2fb019f-2f45-4ca7-bba2-7a57a7e9864a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/repository/PatientRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/request/PatientRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/request/RegisterRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/services/PatientService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/models/Patient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/notification-service/src/main/java/com/example/notificationservice/dto/AppointmentNotificationRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/notification-service/src/main/java/com/example/notificationservice/dto/UserRegistrationRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/notification-service/src/main/resources/templates/appointment-email.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/notification-service/src/main/resources/templates/welcome-email.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/RegisterActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/RegisterActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/api_config/ApiClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/api_config/ApiClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/adapters/AppointmentAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/repository/AppointmentRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/repository/EHRRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/services/AppointmentService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/services/EHRService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/factory/AppointmentUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/factory/AppointmentUIFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/factory/CancelAppointmentUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/factory/CompleteAppointmentUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/factory/ConfirmAppointmentUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/models/Appointment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_calendar.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_cancel.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/res/layout/item_appointment_cancel.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/res/layout/item_appointment_complete.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-end/app/src/main/res/layout/item_appointment_confirm.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/AppointmentHistoryActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/AppointmentHistoryActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/services/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/activity_register.xml" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/app/src/main/res/layout/activity_register.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/notification-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/models/EHR.java" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/models/EHR.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/models/Prescription.java" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/models/Prescription.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/app/src/main/res/layout/activity_main.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/notification-service/src/main/java/com/example/notificationservice/controller/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/src/main/java/com/example/notificationservice/controller/NotificationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/notification-service/src/main/java/com/example/notificationservice/service/NotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/src/main/java/com/example/notificationservice/service/NotificationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/notification-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/patient-service/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/services/patient-service/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/notification-service/src/main/java/com/example/notificationservice/dto/AppointmentNotificationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/src/main/java/com/example/notificationservice/dto/AppointmentNotificationRequest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +51,7 @@
       <list>
         <option value="Class" />
         <option value="Interface" />
+        <option value="Dockerfile" />
       </list>
     </option>
   </component>
@@ -102,51 +108,51 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.patient-service [install].executor": "Run",
-    "Maven.user-service [clean].executor": "Run",
-    "Maven.user-service [install].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.PatientServiceApplication.executor": "Run",
-    "Spring Boot.UserServiceApplication.executor": "Run",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "DP__HK2__25__26",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/thanhtu/HK2_25_26/dp/project/Smart-Helthycare-Application",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.runner",
-    "show.migrate.to.gradle.popup": "false",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.patient-service [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.user-service [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.user-service [install].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.PatientServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.UserServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;!4 on DP__HK2__25__26&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/thanhtu/HK2_25_26/dp/project/Smart-Helthycare-Application&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.runner&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/services" />
@@ -233,6 +239,8 @@
       <workItem from="1769274656099" duration="192000" />
       <workItem from="1769274851034" duration="158000" />
       <workItem from="1774111485819" duration="12555000" />
+      <workItem from="1774285712633" duration="10703000" />
+      <workItem from="1774536513978" duration="4688000" />
     </task>
     <servers />
   </component>

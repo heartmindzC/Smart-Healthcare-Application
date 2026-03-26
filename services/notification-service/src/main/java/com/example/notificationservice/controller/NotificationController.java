@@ -1,5 +1,6 @@
 package com.example.notificationservice.controller;
 
+import com.example.notificationservice.dto.AppointmentNotificationRequest;
 import com.example.notificationservice.dto.OtpNotificationRequest;
 import com.example.notificationservice.dto.UserRegistrationRequest;
 import com.example.notificationservice.service.NotificationService;
@@ -69,31 +70,31 @@ public class NotificationController {
 //    }
 
     // 3. Gửi Email cho Bác sĩ khi có người đặt lịch
-//    @PostMapping("/appointment/doctor")
-//    public ResponseEntity<String> sendAppointmentToDoctor(@RequestBody AppointmentNotificationRequest request) {
-//        Map<String, Object> variables = createAppointmentVariables(request);
-//        variables.put("title", "Lịch Khám Bệnh Mới");
-//        variables.put("recipientName", "Bác sĩ " + request.getDoctorName());
-//        variables.put("message", "Hệ thống vừa ghi nhận một lịch hẹn khám bệnh mới dành cho bác sĩ.");
-//
-//        emailService.sendHtmlEmail(
-//                request.getDoctorEmail(),
-//                "Bạn có lịch hẹn khám mới - Smart Healthcare",
-//                "appointment-email",
-//                variables
-//        );
-//        return ResponseEntity.ok("Đã tiếp nhận yêu cầu gửi Email cho Bác sĩ");
-//    }
+    @PostMapping("/appointment/doctor")
+    public ResponseEntity<String> sendAppointmentToDoctor(@RequestBody AppointmentNotificationRequest request) {
+        Map<String, Object> variables = createAppointmentVariables(request);
+        variables.put("title", "Lịch Khám Bệnh Mới");
+        variables.put("recipientName", "Bác sĩ " + request.getDoctorName());
+        variables.put("message", "Hệ thống vừa ghi nhận một lịch hẹn khám bệnh mới dành cho bác sĩ.");
+
+        emailService.sendHtmlEmail(
+                request.getDoctorEmail(),
+                "Bạn có lịch hẹn khám mới - Smart Healthcare",
+                "appointment-email",
+                variables
+        );
+        return ResponseEntity.ok("Đã tiếp nhận yêu cầu gửi Email cho Bác sĩ");
+    }
 
     // Hàm phụ trợ để đóng gói dữ liệu lịch hẹn
-//    private Map<String, Object> createAppointmentVariables(AppointmentNotificationDto request) {
-//        Map<String, Object> variables = new HashMap<>();
-//        variables.put("patientName", request.getPatientName());
-//        variables.put("doctorName", request.getDoctorName());
-//        variables.put("appointmentTime", request.getAppointmentDateTime()); // Định dạng chuỗi sẵn từ Service gọi sang
-//        variables.put("hospitalName", request.getHospitalName());
-//        variables.put("departmentName", request.getDepartmentName());
-//        variables.put("reason", request.getReason());
-//        return variables;
-//    }
+    private Map<String, Object> createAppointmentVariables(AppointmentNotificationRequest request) {
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("patientName", request.getPatientName());
+        variables.put("doctorName", request.getDoctorName());
+        variables.put("appointmentTime", request.getAppointmentDateTime());
+        variables.put("hospitalName", request.getHospitalName());
+        variables.put("departmentName", request.getDepartmentName());
+        variables.put("reason", request.getReason());
+        return variables;
+    }
 }

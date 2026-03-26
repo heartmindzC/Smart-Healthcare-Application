@@ -17,7 +17,7 @@ public class Prescription {
     private String frequency;
 
     @SerializedName("quantity")
-    private int quantity; // Số lượng thuốc (để kiểu int vì JSON trả về số 0)
+    private int quantity;
 
     @SerializedName("instructions")
     private String instructions;
