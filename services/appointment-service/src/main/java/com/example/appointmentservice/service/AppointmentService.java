@@ -104,13 +104,13 @@ public class AppointmentService {
     //     return appointmentRepository.save(appointment);
     // }
 
-    public Appointment performStatusUpdate(String appointmentId, AppointmentStatus status){
-        Appointment appointment = findById(appointmentId);
-        appointment.setStatus(status);
-        appointment.setUpdatedAt(LocalDateTime.now()); //Cập nhật thời gian
+    // public Appointment performStatusUpdate(String appointmentId, AppointmentStatus status){
+    //     Appointment appointment = findById(appointmentId);
+    //     appointment.setStatus(status);
+    //     appointment.setUpdatedAt(LocalDateTime.now()); //Cập nhật thời gian
 
-        return appointmentRepository.save(appointment);
-    }
+    //     return appointmentRepository.save(appointment);
+    // }
     /**
      * Cập nhật status của appointment sử dụng Template Pattern Handler
      * 
