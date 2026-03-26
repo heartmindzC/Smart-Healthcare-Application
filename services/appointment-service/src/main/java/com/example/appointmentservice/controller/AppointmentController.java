@@ -161,9 +161,6 @@ public class AppointmentController {
             @PathVariable String appointmentId,
             @RequestParam AppointmentStatus status) {
         Appointment updatedAppointment = appointmentService.updateStatus(appointmentId, status);
-        if (status == AppointmentStatus.CANCELLED && updatedAppointment.getTimeSlotId() != null) {
-            // TODO: Gọi Doctor Service để mark time slot là available
-        }
         return  ApiResponse.<Appointment>builder()
                 .result(updatedAppointment)
                 .build();
