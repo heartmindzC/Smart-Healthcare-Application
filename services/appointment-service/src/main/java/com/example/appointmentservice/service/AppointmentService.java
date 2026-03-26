@@ -94,10 +94,18 @@ public class AppointmentService {
     }
     
     // Cập nhật status của appointment
-    public Appointment updateStatus(String appointmentId, AppointmentStatus status) {
-        Appointment appointment = findById(appointmentId);
+    // public Appointment updateStatus(String appointmentId, AppointmentStatus status) {
+    //     Appointment appointment = findById(appointmentId);
 
+    //     appointment.setStatus(status);
+    //     return appointmentRepository.save(appointment);
+    // }
+
+    public Appointment performStatusUpdate(String appointmentId, AppointmentStatus status){
+        Appointment appointment = findById(appointmentId);
         appointment.setStatus(status);
+        appointment.setUpdatedAt(LocalDateTime.now()); //Cập nhật thời gian
+
         return appointmentRepository.save(appointment);
     }
 }

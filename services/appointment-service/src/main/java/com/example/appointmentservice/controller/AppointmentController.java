@@ -2,6 +2,11 @@ package com.example.appointmentservice.controller;
 
 import com.example.appointmentservice.dto.reuqest.AppointmentCreateRequest;
 import com.example.appointmentservice.dto.reuqest.AppointmentRequest;
+import com.example.appointmentservice.command.AppointmentCommand;
+import com.example.appointmentservice.command.AppointmentInvoker;
+import com.example.appointmentservice.command.CancelAppointment;
+import com.example.appointmentservice.command.CompleteAppointment;
+import com.example.appointmentservice.command.ConfirmAppointment;
 import com.example.appointmentservice.dto.response.ApiResponse;
 import com.example.appointmentservice.model.Appointment;
 import com.example.appointmentservice.model.AppointmentStatus;
@@ -27,6 +32,9 @@ public class AppointmentController {
     
     @Autowired
     private com.example.appointmentservice.client.HospitalServiceClient hospitalServiceClient;
+
+    @Autowired
+    private AppointmentInvoker commandInvoker;
     
     // Lấy tất cả appointments
     @GetMapping("/")
@@ -156,35 +164,52 @@ public class AppointmentController {
     }
     
     // Cập nhật status của appointment
-    @PatchMapping("/update-status/{appointmentId}")
-    public ApiResponse<Appointment> updateAppointmentStatus(
-            @PathVariable String appointmentId,
-            @RequestParam AppointmentStatus status) {
-        Appointment updatedAppointment = appointmentService.updateStatus(appointmentId, status);
-        if (status == AppointmentStatus.CANCELLED && updatedAppointment.getTimeSlotId() != null) {
-            // TODO: Gọi Doctor Service để mark time slot là available
-        }
-        return  ApiResponse.<Appointment>builder()
-                .result(updatedAppointment)
-                .build();
-    }
+    // @PatchMapping("/update-status/{appointmentId}")
+    // public ApiResponse<Appointment> updateAppointmentStatus(
+    //         @PathVariable String appointmentId,
+    //         @RequestParam AppointmentStatus status) {
+    //     Appointment updatedAppointment = appointmentService.updateStatus(appointmentId, status);
+    //     if (status == AppointmentStatus.CANCELLED && updatedAppointment.getTimeSlotId() != null) {
+    //         // TODO: Gọi Doctor Service để mark time slot là available
+    //     }
+    //     return  ApiResponse.<Appointment>builder()
+    //             .result(updatedAppointment)
+    //             .build();
+    // }
     
     // Confirm appointment
     @PatchMapping("/confirm/{appointmentId}")
     public ApiResponse<Appointment> confirmAppointment(@PathVariable String appointmentId) {
-        return updateAppointmentStatus(appointmentId, AppointmentStatus.CONFIRMED);
+        AppointmentCommand command = new ConfirmAppointment(appointmentService, appointmentId);
+        Appointment updateAppointment = commandInvoker.executeCommand(command);
+
+        return ApiResponse.<Appointment>builder()
+                .result(updateAppointment)
+                .build();
     }
     
     // Cancel appointment
     @PatchMapping("/cancel/{appointmentId}")
     public ApiResponse<Appointment> cancelAppointment(@PathVariable String appointmentId) {
-        return updateAppointmentStatus(appointmentId, AppointmentStatus.CANCELLED);
+        //Các logic (ktra timeslotid, gọi service khác) được chuyển vào Cancel appointment
+        AppointmentCommand command = new CancelAppointment(appointmentService, appointmentId);
+        Appointment updateAppointment = commandInvoker.executeCommand(command);
+
+        return ApiResponse.<Appointment>builder()
+                .result(updateAppointment)
+                .build();
     }
     
     // Complete appointment
     @PatchMapping("/complete/{appointmentId}")
     public ApiResponse<Appointment> completeAppointment(@PathVariable String appointmentId) {
-        return updateAppointmentStatus(appointmentId, AppointmentStatus.COMPLETED);
+
+        AppointmentCommand command = new CompleteAppointment(appointmentService, appointmentId);
+        Appointment updateAppointment = commandInvoker.executeCommand(command);
+
+        return ApiResponse.<Appointment>builder()
+                .result(updateAppointment)
+                .build();
     }
     
     // Xóa appointment
