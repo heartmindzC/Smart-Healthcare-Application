@@ -20,6 +20,7 @@ public enum AppointmentErrorCode implements ErrorCode {
     APPOINTMENT_DATE_TIME_INVALID(3013, "Appointment date time must be in the future", HttpStatus.BAD_REQUEST),
     STATUS_NULL(3014, "Status is required", HttpStatus.BAD_REQUEST),
     STATUS_INVALID(3015, "Status is invalid", HttpStatus.BAD_REQUEST),
+    INVALID_STATUS_TRANSITION(3016, "Invalid status transition", HttpStatus.BAD_REQUEST),
     ;
 
     private int code;

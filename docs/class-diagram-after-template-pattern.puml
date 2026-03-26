@@ -1,0 +1,148 @@
+@startuml
+!theme plain
+skinparam linetype ortho
+skinparam componentStyle uml2
+
+package "appointment-service" {
+    
+    enum AppointmentStatus {
+        PENDING
+        CONFIRMED
+        CANCELLED
+        COMPLETED
+        NO_SHOW
+    }
+    
+    class Appointment {
+        - appointmentId: String
+        - doctorId: String
+        - doctorName: String
+        - patientId: String
+        - patientName: String
+        - hospitalId: String
+        - hospitalName: String
+        - departmentId: String
+        - departmentName: String
+        - timeSlotId: String
+        - appointmentDateTime: LocalDateTime
+        - status: AppointmentStatus
+        - notes: String
+        - reason: String
+        - createdAt: LocalDateTime
+        - updatedAt: LocalDateTime
+    }
+    
+    interface AppointmentRepository {
+        + findAll(): List<Appointment>
+        + findById(String): Optional<Appointment>
+        + findByPatientId(String): List<Appointment>
+        + findByDoctorId(String): List<Appointment>
+        + findByStatus(AppointmentStatus): List<Appointment>
+        + save(Appointment): Appointment
+        + deleteById(String): void
+    }
+    
+    class AppointmentMapper {
+        + toAppointment(AppointmentCreateRequest): Appointment
+        + update(Appointment, AppointmentRequest): void
+    }
+    
+    class AppointmentService {
+        - appointmentRepository: AppointmentRepository
+        - appointmentMapper: AppointmentMapper
+        - handlerFactory: AppointmentStatusHandlerFactory
+        + findAll(): List<Appointment>
+        + findById(String): Appointment
+        + findByPatientId(String): List<Appointment>
+        + findByDoctorId(String): List<Appointment>
+        + save(AppointmentCreateRequest): Appointment
+        + update(String, AppointmentRequest): Appointment
+        + updateStatus(String, AppointmentStatus): Appointment
+        + deleteById(String): void
+    }
+    
+    class AppointmentController {
+        - appointmentService: AppointmentService
+        + getAllAppointments(): ApiResponse
+        + getAppointmentById(String): ApiResponse
+        + createAppointment(): ApiResponse
+        + updateAppointment(): ApiResponse
+        + updateAppointmentStatus(String, AppointmentStatus): ApiResponse
+        + confirmAppointment(String): ApiResponse
+        + cancelAppointment(String): ApiResponse
+        + completeAppointment(String): ApiResponse
+        + deleteAppointment(String): ApiResponse
+    }
+    
+    ' ===== TEMPLATE PATTERN =====
+    
+    abstract class AbstractAppointmentStatusHandler {
+        # appointmentRepository: AppointmentRepository
+        # emailService: EmailService
+        # doctorServiceClient: DoctorServiceClient
+        + changeStatus(String, AppointmentStatus): Appointment
+        # validateAppointment(String): Appointment
+        # validateTransition(AppointmentStatus, AppointmentStatus): void
+        # preProcess(Appointment, AppointmentStatus): void
+        # doChangeStatus(String, AppointmentStatus): Appointment {abstract}
+        # postProcess(Appointment): void
+        # notifyRelatedServices(Appointment): void
+        # isTerminalStatus(AppointmentStatus): boolean
+    }
+    
+    class ConfirmAppointmentHandler {
+        + doChangeStatus(String, AppointmentStatus): Appointment
+        # validateTransition(AppointmentStatus, AppointmentStatus): void
+        # postProcess(Appointment): void
+    }
+    
+    class CancelAppointmentHandler {
+        + doChangeStatus(String, AppointmentStatus): Appointment
+        # validateTransition(AppointmentStatus, AppointmentStatus): void
+        # postProcess(Appointment): void
+    }
+    
+    class CompleteAppointmentHandler {
+        + doChangeStatus(String, AppointmentStatus): Appointment
+        # validateTransition(AppointmentStatus, AppointmentStatus): void
+    }
+    
+    class AppointmentStatusHandlerFactory {
+        - handlers: Map<AppointmentStatus, AbstractAppointmentStatusHandler>
+        + getHandler(AppointmentStatus): AbstractAppointmentStatusHandler
+        + hasHandler(AppointmentStatus): boolean
+    }
+    
+    class DoctorServiceClient {
+        + releaseTimeSlot(String): boolean
+        + markTimeSlotAsBooked(String): boolean
+        + isTimeSlotAvailable(String): boolean
+    }
+    
+    class EmailService {
+        + sendAppointmentConfirmationEmail(String, Appointment, String): void
+        + sendCancellationEmail(String, Appointment): void
+    }
+    
+    ' ===== RELATIONSHIPS =====
+    
+    Appointment --> AppointmentStatus : status
+    AppointmentService --> AppointmentRepository
+    AppointmentService --> AppointmentMapper
+    AppointmentService --> AppointmentStatusHandlerFactory
+    AppointmentController --> AppointmentService
+    
+    ' Template Pattern relationships
+    AbstractAppointmentStatusHandler <|-- ConfirmAppointmentHandler
+    AbstractAppointmentStatusHandler <|-- CancelAppointmentHandler
+    AbstractAppointmentStatusHandler <|-- CompleteAppointmentHandler
+    
+    AbstractAppointmentStatusHandler --> AppointmentRepository
+    AbstractAppointmentStatusHandler --> DoctorServiceClient
+    AbstractAppointmentStatusHandler --> EmailService
+    
+    AppointmentStatusHandlerFactory --> AbstractAppointmentStatusHandler
+    
+}
+
+@enduml

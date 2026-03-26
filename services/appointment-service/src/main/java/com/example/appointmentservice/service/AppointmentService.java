@@ -3,6 +3,8 @@ package com.example.appointmentservice.service;
 import com.example.appointmentservice.dto.reuqest.AppointmentCreateRequest;
 import com.example.appointmentservice.dto.reuqest.AppointmentRequest;
 import com.example.appointmentservice.exception.AppointmentErrorCode;
+import com.example.appointmentservice.handler.AbstractAppointmentStatusHandler;
+import com.example.appointmentservice.handler.AppointmentStatusHandlerFactory;
 import com.example.appointmentservice.mapper.AppointmentMapper;
 import com.example.appointmentservice.model.Appointment;
 import com.example.appointmentservice.model.AppointmentStatus;
@@ -21,6 +23,8 @@ public class AppointmentService {
     private AppointmentRepository appointmentRepository;
     @Autowired
     private AppointmentMapper appointmentMapper;
+    @Autowired
+    private AppointmentStatusHandlerFactory handlerFactory;
 
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
@@ -92,7 +96,6 @@ public class AppointmentService {
     public void deleteById(String appointmentId) {
         appointmentRepository.deleteById(appointmentId);
     }
-    
     // Cập nhật status của appointment
     // public Appointment updateStatus(String appointmentId, AppointmentStatus status) {
     //     Appointment appointment = findById(appointmentId);
@@ -107,6 +110,26 @@ public class AppointmentService {
         appointment.setUpdatedAt(LocalDateTime.now()); //Cập nhật thời gian
 
         return appointmentRepository.save(appointment);
+    }
+    /**
+     * Cập nhật status của appointment sử dụng Template Pattern Handler
+     * 
+     * @param appointmentId ID của appointment
+     * @param newStatus Status mới cần chuyển đến
+     * @return Appointment đã được cập nhật
+     */
+    public Appointment updateStatus(String appointmentId, AppointmentStatus newStatus) {
+        if (appointmentId == null || appointmentId.isBlank()) {
+            throw new AppException(AppointmentErrorCode.APPOINTMENT_ID_NULL);
+        }
+        
+        if (newStatus == null) {
+            throw new AppException(AppointmentErrorCode.STATUS_NULL);
+        }
+
+        // Lấy handler phù hợp và gọi template method
+        AbstractAppointmentStatusHandler handler = handlerFactory.getHandler(newStatus);
+        return handler.changeStatus(appointmentId, newStatus);
     }
 }
 

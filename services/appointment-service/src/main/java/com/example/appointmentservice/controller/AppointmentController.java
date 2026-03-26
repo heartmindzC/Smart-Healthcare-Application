@@ -176,6 +176,16 @@ public class AppointmentController {
     //             .result(updatedAppointment)
     //             .build();
     // }
+
+    @PatchMapping("/update-status/{appointmentId}")
+    public ApiResponse<Appointment> updateAppointmentStatus(
+            @PathVariable String appointmentId,
+            @RequestParam AppointmentStatus status) {
+        Appointment updatedAppointment = appointmentService.updateStatus(appointmentId, status);
+        return  ApiResponse.<Appointment>builder()
+                .result(updatedAppointment)
+                .build();
+    }
     
     // Confirm appointment
     @PatchMapping("/confirm/{appointmentId}")
