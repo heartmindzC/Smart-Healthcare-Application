@@ -45,5 +45,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, String
     // Tìm appointments theo patient trong khoảng thời gian
     List<Appointment> findByPatientIdAndAppointmentDateTimeBetween(
         String patientId, LocalDateTime start, LocalDateTime end);
+    
+    // Tìm PENDING appointments đã hết timeout
+    List<Appointment> findByStatusAndPendingCreatedAtBefore(
+        AppointmentStatus status, LocalDateTime expiredTime);
 }
 

@@ -39,7 +39,7 @@ public abstract class AbstractAppointmentStatusHandler {
     /**
      * Template Method - định nghĩa skeleton của thuật toán thay đổi status
      */
-    public final Appointment changeStatus(String appointmentId, AppointmentStatus newStatus) {
+    public final Appointment changeStatus(String appointmentId, AppointmentStatus newStatus) { //feature template method
         logger.info("Starting status transition for appointment: {} to status: {}", 
                     appointmentId, newStatus);
 

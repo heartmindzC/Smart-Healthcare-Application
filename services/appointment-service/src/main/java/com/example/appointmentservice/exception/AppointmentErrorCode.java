@@ -21,6 +21,10 @@ public enum AppointmentErrorCode implements ErrorCode {
     STATUS_NULL(3014, "Status is required", HttpStatus.BAD_REQUEST),
     STATUS_INVALID(3015, "Status is invalid", HttpStatus.BAD_REQUEST),
     INVALID_STATUS_TRANSITION(3016, "Invalid status transition", HttpStatus.BAD_REQUEST),
+    TIMESLOT_ALREADY_BOOKED(3017, "Timeslot is being booked by another user", HttpStatus.CONFLICT),
+    TIMESLOT_NOT_AVAILABLE(3018, "Timeslot is no longer available", HttpStatus.CONFLICT),
+    TIMESLOT_ID_NULL(3019, "Timeslot ID cannot be null", HttpStatus.BAD_REQUEST),
+    PENDING_APPOINTMENT_EXPIRED(3020, "Pending appointment has expired", HttpStatus.GONE),
     ;
 
     private int code;

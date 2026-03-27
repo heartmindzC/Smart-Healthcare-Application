@@ -41,6 +41,8 @@ public class Appointment {
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status; // PENDING, CONFIRMED, CANCELLED, COMPLETED
     
+    private LocalDateTime pendingCreatedAt;  // Thời điểm chuyển sang PENDING (dùng cho timeout)
+    
     private String notes;  // Ghi chú của bệnh nhân
     private String reason; // Lý do khám
     

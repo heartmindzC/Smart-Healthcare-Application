@@ -83,6 +83,11 @@
             <artifactId>common-exception</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!-- Redis for distributed locking -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

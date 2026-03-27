@@ -4,8 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Map;
 
 /**
  * Client để gọi Doctor Service thông qua API Gateway/trực tiếp
@@ -77,13 +80,26 @@ public class DoctorServiceClient {
 
             // Gọi API để lấy thông tin time slot
             // Response structure: { result: { isAvailable: true/false } }
-            // Simplified: chỉ kiểm tra xem có gọi được không
+            ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
             
-            logger.info("Time slot {} is available", timeSlotId);
+            if (response.getBody() != null && response.getBody().containsKey("result")) {
+                Object result = response.getBody().get("result");
+                if (result instanceof Map) {
+                    Object isAvailable = ((Map<?, ?>) result).get("isAvailable");
+                    boolean available = Boolean.TRUE.equals(isAvailable);
+                    logger.info("Time slot {} availability: {}", timeSlotId, available);
+                    return available;
+                }
+            }
+            
+            // Fallback: nếu không parse được, thử kiểm tra lại bằng cách gọi API khác
+            // Hoặc coi như available nếu không chắc chắn
+            logger.warn("Could not parse time slot availability response, assuming available");
             return true;
 
         } catch (Exception e) {
             logger.error("Failed to check time slot availability: {}. Error: {}", timeSlotId, e.getMessage());
+            // Khi có lỗi, trả về false để tránh double booking
             return false;
         }
     }
