@@ -21,12 +21,11 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-@Slf4j // 1. Tự động sinh ra biến log chuẩn của SLF4J (hỗ trợ dấu {})
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-    // 2. Chuẩn hóa Injection: Dùng private final hết, bỏ @Autowired
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RestTemplate restTemplate;
@@ -34,7 +33,7 @@ public class UserService {
     private final List<LoginMethod> loginMethods;
     private final StringRedisTemplate redisTemplate;
 
-    private final String NOTIFICATION_SERVICE_URL = "http://host.docker.internal:8087/notifications/";
+    private final String NOTIFICATION_SERVICE_URL = "http://host.docker.internal:8088/notifications/";
 
     public UserResponse findByUserId(String userId) {
         User user = userRepository.findByUserId(userId)
@@ -63,13 +62,13 @@ public class UserService {
         User user = userMapper.toUser(registerRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.PATIENT);
+        Set<Role> roles = (registerRequest.getRoles() != null && !registerRequest.getRoles().isEmpty())
+                ? registerRequest.getRoles()
+                : new HashSet<>(Set.of(Role.PATIENT));
         user.setRoles(roles);
 
         UserResponse response = userMapper.toUserResponse(userRepository.save(user));
 
-        // 4. Đã sửa lỗi truyền getPhone() 2 lần thành getUserId()
         sendWelcomeEmail(response.getEmail(), response.getFullname(), response.getPhone(), response.getUserId());
 
         return response;
