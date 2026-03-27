@@ -1,5 +1,9 @@
 package com.example.notificationservice.controller;
 
+import com.example.notificationservice.command.NotificationCommand;
+import com.example.notificationservice.command.NotificationInvoker;
+import com.example.notificationservice.command.SendOtpCommand;
+import com.example.notificationservice.command.SendEmailCommand;
 import com.example.notificationservice.dto.AppointmentNotificationRequest;
 import com.example.notificationservice.dto.OtpNotificationRequest;
 import com.example.notificationservice.dto.UserRegistrationRequest;
@@ -17,37 +21,48 @@ import java.util.Map;
 public class NotificationController {
 
     private final NotificationService emailService;
+    private final NotificationInvoker notificationInvoker;
 
     @PostMapping("/welcome")
     public ResponseEntity<String> sendWelcomeEmail(@RequestBody UserRegistrationRequest request) {
-        Map<String, Object> variables = new HashMap<>();
-        variables.put("fullName", request.getFullName());
-        variables.put("userId", request.getUserId());
-        variables.put("email", request.getEmail());
-        variables.put("phone", request.getPhone());
+        // Map<String, Object> variables = new HashMap<>();
+        // variables.put("fullName", request.getFullName());
+        // variables.put("userId", request.getUserId());
+        // variables.put("email", request.getEmail());
+        // variables.put("phone", request.getPhone());
 
-        emailService.sendHtmlEmail(
-                request.getEmail(),
-                "Chào mừng bạn đến với hệ thống Smart Healthcare",
-                "welcome-email",
-                variables
-        );
+        // emailService.sendHtmlEmail(
+        //         request.getEmail(),
+        //         "Chào mừng bạn đến với hệ thống Smart Healthcare",
+        //         "welcome-email",
+        //         variables
+        // );
+
+        //Tạo command và truyền dữ liệu để service thực thi
+        NotificationCommand command = new SendEmailCommand(emailService, request);
+        //Invoker xử lý
+        notificationInvoker.executeCommand(command);
         return ResponseEntity.ok("Đã tiếp nhận yêu cầu gửi Welcome Email");
     }
 
     @PostMapping("/otp")
     public ResponseEntity<String> sendOtpEmail(@RequestBody OtpNotificationRequest request) {
 
-        Map<String, Object> variables = new HashMap<>();
-        variables.put("fullName", request.getFullName());
-        variables.put("otp", request.getOtp());
+        // Map<String, Object> variables = new HashMap<>();
+        // variables.put("fullName", request.getFullName());
+        // variables.put("otp", request.getOtp());
 
-        emailService.sendHtmlEmail(
-                request.getEmail(),
-                "Mã xác thực (OTP) đặt lại mật khẩu - Smart Healthcare",
-                "otp-email",
-                variables
-        );
+        // emailService.sendHtmlEmail(
+        //         request.getEmail(),
+        //         "Mã xác thực (OTP) đặt lại mật khẩu - Smart Healthcare",
+        //         "otp-email",
+        //         variables
+        // );
+
+        //Tạo command truyền dữ liệu để service thực thi
+        NotificationCommand command = new SendOtpCommand(emailService, request);
+        //Invoker xử lý
+        notificationInvoker.executeCommand(command);
 
         return ResponseEntity.ok("Yêu cầu gửi email OTP đã được xử lý!");
     }
