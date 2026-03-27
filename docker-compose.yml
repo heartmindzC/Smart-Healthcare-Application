@@ -97,9 +97,12 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/doctorsdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: 123456
+      USER_SERVICE_URL: http://user-service:8080
     depends_on:
       mysql-db:
         condition: service_healthy
+      user-service:
+        condition: service_started
     networks:
       - healthcare-network
 

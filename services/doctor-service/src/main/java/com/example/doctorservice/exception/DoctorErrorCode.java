@@ -21,6 +21,12 @@ public enum DoctorErrorCode implements ErrorCode {
     END_TIME_NULL(2014, "End time is required", HttpStatus.BAD_REQUEST),
     IS_AVAILABLE_NULL(2015, "Is available is required", HttpStatus.BAD_REQUEST),
     SPECIFIC_DATE_NULL(2016, "Specific date is required", HttpStatus.BAD_REQUEST),
+    USER_CREATION_FAILED(2017, "Failed to create user account", HttpStatus.BAD_REQUEST),
+    USER_SERVICE_UNAVAILABLE(2018, "User service is unavailable, please try again later", HttpStatus.SERVICE_UNAVAILABLE),
+    EMAIL_INVALID(2019, "Email is invalid", HttpStatus.BAD_REQUEST),
+    PHONE_INVALID(2020, "Phone number is invalid", HttpStatus.BAD_REQUEST),
+    PASSWORD_NULL(2021, "Password is required", HttpStatus.BAD_REQUEST),
+    ADDRESS_NULL(2022, "Address is required", HttpStatus.BAD_REQUEST),
 
     ;
 
