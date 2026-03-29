@@ -3,6 +3,7 @@ package com.example.appointmentservice.service;
 import com.example.appointmentservice.dto.reuqest.AppointmentCreateRequest;
 import com.example.appointmentservice.dto.reuqest.AppointmentRequest;
 import com.example.appointmentservice.exception.AppointmentErrorCode;
+import com.example.appointmentservice.client.DoctorServiceClient;
 import com.example.appointmentservice.handler.AbstractAppointmentStatusHandler;
 import com.example.appointmentservice.handler.AppointmentStatusHandlerFactory;
 import com.example.appointmentservice.mapper.AppointmentMapper;
@@ -25,6 +26,8 @@ public class AppointmentService {
     private AppointmentMapper appointmentMapper;
     @Autowired
     private AppointmentStatusHandlerFactory handlerFactory;
+    @Autowired
+    private DoctorServiceClient doctorServiceClient;
 
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
@@ -88,7 +91,17 @@ public class AppointmentService {
             appointment.setPendingCreatedAt(LocalDateTime.now());
         }
         
-        return appointmentRepository.save(appointment);
+        // Lưu trước với status PENDING (để có appointmentId)
+        appointment = appointmentRepository.save(appointment);
+        
+        // Auto-confirm/cancel dựa trên timeslot availability
+        if (doctorServiceClient.isTimeSlotAvailable(appointment.getTimeSlotId())) {
+            appointment = updateStatus(appointment.getAppointmentId(), AppointmentStatus.CONFIRMED);
+        } else {
+            appointment = updateStatus(appointment.getAppointmentId(), AppointmentStatus.CANCELLED);
+        }
+        
+        return appointment;
     }
 
     public Appointment update(String id, AppointmentRequest request) {
