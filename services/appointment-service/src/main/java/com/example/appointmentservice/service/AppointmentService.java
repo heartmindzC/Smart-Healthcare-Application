@@ -83,13 +83,14 @@ public class AppointmentService {
     
     public Appointment save(AppointmentCreateRequest request) {
         Appointment appointment = appointmentMapper.toAppointment(request);
+        appointment.setStatus(AppointmentStatus.PENDING);
         appointment.setCreatedAt(LocalDateTime.now());
         appointment.setUpdatedAt(LocalDateTime.now());
         
         // Set pendingCreatedAt khi tạo appointment mới (để track timeout)
-        if (appointment.getStatus() == AppointmentStatus.PENDING) {
-            appointment.setPendingCreatedAt(LocalDateTime.now());
-        }
+        // if (appointment.getStatus() == AppointmentStatus.PENDING) {
+        appointment.setPendingCreatedAt(LocalDateTime.now());
+        // }
         
         // Lưu trước với status PENDING (để có appointmentId)
         appointment = appointmentRepository.save(appointment);
