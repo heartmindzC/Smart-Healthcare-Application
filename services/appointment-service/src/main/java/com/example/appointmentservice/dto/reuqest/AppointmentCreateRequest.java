@@ -37,9 +37,7 @@ public class AppointmentCreateRequest {
     @NotEmpty(message = "DEPARTMENT_NAME_NULL")
     private String departmentName;
     
-    @NotEmpty(message = "TIME_SLOT_ID_NULL")
-    private String timeSlotId;
-    
+
     @NotNull(message = "APPOINTMENT_DATE_TIME_NULL")
     @Future(message = "APPOINTMENT_DATE_TIME_INVALID")
     private LocalDateTime appointmentDateTime;

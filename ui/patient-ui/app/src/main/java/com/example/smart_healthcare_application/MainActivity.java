@@ -56,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
         cvBooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Mở trang Đặt lịch khám", Toast.LENGTH_SHORT).show();
-                // Intent intent = new Intent(MainActivity.this, BookingActivity.class);
-                // startActivity(intent);
+                // Toast.makeText(MainActivity.this, "Mở trang Đặt lịch khám", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, BookingActivity.class);
+                startActivity(intent);
             }
         });
 

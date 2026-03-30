@@ -22,7 +22,7 @@ public class DoctorServiceClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Value("${services.doctor.url:http://localhost:8082}")
+    @Value("${services.doctor.url:http://host.docker.internal:8082}")
     private String doctorServiceUrl;
 
     /**
@@ -81,7 +81,7 @@ public class DoctorServiceClient {
             // Gọi API để lấy thông tin time slot
             // Response structure: { result: { isAvailable: true/false } }
             ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
-            
+
             if (response.getBody() != null && response.getBody().containsKey("result")) {
                 Object result = response.getBody().get("result");
                 if (result instanceof Map) {
@@ -91,7 +91,7 @@ public class DoctorServiceClient {
                     return available;
                 }
             }
-            
+
             // Fallback: nếu không parse được, thử kiểm tra lại bằng cách gọi API khác
             // Hoặc coi như available nếu không chắc chắn
             logger.warn("Could not parse time slot availability response, assuming available");
@@ -99,8 +99,52 @@ public class DoctorServiceClient {
 
         } catch (Exception e) {
             logger.error("Failed to check time slot availability: {}. Error: {}", timeSlotId, e.getMessage());
-            // Khi có lỗi, trả về false để tránh double booking
             return false;
+        }
+    }
+
+    /**
+     * Tạo time slot mới
+     * 
+     * @param doctorId            ID của bác sĩ
+     * @param appointmentDateTime Thời gian hẹn
+     * @return ID của time slot được tạo, hoặc null nếu thất bại
+     */
+    public String createTimeSlot(String doctorId, java.time.LocalDateTime appointmentDateTime) {
+        try {
+            String url = doctorServiceUrl + "/time-slots/";
+            logger.info("Creating time slot for doctor: {} at: {} via URL: {}", doctorId, appointmentDateTime, url);
+
+            Map<String, Object> request = new java.util.HashMap<>();
+            request.put("doctorId", doctorId);
+            request.put("dayOfWeek", appointmentDateTime.getDayOfWeek().name());
+            request.put("startTime", appointmentDateTime.toLocalTime().toString());
+            // Giả định mỗi buổi hẹn kéo dài 1 tiếng
+            request.put("endTime", appointmentDateTime.toLocalTime().plusHours(1).toString());
+            request.put("isAvailable", true);
+            request.put("specificDate", appointmentDateTime.toLocalDate().toString());
+
+            ResponseEntity<Map> response = restTemplate.postForEntity(url, request, Map.class);
+
+            if (response.getBody() != null && response.getBody().containsKey("result")) {
+                Object result = response.getBody().get("result");
+                if (result instanceof Map) {
+                    Object timeSlotId = ((Map<?, ?>) result).get("timeSlotId");
+                    if (timeSlotId == null) {
+                        timeSlotId = ((Map<?, ?>) result).get("id");
+                    }
+                    if (timeSlotId != null) {
+                        logger.info("Successfully created time slot: {}", timeSlotId);
+                        return timeSlotId.toString();
+                    }
+                }
+            }
+            logger.warn("Could not parse time slot creation response");
+            return null;
+
+        } catch (Exception e) {
+            logger.error("Failed to create time slot. DoctorId: {}. Error: {}", doctorId, e.getMessage());
+            return null;
         }
     }
 }

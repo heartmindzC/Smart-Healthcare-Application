@@ -27,6 +27,7 @@ public enum DoctorErrorCode implements ErrorCode {
     PHONE_INVALID(2020, "Phone number is invalid", HttpStatus.BAD_REQUEST),
     PASSWORD_NULL(2021, "Password is required", HttpStatus.BAD_REQUEST),
     ADDRESS_NULL(2022, "Address is required", HttpStatus.BAD_REQUEST),
+    TIME_SLOT_UNAVAILABLE(2023, "Time slot is unavailable", HttpStatus.CONFLICT),
 
     ;
 

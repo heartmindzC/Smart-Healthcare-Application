@@ -21,12 +21,11 @@ public class Doctor {
     private String userId;
     private String hospitalId;
     private String department;
-    private String fullName; // ho ten
+    private String fullName;
     private Date birth;
-    private Date registrationAt; // --
+    private Date registrationAt;
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private String licenseId;
-    private Boolean isActive; // --
-
+    private Boolean isActive;
 }

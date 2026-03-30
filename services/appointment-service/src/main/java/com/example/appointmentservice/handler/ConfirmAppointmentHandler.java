@@ -41,25 +41,23 @@ public class ConfirmAppointmentHandler extends AbstractAppointmentStatusHandler 
     @Override
     protected void validateTransition(AppointmentStatus currentStatus, AppointmentStatus newStatus) {
         super.validateTransition(currentStatus, newStatus);
-        
+
         if (newStatus != AppointmentStatus.CONFIRMED) {
-            throw new AppException(AppointmentErrorCode.STATUS_INVALID, 
-                    "Confirm handler chỉ xử lý CONFIRMED status");
+            throw new AppException(AppointmentErrorCode.STATUS_INVALID);
         }
-        
+
         if (!ALLOWED_PREVIOUS_STATUSES.contains(currentStatus)) {
-            throw new AppException(AppointmentErrorCode.STATUS_INVALID, 
-                    "Chỉ PENDING appointment mới có thể xác nhận. Trạng thái hiện tại: " + currentStatus);
+            throw new AppException(AppointmentErrorCode.STATUS_INVALID);
         }
     }
 
     @Override
     protected void preProcess(Appointment appointment, AppointmentStatus newStatus) {
         super.preProcess(appointment, newStatus);
-        
+
         if (newStatus == AppointmentStatus.CONFIRMED) {
             String timeSlotId = appointment.getTimeSlotId();
-            
+
             // Validate timeSlotId exists
             if (timeSlotId == null || timeSlotId.isBlank()) {
                 throw new AppException(AppointmentErrorCode.TIMESLOT_ID_NULL);
@@ -67,15 +65,15 @@ public class ConfirmAppointmentHandler extends AbstractAppointmentStatusHandler 
 
             // Generate unique lock ID for this confirmation attempt
             String lockId = UUID.randomUUID().toString();
-            
+
             // Step 1: Acquire distributed lock
-            // This prevents race condition when multiple users try to confirm the same time slot
+            // This prevents race condition when multiple users try to confirm the same time
+            // slot
             if (!timeSlotLockService.acquireLock(timeSlotId, lockId)) {
                 logger.warn("Failed to acquire lock for timeSlot {} - already locked", timeSlotId);
-                throw new AppException(AppointmentErrorCode.TIMESLOT_ALREADY_BOOKED,
-                        "Timeslot đang được xử lý bởi người khác. Vui lòng thử lại sau.");
+                throw new AppException(AppointmentErrorCode.TIMESLOT_ALREADY_BOOKED);
             }
-            
+
             logger.debug("Acquired lock for timeSlot {} with lockId {}", timeSlotId, lockId);
 
             // Step 2: Double-check time slot availability with Doctor Service
@@ -85,15 +83,14 @@ public class ConfirmAppointmentHandler extends AbstractAppointmentStatusHandler 
                     // Release lock and throw exception
                     timeSlotLockService.releaseLock(timeSlotId, lockId);
                     logger.warn("TimeSlot {} is no longer available during confirmation", timeSlotId);
-                    throw new AppException(AppointmentErrorCode.TIMESLOT_NOT_AVAILABLE,
-                            "Timeslot không còn khả dụng. Vui lòng chọn timeslot khác.");
+                    throw new AppException(AppointmentErrorCode.TIMESLOT_NOT_AVAILABLE);
                 }
             } catch (Exception e) {
                 // Release lock if anything goes wrong
                 timeSlotLockService.releaseLock(timeSlotId, lockId);
                 throw e;
             }
-            
+
             // Store lockId in appointment for later release in postProcess
             // Using a temporary key that will be cleaned up
             appointment.setNotes(LOCK_ID_PREFIX + lockId);
@@ -108,7 +105,7 @@ public class ConfirmAppointmentHandler extends AbstractAppointmentStatusHandler 
 
         appointment.setStatus(AppointmentStatus.CONFIRMED);
         appointment.setUpdatedAt(LocalDateTime.now());
-        
+
         return appointmentRepository.save(appointment);
     }
 
@@ -116,17 +113,17 @@ public class ConfirmAppointmentHandler extends AbstractAppointmentStatusHandler 
     protected void postProcess(Appointment appointment) {
         super.postProcess(appointment);
         logger.info("Post-process CONFIRM for appointment: {}", appointment.getAppointmentId());
-        
+
         String timeSlotId = appointment.getTimeSlotId();
-        
+
         // Extract lockId from notes if present
         String storedNotes = appointment.getNotes();
         String lockId = null;
-        
+
         if (storedNotes != null && storedNotes.startsWith(LOCK_ID_PREFIX)) {
             lockId = storedNotes.substring(LOCK_ID_PREFIX.length());
         }
-        
+
         // Step 1: Mark time slot as booked (not available) in Doctor Service
         if (timeSlotId != null) {
             try {
@@ -142,7 +139,7 @@ public class ConfirmAppointmentHandler extends AbstractAppointmentStatusHandler 
                 // Continue to release lock regardless
             }
         }
-        
+
         // Step 2: Release the distributed lock
         if (lockId != null && timeSlotId != null) {
             try {
@@ -156,7 +153,7 @@ public class ConfirmAppointmentHandler extends AbstractAppointmentStatusHandler 
                 logger.error("Error releasing lock for timeSlot {}: {}", timeSlotId, e);
             }
         }
-        
+
         // Clean up the temporary notes field
         appointment.setNotes(null);
     }

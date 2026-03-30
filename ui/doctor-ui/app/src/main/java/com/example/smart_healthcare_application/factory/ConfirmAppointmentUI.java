@@ -18,7 +18,17 @@ import java.util.TimeZone;
 
 public class ConfirmAppointmentUI extends AppointmentUI {
     private TextView tvDate, tvStatus, tvDoctor, tvHospital, tvReason;
-    private Button btnCancelAppointment;
+    private Button btnCancelAppointment, btnCompleteAppointment;
+    private OnAppointmentActionListener listener;
+
+    public interface OnAppointmentActionListener {
+        void onCancel(Appointment appointment);
+        void onComplete(Appointment appointment);
+    }
+
+    public void setActionListener(OnAppointmentActionListener listener) {
+        this.listener = listener;
+    }
 
     public ConfirmAppointmentUI(@NonNull ViewGroup parent) {
         super(LayoutInflater.from(parent.getContext())
@@ -30,6 +40,7 @@ public class ConfirmAppointmentUI extends AppointmentUI {
         tvHospital = itemView.findViewById(R.id.tvHospital);
         tvReason = itemView.findViewById(R.id.tvReason);
         btnCancelAppointment = itemView.findViewById(R.id.btnCancelAppointment);
+        btnCompleteAppointment = itemView.findViewById(R.id.btnCompleteAppointment);
     }
 
     @Override
@@ -42,38 +53,13 @@ public class ConfirmAppointmentUI extends AppointmentUI {
         String reason = appointment.getReason();
         tvReason.setText("Lý do: " + (reason != null && !reason.isEmpty() ? reason : "Không có"));
 
-        if (canCancelAppointment(appointment.getAppointmentDateTime())) {
-            btnCancelAppointment.setVisibility(View.VISIBLE);
-        } else {
-            btnCancelAppointment.setVisibility(View.GONE);
-        }
-
+        // Bác sĩ có quyền hủy hoặc hoàn thành bất cứ lúc nào
         btnCancelAppointment.setOnClickListener(v -> {
-            // TODO: Gọi interface callback truyền ra Activity để xử lý gọi API hủy lịch
+            if (listener != null) listener.onCancel(appointment);
         });
-    }
 
-    // Hàm kiểm tra thời gian
-    private boolean canCancelAppointment(String isoDate) {
-        if (isoDate == null || isoDate.isEmpty()) return false;
-
-        try {
-            SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
-            isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            Date appointmentDate = isoFormat.parse(isoDate);
-
-            if (appointmentDate != null) {
-                long currentTimeMillis = System.currentTimeMillis();
-                long appointmentTimeMillis = appointmentDate.getTime();
-                long diffInMillis = appointmentTimeMillis - currentTimeMillis;
-
-                long hours24InMillis = 24 * 60 * 60 * 1000L;
-
-                return diffInMillis > hours24InMillis;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+        btnCompleteAppointment.setOnClickListener(v -> {
+            if (listener != null) listener.onComplete(appointment);
+        });
     }
 }

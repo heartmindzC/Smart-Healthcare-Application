@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Smarthealthcareapplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".BookingActivity"
+            android:exported="false" />
+        <activity
             android:name=".PasswordRecoveryActivity"
             android:exported="false" />
         <activity

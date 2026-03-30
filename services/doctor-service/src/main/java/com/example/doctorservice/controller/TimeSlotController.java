@@ -64,6 +64,15 @@ public class TimeSlotController {
                 .build();
     }
     
+    // Lấy time slot theo ID
+    @GetMapping("/{timeSlotId}")
+    public ApiResponse<TimeSlot> getTimeSlotById(@PathVariable String timeSlotId) {
+        TimeSlot timeSlot = timeSlotService.findById(timeSlotId);
+        return ApiResponse.<TimeSlot>builder()
+                .result(timeSlot)
+                .build();
+    }
+    
     // Tạo time slot mới
     @PostMapping("/")
     public ApiResponse<TimeSlot> createTimeSlot(@Valid @RequestBody TimeSlotRequest request) {

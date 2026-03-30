@@ -82,7 +82,14 @@ public class AppointmentService {
     }
     
     public Appointment save(AppointmentCreateRequest request) {
+        // Tạo time slot trước khi tạo appointment
+        String timeSlotId = doctorServiceClient.createTimeSlot(request.getDoctorId(), request.getAppointmentDateTime());
+        if (timeSlotId == null) {
+            throw new AppException(AppointmentErrorCode.TIMESLOT_CREATION_FAILED);
+        }
+
         Appointment appointment = appointmentMapper.toAppointment(request);
+        appointment.setTimeSlotId(timeSlotId); // Gán timeSlotId vừa tạo
         appointment.setStatus(AppointmentStatus.PENDING);
         appointment.setCreatedAt(LocalDateTime.now());
         appointment.setUpdatedAt(LocalDateTime.now());

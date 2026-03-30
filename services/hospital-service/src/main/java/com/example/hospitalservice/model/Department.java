@@ -20,4 +20,10 @@ public class Department {
     private String departmentPhone;
     private String departmentEmail;
     private String hospitalId;
+
+
+
+    // code show thông tin bác sĩ trước
+    // dùng hospital_id để tìm department
+    // dùng department để tìm doctor
 }

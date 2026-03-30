@@ -4,8 +4,10 @@ import com.example.smart_healthcare_application.api.response.ApiResponse;
 import com.example.smart_healthcare_application.models.Appointment;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 import java.util.List;
@@ -16,4 +18,7 @@ public interface AppointmentService {
 
     @PATCH("appointments/cancel/{appointmentId}")
     Call<ApiResponse<Appointment>> cancelAppointment(@Path("appointmentId") String appointmentId);
+
+    @POST("appointments")
+    Call<ApiResponse<Appointment>> createAppointment(@Body Appointment appointment);
 }

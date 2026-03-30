@@ -8,7 +8,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TimeSlotRepository extends JpaRepository<TimeSlot, String> {
@@ -21,6 +23,8 @@ public interface TimeSlotRepository extends JpaRepository<TimeSlot, String> {
     
     // Tìm time slots theo ngày cụ thể
     List<TimeSlot> findByDoctorIdAndSpecificDate(String doctorId, LocalDate specificDate);
+    
+    Optional<TimeSlot> findByDoctorIdAndSpecificDateAndStartTimeAndEndTime(String doctorId, LocalDate specificDate, LocalTime startTime, LocalTime endTime);
     
     // Tìm time slots theo day of week (lịch lặp lại)
     List<TimeSlot> findByDoctorIdAndDayOfWeekAndSpecificDateIsNull(String doctorId, DayOfWeek dayOfWeek);

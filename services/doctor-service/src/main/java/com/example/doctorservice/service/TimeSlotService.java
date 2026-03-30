@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TimeSlotService {
@@ -43,6 +44,21 @@ public class TimeSlotService {
     }
     
     public TimeSlot save(TimeSlotRequest request) {
+        Optional<TimeSlot> existingSlotOpt = timeSlotRepository.findByDoctorIdAndSpecificDateAndStartTimeAndEndTime(
+                request.getDoctorId(),
+                request.getSpecificDate(),
+                request.getStartTime(),
+                request.getEndTime()
+        );
+
+        if (existingSlotOpt.isPresent()) {
+            TimeSlot existingSlot = existingSlotOpt.get();
+            if (Boolean.FALSE.equals(existingSlot.getIsAvailable())) {
+                throw new AppException(DoctorErrorCode.TIME_SLOT_UNAVAILABLE);
+            }
+            return existingSlot;
+        }
+
         TimeSlot timeSlot = timeSlotMapper.toTimeSlot(request);
         timeSlot.setCreatedAt(LocalDateTime.now());
         return timeSlotRepository.save(timeSlot);

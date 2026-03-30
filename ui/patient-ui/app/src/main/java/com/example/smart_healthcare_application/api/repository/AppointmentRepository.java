@@ -65,4 +65,25 @@ public class AppointmentRepository {
             }
         });
     }
+
+    public void createAppointment(Appointment appointment, ApiCallback<Appointment> callback) {
+        appointmentService.createAppointment(appointment).enqueue(new Callback<ApiResponse<Appointment>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Appointment>> call, Response<ApiResponse<Appointment>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body().getResult());
+                } else {
+                    String errorMessage = ApiErrorMessage.getErrorMessage(response.errorBody());
+                    Log.e(TAG, "createAppointment error: " + errorMessage);
+                    callback.onError(errorMessage);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Appointment>> call, Throwable t) {
+                Log.e(TAG, "createAppointment failure: " + t.getMessage());
+                callback.onError("Lỗi kết nối: " + t.getMessage());
+            }
+        });
+    }
 }

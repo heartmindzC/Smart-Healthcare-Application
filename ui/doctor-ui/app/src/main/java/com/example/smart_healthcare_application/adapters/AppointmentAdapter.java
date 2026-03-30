@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smart_healthcare_application.factory.AppointmentUI;
 import com.example.smart_healthcare_application.factory.AppointmentUIFactory;
+import com.example.smart_healthcare_application.factory.ConfirmAppointmentUI;
 import com.example.smart_healthcare_application.models.Appointment;
 
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.List;
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentUI> {
 
     private List<Appointment> appointmentList;
+    private ConfirmAppointmentUI.OnAppointmentActionListener listener;
 
-    public AppointmentAdapter(List<Appointment> appointmentList) {
+    public AppointmentAdapter(List<Appointment> appointmentList, ConfirmAppointmentUI.OnAppointmentActionListener listener) {
         this.appointmentList = appointmentList;
+        this.listener = listener;
     }
 
     @Override
@@ -44,6 +47,11 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentUI> {
     @Override
     public void onBindViewHolder(@NonNull AppointmentUI holder, int position) {
         Appointment appointment = appointmentList.get(position);
+        
+        if (holder instanceof ConfirmAppointmentUI) {
+            ((ConfirmAppointmentUI) holder).setActionListener(listener);
+        }
+        
         holder.bind(appointment);
     }
 

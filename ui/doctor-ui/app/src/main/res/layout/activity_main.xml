@@ -152,7 +152,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:gravity="center"
-                        android:text="Lịch Sử Đặt Lịch"
+                        android:text="Lịch Làm Việc"
                         android:textStyle="bold" />
 
                     <TextView
@@ -160,7 +160,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:gravity="center"
-                        android:text="Xem lại tất cả các lần khám bệnh trước đây."
+                        android:text="Xem và quản lý lịch hẹn khám của bạn."
                         android:textColor="#757575"
                         android:textSize="12sp" />
                 </LinearLayout>

@@ -25,8 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public abstract class AbstractAppointmentStatusHandler {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
-
+    protected final Logger logger = LoggerFactory.getLogger(AbstractAppointmentStatusHandler.class);
     @Autowired
     protected AppointmentRepository appointmentRepository;
 

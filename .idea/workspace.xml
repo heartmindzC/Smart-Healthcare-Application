@@ -12,150 +12,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2fb019f-2f45-4ca7-bba2-7a57a7e9864a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/.idea/AndroidProjectSystem.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/.idea/appInsightsSettings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/.idea/deploymentTargetSelector.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/.idea/migrations.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/.idea/runConfigurations.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/build.gradle.kts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/proguard-rules.pro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/androidTest/java/com/example/smart_healthcare_application/ExampleInstrumentedTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/AppointmentHistoryActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/EHRActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/ForgotPasswordActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/LoginActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/MainActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/OtpVerificationActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/PasswordChangingActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/PasswordRecoveryActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/RegisterActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/UserProfileActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/UserProfileUpdatingActivity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/adapters/AppointmentAdapter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/adapters/MedicalHistoryAdapter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/api_config/ApiCallback.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/api_config/ApiClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/repository/AppointmentRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/repository/EHRRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/repository/PatientRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/repository/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/request/ChangePasswordRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/request/ForgotPasswordRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/request/LoginRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/request/PatientRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/request/RegisterRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/request/ResetpasswordRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/request/UpdatePatientRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/request/UpdateUserRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/request/VerifyOtpRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/response/ApiResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/services/AppointmentService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/services/EHRService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/services/PatientService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/api/services/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/factory/AppointmentUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/factory/AppointmentUIFactory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/factory/CancelAppointmentUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/factory/CompleteAppointmentUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/factory/ConfirmAppointmentUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/models/Appointment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/models/EHR.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/models/MedicalVisits.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/models/Patient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/models/Prescription.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/models/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/utils/ApiErrorMessage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/java/com/example/smart_healthcare_application/utils/LoginManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/bg_rounded_status.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_arrow_back.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_arrow_drop_down.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_badge.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_bloodtype.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_cake.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_calendar.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_cancel.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_check_circle.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_chevron_right.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_edit.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_email.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_gender.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_height.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_hospital_illustration.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_launcher_foreground.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_location_on.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_lock.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_lock_open.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_logout.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_medical_information.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_monitor_weight.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_person.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_phone.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_placeholder_profile.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/ic_security.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/drawable/spinner_border.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/activity_appointment_history.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/activity_ehr.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/activity_forgot_password.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/activity_login.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/activity_main.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/activity_otp_verification.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/activity_password_changing.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/activity_password_recovery.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/activity_register.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/activity_user_profile.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/activity_user_profile_updating.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/item_appointment.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/item_appointment_cancel.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/item_appointment_complete.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/item_appointment_confirm.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/item_medical_history.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/layout/item_prescription.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/mipmap-hdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/mipmap-mdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/mipmap-xhdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/values-night/themes.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/values/colors.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/values/strings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/values/themes.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/xml/backup_rules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/main/res/xml/data_extraction_rules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/app/src/test/java/com/example/smart_healthcare_application/ExampleUnitTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/build.gradle.kts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/gradle.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/gradle/libs.versions.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/settings.gradle.kts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/api-gateway-service/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/services/api-gateway-service/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/doctor-service/src/main/java/com/example/doctorservice/dto/request/DoctorCreationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/doctor-service/src/main/java/com/example/doctorservice/dto/request/DoctorCreationRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/doctor-service/src/main/java/com/example/doctorservice/exception/DoctorErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/doctor-service/src/main/java/com/example/doctorservice/exception/DoctorErrorCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/doctor-service/src/main/java/com/example/doctorservice/service/DoctorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/doctor-service/src/main/java/com/example/doctorservice/service/DoctorService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/doctor-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/services/doctor-service/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/dto/request/RegisterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/dto/request/RegisterRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/java/com/example/userservice/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/appointment-service/src/main/java/com/example/appointmentservice/handler/ConfirmAppointmentHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/appointment-service/src/main/java/com/example/appointmentservice/handler/ConfirmAppointmentHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/doctor-service/src/main/java/com/example/doctorservice/model/Doctor.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/doctor-service/src/main/java/com/example/doctorservice/model/Doctor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/hospital-service/src/main/java/com/example/hospitalservice/model/Department.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/hospital-service/src/main/java/com/example/hospitalservice/model/Department.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/notification-service/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/notification-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/AppointmentHistoryActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/AppointmentHistoryActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/adapters/AppointmentAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/adapters/AppointmentAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/api/repository/AppointmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/api/repository/AppointmentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/api/services/AppointmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/api/services/AppointmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/factory/AppointmentUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/factory/AppointmentUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/factory/ConfirmAppointmentUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/factory/ConfirmAppointmentUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/res/layout/activity_appointment_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/res/layout/activity_appointment_history.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/res/layout/item_appointment_confirm.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/res/layout/item_appointment_confirm.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/api/repository/AppointmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/api/repository/AppointmentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/api/services/AppointmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/api/services/AppointmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/res/values/colors.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -359,7 +236,7 @@
       <workItem from="1769274851034" duration="158000" />
       <workItem from="1774111485819" duration="12555000" />
       <workItem from="1774285712633" duration="10703000" />
-      <workItem from="1774536513978" duration="13125000" />
+      <workItem from="1774536513978" duration="24277000" />
     </task>
     <servers />
   </component>

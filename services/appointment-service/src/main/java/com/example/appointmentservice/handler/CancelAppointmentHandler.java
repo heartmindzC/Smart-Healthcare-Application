@@ -23,25 +23,26 @@ import java.util.Set;
 @Component
 public class CancelAppointmentHandler extends AbstractAppointmentStatusHandler {
 
-    private static final Set<AppointmentStatus> ALLOWED_PREVIOUS_STATUSES = 
-            Set.of(AppointmentStatus.PENDING, AppointmentStatus.CONFIRMED);
+    private static final Set<AppointmentStatus> ALLOWED_PREVIOUS_STATUSES = Set.of(AppointmentStatus.PENDING,
+            AppointmentStatus.CONFIRMED);
 
     @Override
     protected void validateTransition(AppointmentStatus currentStatus, AppointmentStatus newStatus) {
         super.validateTransition(currentStatus, newStatus);
-        
+
         if (newStatus != AppointmentStatus.CANCELLED) {
-            throw new AppException(AppointmentErrorCode.STATUS_INVALID, 
+            throw new AppException(AppointmentErrorCode.STATUS_INVALID,
                     "Cancel handler chỉ xử lý CANCELLED status");
         }
-        
+
         if (isTerminalStatus(currentStatus)) {
-            throw new AppException(AppointmentErrorCode.STATUS_INVALID, 
-                    "Không thể hủy appointment đã hoàn thành hoặc đã hủy trước đó. Trạng thái hiện tại: " + currentStatus);
+            throw new AppException(AppointmentErrorCode.STATUS_INVALID,
+                    "Không thể hủy appointment đã hoàn thành hoặc đã hủy trước đó. Trạng thái hiện tại: "
+                            + currentStatus);
         }
-        
+
         if (!ALLOWED_PREVIOUS_STATUSES.contains(currentStatus)) {
-            throw new AppException(AppointmentErrorCode.STATUS_INVALID, 
+            throw new AppException(AppointmentErrorCode.STATUS_INVALID,
                     "Chỉ PENDING hoặc CONFIRMED appointment mới có thể hủy. Trạng thái hiện tại: " + currentStatus);
         }
     }
@@ -54,7 +55,7 @@ public class CancelAppointmentHandler extends AbstractAppointmentStatusHandler {
 
         appointment.setStatus(AppointmentStatus.CANCELLED);
         appointment.setUpdatedAt(LocalDateTime.now());
-        
+
         return appointmentRepository.save(appointment);
     }
 
@@ -62,7 +63,7 @@ public class CancelAppointmentHandler extends AbstractAppointmentStatusHandler {
     protected void postProcess(Appointment appointment) {
         super.postProcess(appointment);
         logger.info("Post-process CANCEL for appointment: {}", appointment.getAppointmentId());
-        
+
         // Release time slot (mark as available) khi cancel
         if (appointment.getTimeSlotId() != null) {
             boolean success = doctorServiceClient.releaseTimeSlot(appointment.getTimeSlotId());
