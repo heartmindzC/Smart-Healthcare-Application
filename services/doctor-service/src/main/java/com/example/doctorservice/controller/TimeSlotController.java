@@ -63,6 +63,17 @@ public class TimeSlotController {
                 .result(timeSlots)
                 .build();
     }
+
+    // Lấy tất cả time slots của bác sĩ theo ngày cụ thể (không phân biệt available)
+    @GetMapping("/doctor/{doctorId}/by-date")
+    public ApiResponse<List<TimeSlot>> getTimeSlotsByDoctorAndDate(
+            @PathVariable String doctorId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        List<TimeSlot> timeSlots = timeSlotService.findByDoctorIdAndSpecificDate(doctorId, date);
+        return ApiResponse.<List<TimeSlot>>builder()
+                .result(timeSlots)
+                .build();
+    }
     
     // Lấy time slot theo ID
     @GetMapping("/{timeSlotId}")

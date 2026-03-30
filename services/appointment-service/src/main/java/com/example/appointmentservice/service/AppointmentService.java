@@ -14,8 +14,10 @@ import com.example.common_exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AppointmentService {
@@ -28,6 +30,8 @@ public class AppointmentService {
     private AppointmentStatusHandlerFactory handlerFactory;
     @Autowired
     private DoctorServiceClient doctorServiceClient;
+    @Autowired
+    private TimeSlotLockService timeSlotLockService;
 
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
@@ -82,34 +86,61 @@ public class AppointmentService {
     }
     
     public Appointment save(AppointmentCreateRequest request) {
-        // Tạo time slot trước khi tạo appointment
-        String timeSlotId = doctorServiceClient.createTimeSlot(request.getDoctorId(), request.getAppointmentDateTime());
-        if (timeSlotId == null) {
-            throw new AppException(AppointmentErrorCode.TIMESLOT_CREATION_FAILED);
+        // Tạo lock key dựa trên doctorId và thời gian hẹn
+        String lockKey = "appointment:" + request.getDoctorId() + ":" + request.getAppointmentDateTime().toLocalDate() + ":" + request.getAppointmentDateTime().toLocalTime();
+        String lockId = UUID.randomUUID().toString();
+
+        // Acquire lock - nếu fail thì reject luôn
+        boolean lockAcquired = timeSlotLockService.acquireLock(lockKey, lockId, Duration.ofSeconds(30));
+        if (!lockAcquired) {
+            throw new AppException(AppointmentErrorCode.TIMESLOT_ALREADY_BOOKED);
         }
 
-        Appointment appointment = appointmentMapper.toAppointment(request);
-        appointment.setTimeSlotId(timeSlotId); // Gán timeSlotId vừa tạo
-        appointment.setStatus(AppointmentStatus.PENDING);
-        appointment.setCreatedAt(LocalDateTime.now());
-        appointment.setUpdatedAt(LocalDateTime.now());
-        
-        // Set pendingCreatedAt khi tạo appointment mới (để track timeout)
-        // if (appointment.getStatus() == AppointmentStatus.PENDING) {
-        appointment.setPendingCreatedAt(LocalDateTime.now());
-        // }
-        
-        // Lưu trước với status PENDING (để có appointmentId)
-        appointment = appointmentRepository.save(appointment);
-        
-        // Auto-confirm/cancel dựa trên timeslot availability
-        if (doctorServiceClient.isTimeSlotAvailable(appointment.getTimeSlotId())) {
-            appointment = updateStatus(appointment.getAppointmentId(), AppointmentStatus.CONFIRMED);
-        } else {
-            appointment = updateStatus(appointment.getAppointmentId(), AppointmentStatus.CANCELLED);
+        try {
+            // Tạo time slot trước khi tạo appointment
+            String timeSlotId = doctorServiceClient.createTimeSlot(request.getDoctorId(), request.getAppointmentDateTime());
+            
+            // Nếu create thất bại (slot đã tồn tại), thử tìm slot đã có
+            if (timeSlotId == null) {
+                // logger.info("Time slot creation failed, trying to find existing slot");
+                timeSlotId = doctorServiceClient.findExistingTimeSlot(request.getDoctorId(), request.getAppointmentDateTime());
+            }
+
+            // Nếu không tìm được slot nào
+            if (timeSlotId == null) {
+                // logger.warn("No time slot found for doctor: {} at: {}", request.getDoctorId(), request.getAppointmentDateTime());
+                throw new AppException(AppointmentErrorCode.TIMESLOT_NOT_AVAILABLE);
+            }
+
+            Appointment appointment = appointmentMapper.toAppointment(request);
+            appointment.setTimeSlotId(timeSlotId);
+            appointment.setStatus(AppointmentStatus.PENDING);
+            appointment.setCreatedAt(LocalDateTime.now());
+            appointment.setUpdatedAt(LocalDateTime.now());
+            appointment.setPendingCreatedAt(LocalDateTime.now());
+
+            // Lưu trước với status PENDING (để có appointmentId)
+            appointment = appointmentRepository.save(appointment);
+
+            // Auto-confirm/cancel dựa trên timeslot availability - với lock đang giữ
+            // Check lại availability lần cuối trong lock để tránh race condition
+            if (doctorServiceClient.isTimeSlotAvailable(appointment.getTimeSlotId())) {
+                appointment = updateStatus(appointment.getAppointmentId(), AppointmentStatus.CONFIRMED);
+                // Mark as booked NGAY để các request khác không thể chiếm slot này
+                doctorServiceClient.markTimeSlotAsBooked(appointment.getTimeSlotId());
+            } else {
+                appointment = updateStatus(appointment.getAppointmentId(), AppointmentStatus.CANCELLED);
+                doctorServiceClient.markTimeSlotAsBooked(appointment.getTimeSlotId());
+
+                // Giải phóng slot nếu đã bị chiếm bởi request khác (trường hợp đặc biệt)
+                // doctorServiceClient.releaseTimeSlot(appointment.getTimeSlotId());
+            }
+
+            return appointment;
+        } finally {
+            // Luôn release lock
+            timeSlotLockService.releaseLock(lockKey, lockId);
         }
-        
-        return appointment;
     }
 
     public Appointment update(String id, AppointmentRequest request) {

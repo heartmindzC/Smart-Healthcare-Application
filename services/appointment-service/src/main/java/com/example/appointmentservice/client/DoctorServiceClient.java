@@ -142,8 +142,83 @@ public class DoctorServiceClient {
             logger.warn("Could not parse time slot creation response");
             return null;
 
+        } catch (org.springframework.web.client.HttpClientErrorException e) {
+            logger.warn("Time slot creation failed (slot may exist): {}. Error: {}", doctorId, e.getMessage());
+            return null;
         } catch (Exception e) {
             logger.error("Failed to create time slot. DoctorId: {}. Error: {}", doctorId, e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Tìm time slot đã tồn tại theo doctor và thời gian
+     * 
+     * @param doctorId            ID của bác sĩ
+     * @param appointmentDateTime Thời gian hẹn
+     * @return ID của time slot đã tồn tại, hoặc null nếu không tìm thấy
+     */
+    public String findExistingTimeSlot(String doctorId, java.time.LocalDateTime appointmentDateTime) {
+        try {
+            // Gọi endpoint lọc theo ngày cụ thể
+            String dateStr = appointmentDateTime.toLocalDate().toString();
+            String url = doctorServiceUrl + "/time-slots/doctor/" + doctorId + "/by-date?date=" + dateStr;
+            logger.info("Finding existing time slot: {}", url);
+            ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
+
+            // Parse thời gian cần tìm về LocalTime để so sánh chính xác
+            java.time.LocalTime targetTime = appointmentDateTime.toLocalTime();
+
+            if (response.getBody() != null && response.getBody().containsKey("result")) {
+                Object result = response.getBody().get("result");
+                if (result instanceof java.util.List) {
+                    java.util.List<?> slots = (java.util.List<?>) result;
+                    for (Object slot : slots) {
+                        if (slot instanceof Map) {
+                            Map<?, ?> slotMap = (Map<?, ?>) slot;
+                            Object startTimeObj = slotMap.get("startTime");
+                            
+                            // Parse startTime về LocalTime để so sánh chính xác
+                            if (startTimeObj != null) {
+                                java.time.LocalTime slotStartTime = parseLocalTime(startTimeObj.toString());
+                                if (slotStartTime != null && slotStartTime.equals(targetTime)) {
+                                    Object timeSlotId = slotMap.get("timeSlotId");
+                                    if (timeSlotId == null) {
+                                        timeSlotId = slotMap.get("id");
+                                    }
+                                    if (timeSlotId != null) {
+                                        logger.info("Found existing time slot: {}", timeSlotId);
+                                        return timeSlotId.toString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            logger.warn("Could not find existing time slot for doctor: {} at: {}", doctorId, appointmentDateTime);
+            return null;
+
+        } catch (Exception e) {
+            logger.error("Failed to find existing time slot. DoctorId: {}. Error: {}", doctorId, e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Parse string thành LocalTime (hỗ trợ nhiều format: "HH:mm", "HH:mm:ss", "H:mm")
+     */
+    private java.time.LocalTime parseLocalTime(String timeStr) {
+        try {
+            // Thử format "HH:mm:ss" trước
+            if (timeStr.length() == 8) {
+                return java.time.LocalTime.parse(timeStr);
+            }
+            // Thử format "HH:mm"
+            return java.time.LocalTime.parse(timeStr, java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
+        } catch (Exception e) {
+            logger.warn("Failed to parse time string: {}", timeStr);
             return null;
         }
     }

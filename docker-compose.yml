@@ -177,7 +177,7 @@ services:
       redis:
         condition: service_healthy
     networks:
-     - healthcare-network
+      - healthcare-network
 #  notification-service
   notification-service:
     build:

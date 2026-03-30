@@ -42,6 +42,10 @@ public class TimeSlotService {
     public List<TimeSlot> findAvailableSlotsByDoctorAndDate(String doctorId, LocalDate date, DayOfWeek dayOfWeek) {
         return timeSlotRepository.findAvailableSlotsByDoctorAndDate(doctorId, date, dayOfWeek);
     }
+
+    public List<TimeSlot> findByDoctorIdAndSpecificDate(String doctorId, LocalDate specificDate) {
+        return timeSlotRepository.findByDoctorIdAndSpecificDate(doctorId, specificDate);
+    }
     
     public TimeSlot save(TimeSlotRequest request) {
         Optional<TimeSlot> existingSlotOpt = timeSlotRepository.findByDoctorIdAndSpecificDateAndStartTimeAndEndTime(
