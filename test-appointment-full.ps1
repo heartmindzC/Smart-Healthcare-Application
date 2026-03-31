@@ -133,7 +133,7 @@ $app6a = Create-Appointment "doc-7" "pat-6a" "2026-03-31T09:00:00" "March 31"
 $app6b = Create-Appointment "doc-7" "pat-6b" "2026-04-01T09:00:00" "April 1"
 Write-Host "  Expected: Both CONFIRMED (different dates)"
 
-# Case 7: Race condition nhiều request
+# Case 7: Race condition nhiều request testing 
 Write-Host "`n--- CASE 7: Heavy Race (5 concurrent) ---" -ForegroundColor Yellow
 $jobs2 = @()
 for ($i = 1; $i -le 5; $i++) {
