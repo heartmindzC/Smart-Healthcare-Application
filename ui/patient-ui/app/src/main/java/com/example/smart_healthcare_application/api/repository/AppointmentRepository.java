@@ -78,10 +78,31 @@ public class AppointmentRepository {
                     callback.onError(errorMessage);
                 }
             }
-
+ 
             @Override
             public void onFailure(Call<ApiResponse<Appointment>> call, Throwable t) {
                 Log.e(TAG, "createAppointment failure: " + t.getMessage());
+                callback.onError("Lỗi kết nối: " + t.getMessage());
+            }
+        });
+    }
+
+    public void getAppointmentsByDoctorAndDate(String doctorId, String date, ApiCallback<List<Appointment>> callback) {
+        appointmentService.getAppointmentsByDoctorAndDate(doctorId, date).enqueue(new Callback<ApiResponse<List<Appointment>>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<List<Appointment>>> call, Response<ApiResponse<List<Appointment>>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body().getResult());
+                } else {
+                    String errorMessage = ApiErrorMessage.getErrorMessage(response.errorBody());
+                    Log.e(TAG, "getAppointmentsByDoctorAndDate error: " + errorMessage);
+                    callback.onError(errorMessage);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<List<Appointment>>> call, Throwable t) {
+                Log.e(TAG, "getAppointmentsByDoctorAndDate failure: " + t.getMessage());
                 callback.onError("Lỗi kết nối: " + t.getMessage());
             }
         });

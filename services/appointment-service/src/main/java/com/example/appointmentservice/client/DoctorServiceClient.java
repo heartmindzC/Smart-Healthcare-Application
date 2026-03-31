@@ -177,7 +177,7 @@ public class DoctorServiceClient {
                         if (slot instanceof Map) {
                             Map<?, ?> slotMap = (Map<?, ?>) slot;
                             Object startTimeObj = slotMap.get("startTime");
-                            
+
                             // Parse startTime về LocalTime để so sánh chính xác
                             if (startTimeObj != null) {
                                 java.time.LocalTime slotStartTime = parseLocalTime(startTimeObj.toString());
@@ -196,7 +196,7 @@ public class DoctorServiceClient {
                     }
                 }
             }
-            
+
             logger.warn("Could not find existing time slot for doctor: {} at: {}", doctorId, appointmentDateTime);
             return null;
 
@@ -207,7 +207,8 @@ public class DoctorServiceClient {
     }
 
     /**
-     * Parse string thành LocalTime (hỗ trợ nhiều format: "HH:mm", "HH:mm:ss", "H:mm")
+     * Parse string thành LocalTime (hỗ trợ nhiều format: "HH:mm", "HH:mm:ss",
+     * "H:mm")
      */
     private java.time.LocalTime parseLocalTime(String timeStr) {
         try {

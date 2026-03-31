@@ -12,27 +12,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2fb019f-2f45-4ca7-bba2-7a57a7e9864a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/appointment-service/src/main/java/com/example/appointmentservice/handler/ConfirmAppointmentHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/appointment-service/src/main/java/com/example/appointmentservice/handler/ConfirmAppointmentHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/doctor-service/src/main/java/com/example/doctorservice/model/Doctor.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/doctor-service/src/main/java/com/example/doctorservice/model/Doctor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/hospital-service/src/main/java/com/example/hospitalservice/model/Department.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/hospital-service/src/main/java/com/example/hospitalservice/model/Department.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/notification-service/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/notification-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/AppointmentHistoryActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/AppointmentHistoryActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/adapters/AppointmentAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/adapters/AppointmentAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/api/repository/AppointmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/api/repository/AppointmentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/api/services/AppointmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/api/services/AppointmentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/factory/AppointmentUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/factory/AppointmentUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/factory/ConfirmAppointmentUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/java/com/example/smart_healthcare_application/factory/ConfirmAppointmentUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/res/layout/activity_appointment_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/res/layout/activity_appointment_history.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/res/layout/item_appointment_confirm.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/doctor-ui/app/src/main/res/layout/item_appointment_confirm.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/api-gateway-service/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/services/api-gateway-service/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/appointment-service/src/main/java/com/example/appointmentservice/controller/AppointmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/appointment-service/src/main/java/com/example/appointmentservice/controller/AppointmentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/BookingActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/BookingActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/adapters/TimeSlotAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/adapters/TimeSlotAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/api/repository/AppointmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/api/repository/AppointmentRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/api/services/AppointmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/api/services/AppointmentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/res/values/colors.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/models/TimeSlot.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/models/TimeSlot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/res/layout/activity_booking.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/res/layout/activity_booking.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -237,6 +225,8 @@
       <workItem from="1774111485819" duration="12555000" />
       <workItem from="1774285712633" duration="10703000" />
       <workItem from="1774536513978" duration="24277000" />
+      <workItem from="1774884712867" duration="3577000" />
+      <workItem from="1774895087505" duration="5303000" />
     </task>
     <servers />
   </component>

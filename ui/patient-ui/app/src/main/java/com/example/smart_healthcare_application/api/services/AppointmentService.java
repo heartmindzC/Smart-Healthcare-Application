@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 import java.util.List;
 
@@ -19,6 +20,12 @@ public interface AppointmentService {
     @PATCH("appointments/cancel/{appointmentId}")
     Call<ApiResponse<Appointment>> cancelAppointment(@Path("appointmentId") String appointmentId);
 
-    @POST("appointments")
+    @POST("appointments/")
     Call<ApiResponse<Appointment>> createAppointment(@Body Appointment appointment);
+
+    @GET("appointments/doctor/{doctorId}/date")
+    Call<ApiResponse<List<Appointment>>> getAppointmentsByDoctorAndDate(
+            @Path("doctorId") String doctorId,
+            @Query("date") String date
+    );
 }

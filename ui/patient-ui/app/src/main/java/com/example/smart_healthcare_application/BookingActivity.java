@@ -2,6 +2,7 @@ package com.example.smart_healthcare_application;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,6 +26,7 @@ import com.example.smart_healthcare_application.api.repository.AppointmentReposi
 import com.example.smart_healthcare_application.api.repository.DepartmentRepository;
 import com.example.smart_healthcare_application.api.repository.DoctorRepository;
 import com.example.smart_healthcare_application.api.repository.HospitalRepository;
+import com.example.smart_healthcare_application.api.repository.TimeSlotRepository;
 import com.example.smart_healthcare_application.models.Appointment;
 import com.example.smart_healthcare_application.models.Department;
 import com.example.smart_healthcare_application.models.Doctor;
@@ -45,9 +47,11 @@ public class BookingActivity extends AppCompatActivity {
     private LinearLayout layoutDoctorSection, layoutTimeslotSection, layoutDateSection, layoutConfirmSection;
     private TextView tvSelectedDate, tvSelectedDoctorName, tvSelectedDoctorSpec,
             tvSelectedTimeslot, tvSelectedDateConfirm;
+    private android.widget.EditText etReason, etNotes;
     private Button btnPickDate, btnConfirmBooking;
-    private ProgressBar progressBarDepartment, progressBarDoctor;
-    private View dividerDoctors, dividerTimeslot, dividerDate, dividerConfirm;
+    private ProgressBar progressBarDepartment, progressBarDoctor, progressBarTimeslot;
+    private LinearLayout layoutAdditionalInfoSection;
+    private View dividerDoctors, dividerTimeslot, dividerDate, dividerAdditionalInfo, dividerConfirm;
 
     // --- Data ---
     private List<Hospital> hospitalList = new ArrayList<>();
@@ -72,6 +76,7 @@ public class BookingActivity extends AppCompatActivity {
     private DepartmentRepository departmentRepository;
     private DoctorRepository doctorRepository;
     private AppointmentRepository appointmentRepository;
+    private TimeSlotRepository timeSlotRepository;
 
     // Flags to avoid re-triggering spinner listeners
     private boolean isHospitalSpinnerReady = false;
@@ -86,6 +91,7 @@ public class BookingActivity extends AppCompatActivity {
         departmentRepository = new DepartmentRepository();
         doctorRepository = new DoctorRepository();
         appointmentRepository = new AppointmentRepository();
+        timeSlotRepository = new TimeSlotRepository();
 
         initViews();
         buildTimeSlots();
@@ -101,19 +107,24 @@ public class BookingActivity extends AppCompatActivity {
         layoutDoctorSection = findViewById(R.id.layoutDoctorSection);
         layoutTimeslotSection = findViewById(R.id.layoutTimeslotSection);
         layoutDateSection = findViewById(R.id.layoutDateSection);
+        layoutAdditionalInfoSection = findViewById(R.id.layoutAdditionalInfoSection);
         layoutConfirmSection = findViewById(R.id.layoutConfirmSection);
         tvSelectedDate = findViewById(R.id.tvSelectedDate);
         tvSelectedDoctorName = findViewById(R.id.tvSelectedDoctorName);
         tvSelectedDoctorSpec = findViewById(R.id.tvSelectedDoctorSpec);
         tvSelectedTimeslot = findViewById(R.id.tvSelectedTimeslot);
         tvSelectedDateConfirm = findViewById(R.id.tvSelectedDateConfirm);
+        etReason = findViewById(R.id.etReason);
+        etNotes = findViewById(R.id.etNotes);
         btnPickDate = findViewById(R.id.btnPickDate);
         btnConfirmBooking = findViewById(R.id.btnConfirmBooking);
         progressBarDepartment = findViewById(R.id.progressBarDepartment);
         progressBarDoctor = findViewById(R.id.progressBarDoctor);
+        progressBarTimeslot = findViewById(R.id.progressBarTimeslot);
         dividerDoctors = findViewById(R.id.dividerDoctors);
         dividerTimeslot = findViewById(R.id.dividerTimeslot);
         dividerDate = findViewById(R.id.dividerDate);
+        dividerAdditionalInfo = findViewById(R.id.dividerAdditionalInfo);
         dividerConfirm = findViewById(R.id.dividerConfirm);
 
         // Setup Hospital Spinner
@@ -131,8 +142,10 @@ public class BookingActivity extends AppCompatActivity {
         doctorAdapter = new DoctorAdapter(doctorList, doctor -> {
             selectedDoctor = doctor;
             selectedTimeSlot = null;
+            selectedDateStr = null;
+            tvSelectedDate.setText("Chưa chọn ngày");
             timeSlotAdapter.resetSelection();
-            showTimeslotSection();
+            showDateSection();
             updateConfirmSection();
         });
         rvDoctors.setLayoutManager(new LinearLayoutManager(this));
@@ -141,7 +154,7 @@ public class BookingActivity extends AppCompatActivity {
         // Setup TimeSlot RecyclerView
         timeSlotAdapter = new TimeSlotAdapter(timeSlotList, slot -> {
             selectedTimeSlot = slot;
-            showDateSection();
+            showAdditionalInfoSection();
             updateConfirmSection();
         });
         rvTimeSlots.setLayoutManager(new GridLayoutManager(this, 2));
@@ -154,6 +167,8 @@ public class BookingActivity extends AppCompatActivity {
         dividerTimeslot.setVisibility(View.GONE);
         layoutDateSection.setVisibility(View.GONE);
         dividerDate.setVisibility(View.GONE);
+        layoutAdditionalInfoSection.setVisibility(View.GONE);
+        dividerAdditionalInfo.setVisibility(View.GONE);
         layoutConfirmSection.setVisibility(View.GONE);
         dividerConfirm.setVisibility(View.GONE);
     }
@@ -309,23 +324,33 @@ public class BookingActivity extends AppCompatActivity {
     }
 
     private void showTimeslotSection() {
+        layoutDateSection.setVisibility(View.VISIBLE);
+        dividerDate.setVisibility(View.VISIBLE);
         layoutTimeslotSection.setVisibility(View.VISIBLE);
         dividerTimeslot.setVisibility(View.VISIBLE);
-        layoutDateSection.setVisibility(View.GONE);
-        dividerDate.setVisibility(View.GONE);
+        
         layoutConfirmSection.setVisibility(View.GONE);
         dividerConfirm.setVisibility(View.GONE);
-        selectedDateStr = null;
-        tvSelectedDate.setText("Chưa chọn ngày");
+        layoutAdditionalInfoSection.setVisibility(View.GONE);
+        dividerAdditionalInfo.setVisibility(View.GONE);
     }
 
     private void showDateSection() {
         layoutDateSection.setVisibility(View.VISIBLE);
         dividerDate.setVisibility(View.VISIBLE);
-        selectedDateStr = null;
-        tvSelectedDate.setText("Chưa chọn ngày");
+        layoutTimeslotSection.setVisibility(View.GONE);
+        dividerTimeslot.setVisibility(View.GONE);
         layoutConfirmSection.setVisibility(View.GONE);
         dividerConfirm.setVisibility(View.GONE);
+        layoutAdditionalInfoSection.setVisibility(View.GONE);
+        dividerAdditionalInfo.setVisibility(View.GONE);
+    }
+
+    private void showAdditionalInfoSection() {
+        layoutAdditionalInfoSection.setVisibility(View.VISIBLE);
+        dividerAdditionalInfo.setVisibility(View.VISIBLE);
+        layoutConfirmSection.setVisibility(View.VISIBLE);
+        dividerConfirm.setVisibility(View.VISIBLE);
     }
 
     private void showDatePicker() {
@@ -340,12 +365,69 @@ public class BookingActivity extends AppCompatActivity {
             selectedDateStr = String.format("%04d-%02d-%02d", y, m + 1, d);
             String displayDate = String.format("%02d/%02d/%04d", d, m + 1, y);
             tvSelectedDate.setText(displayDate);
+            loadBookedSlots();
             updateConfirmSection();
         }, year, month, day);
 
         // Không cho chọn ngày trong quá khứ
         dialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
         dialog.show();
+    }
+
+    private void loadBookedSlots() {
+        if (selectedDoctor == null || selectedDateStr == null) return;
+        
+        progressBarTimeslot.setVisibility(View.VISIBLE);
+        layoutTimeslotSection.setVisibility(View.VISIBLE);
+        dividerTimeslot.setVisibility(View.VISIBLE);
+
+        timeSlotRepository.getTimeSlotsByDoctorAndDate(selectedDoctor.getDoctorId(), selectedDateStr, new ApiCallback<List<com.example.smart_healthcare_application.api.response.TimeSlotResponse>>() {
+            @Override
+            public void onSuccess(List<com.example.smart_healthcare_application.api.response.TimeSlotResponse> result) {
+                runOnUiThread(() -> {
+                    progressBarTimeslot.setVisibility(View.GONE);
+                    
+                    // 1. Reset all local static slots to available (false)
+                    for (TimeSlot slot : timeSlotList) {
+                        slot.setBooked(false);
+                    }
+                    
+                    // 2. Sync with doctor-service data
+                    if (result != null) {
+                        Log.d("BookingActivity", "Fetched " + result.size() + " slots from doctor-service");
+                        for (com.example.smart_healthcare_application.api.response.TimeSlotResponse backendSlot : result) {
+                            // If slot is NOT available, mark it as booked in our local list
+                            if (!backendSlot.isAvailable()) {
+                                String backendStartTime = backendSlot.getStartTime(); // e.g., "08:00:00"
+                                if (backendStartTime != null && backendStartTime.length() >= 5) {
+                                    String shortStartTime = backendStartTime.substring(0, 5); // "08:00"
+                                    
+                                    for (TimeSlot localSlot : timeSlotList) {
+                                        if (localSlot.getStartTime().equals(shortStartTime)) {
+                                            localSlot.setBooked(true);
+                                            Log.d("BookingActivity", "Marked local slot " + shortStartTime + " as Booked");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    timeSlotAdapter.notifyDataSetChanged();
+                    showTimeslotSection();
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                runOnUiThread(() -> {
+                    progressBarTimeslot.setVisibility(View.GONE);
+                    Log.e("BookingActivity", "Error loading doctor time slots: " + errorMessage);
+                    Toast.makeText(BookingActivity.this, "Lỗi tải lịch làm việc: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    showTimeslotSection(); 
+                });
+            }
+        });
     }
 
     private void updateConfirmSection() {
@@ -359,7 +441,9 @@ public class BookingActivity extends AppCompatActivity {
             String[] parts = selectedDateStr.split("-");
             String displayDate = parts[2] + "/" + parts[1] + "/" + parts[0];
             tvSelectedDateConfirm.setText(displayDate);
-
+            
+            layoutAdditionalInfoSection.setVisibility(View.VISIBLE);
+            dividerAdditionalInfo.setVisibility(View.VISIBLE);
             layoutConfirmSection.setVisibility(View.VISIBLE);
             dividerConfirm.setVisibility(View.VISIBLE);
         }
@@ -388,7 +472,9 @@ public class BookingActivity extends AppCompatActivity {
                         + "🏬 Khoa: " + selectedDepartment.getDepartmentName() + "\n"
                         + "👨‍⚕️ Bác sĩ: BS. " + selectedDoctor.getFullName() + "\n"
                         + "🕐 Giờ: " + selectedTimeSlot.getDisplayTime() + "\n"
-                        + "📅 Ngày: " + tvSelectedDateConfirm.getText())
+                        + "📅 Ngày: " + tvSelectedDateConfirm.getText() + "\n"
+                        + (etReason.getText().toString().isEmpty() ? "" : "📝 Lý do: " + etReason.getText().toString() + "\n")
+                        + (etNotes.getText().toString().isEmpty() ? "" : "🗒️ Ghi chú: " + etNotes.getText().toString()))
                 .setPositiveButton("Đặt lịch", (dialog, which) -> {
                     createAppointment(currentPatient, appointmentDateTime);
                 })
@@ -410,6 +496,8 @@ public class BookingActivity extends AppCompatActivity {
         appointment.setDepartmentName(selectedDepartment.getDepartmentName());
         appointment.setTimeSlotId(selectedTimeSlot.getSlotId());
         appointment.setAppointmentDateTime(appointmentDateTime);
+        appointment.setReason(etReason.getText().toString());
+        appointment.setNotes(etNotes.getText().toString());
         appointment.setStatus("PENDING");
 
         appointmentRepository.createAppointment(appointment, new ApiCallback<Appointment>() {
@@ -460,6 +548,8 @@ public class BookingActivity extends AppCompatActivity {
         dividerTimeslot.setVisibility(View.GONE);
         layoutDateSection.setVisibility(View.GONE);
         dividerDate.setVisibility(View.GONE);
+        layoutAdditionalInfoSection.setVisibility(View.GONE);
+        dividerAdditionalInfo.setVisibility(View.GONE);
         layoutConfirmSection.setVisibility(View.GONE);
         dividerConfirm.setVisibility(View.GONE);
     }

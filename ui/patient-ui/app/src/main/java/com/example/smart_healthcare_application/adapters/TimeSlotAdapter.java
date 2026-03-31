@@ -44,6 +44,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
         holder.bind(slot, position == selectedPosition);
 
         holder.itemView.setOnClickListener(v -> {
+            if (slot.isBooked()) return;
             int prevSelected = selectedPosition;
             selectedPosition = holder.getAdapterPosition();
             if (prevSelected != -1) notifyItemChanged(prevSelected);
@@ -77,12 +78,18 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
             tvTimeSlot.setText(slot.getDisplayTime());
 
             Context context = itemView.getContext();
-            if (isSelected) {
+            if (slot.isBooked()) {
+                cardTimeSlot.setCardBackgroundColor(context.getResources().getColor(android.R.color.holo_red_light));
+                tvTimeSlot.setTextColor(context.getResources().getColor(android.R.color.darker_gray));
+                cardTimeSlot.setAlpha(0.6f);
+            } else if (isSelected) {
                 cardTimeSlot.setCardBackgroundColor(context.getResources().getColor(R.color.teal_primary));
                 tvTimeSlot.setTextColor(context.getResources().getColor(android.R.color.white));
+                cardTimeSlot.setAlpha(1.0f);
             } else {
                 cardTimeSlot.setCardBackgroundColor(context.getResources().getColor(android.R.color.white));
                 tvTimeSlot.setTextColor(context.getResources().getColor(R.color.teal_primary));
+                cardTimeSlot.setAlpha(1.0f);
             }
         }
     }

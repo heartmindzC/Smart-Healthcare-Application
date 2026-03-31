@@ -81,9 +81,9 @@ public class AppointmentService {
         return appointmentRepository.findByDoctorIdAndAppointmentDateTimeBetween(doctorId, start, end);
     }
     
-    public List<Appointment> findByPatientAndDateRange(String patientId, LocalDateTime start, LocalDateTime end) {
-        return appointmentRepository.findByPatientIdAndAppointmentDateTimeBetween(patientId, start, end);
-    }
+    // public List<Appointment> findByPatientAndDateRange(String patientId, LocalDateTime start, LocalDateTime end) {
+    //     return appointmentRepository.findByPatientIdAndAppointmentDateTimeBetween(patientId, start, end);
+    // }
     
     public Appointment save(AppointmentCreateRequest request) {
         // Tạo lock key dựa trên doctorId và thời gian hẹn
