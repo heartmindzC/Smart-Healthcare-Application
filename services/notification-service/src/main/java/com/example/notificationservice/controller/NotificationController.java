@@ -38,7 +38,7 @@ public class NotificationController {
         //         variables
         // );
 
-        //Tạo command và truyền dữ liệu để service thực thi
+        //Tạo command và truyền dữ liệu vào để service thực thi
         NotificationCommand command = new SendEmailCommand(emailService, request);
         //Invoker xử lý
         notificationInvoker.executeCommand(command);
@@ -59,7 +59,7 @@ public class NotificationController {
         //         variables
         // );
 
-        //Tạo command truyền dữ liệu để service thực thi
+        //Tạo command truyền dữ liệu vào để service thực thi
         NotificationCommand command = new SendOtpCommand(emailService, request);
         //Invoker xử lý
         notificationInvoker.executeCommand(command);

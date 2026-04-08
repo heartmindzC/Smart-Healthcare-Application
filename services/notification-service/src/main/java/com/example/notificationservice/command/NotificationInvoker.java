@@ -14,7 +14,7 @@ public class NotificationInvoker {
             log.info("Thuc thi NotificationCommand thanh cong.");
         } catch (Exception e) {
             log.error("Loi khi thuc thi NotificationCommand: ", e);
-            // Có thể thêm logic lưu lại command bị lỗi để retry ở đây
+            //Có thể thêm logic lưu lại command lỗi để retry
         }
     }
 }
