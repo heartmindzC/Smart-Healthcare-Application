@@ -1,10 +1,12 @@
 package com.example.smart_healthcare_application.models;
 
-public class TimeSlot {
+import com.example.smart_healthcare_application.adapters.TimeSlotDisplayable;
+
+public class TimeSlot implements TimeSlotDisplayable {
     private String slotId;
-    private String startTime; // e.g. "08:00"
-    private String endTime; // e.g. "09:30"
-    private String displayTime; // e.g. "08:00 - 09:30"
+    private String startTime;
+    private String endTime;
+    private String displayTime;
     private boolean isSelected;
     private boolean isBooked;
 

@@ -21,12 +21,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smart_healthcare_application.adapters.DoctorAdapter;
 import com.example.smart_healthcare_application.adapters.TimeSlotAdapter;
+import com.example.smart_healthcare_application.adapters.TimeSlotDataAdapter;
 import com.example.smart_healthcare_application.api.api_config.ApiCallback;
 import com.example.smart_healthcare_application.api.repository.AppointmentRepository;
 import com.example.smart_healthcare_application.api.repository.DepartmentRepository;
 import com.example.smart_healthcare_application.api.repository.DoctorRepository;
 import com.example.smart_healthcare_application.api.repository.HospitalRepository;
 import com.example.smart_healthcare_application.api.repository.TimeSlotRepository;
+import com.example.smart_healthcare_application.api.response.TimeSlotResponse;
 import com.example.smart_healthcare_application.models.Appointment;
 import com.example.smart_healthcare_application.models.Department;
 import com.example.smart_healthcare_application.models.Doctor;
@@ -381,37 +383,14 @@ public class BookingActivity extends AppCompatActivity {
         layoutTimeslotSection.setVisibility(View.VISIBLE);
         dividerTimeslot.setVisibility(View.VISIBLE);
 
-        timeSlotRepository.getTimeSlotsByDoctorAndDate(selectedDoctor.getDoctorId(), selectedDateStr, new ApiCallback<List<com.example.smart_healthcare_application.api.response.TimeSlotResponse>>() {
+        timeSlotRepository.getTimeSlotsByDoctorAndDate(selectedDoctor.getDoctorId(), selectedDateStr, new ApiCallback<List<TimeSlotResponse>>() {
             @Override
-            public void onSuccess(List<com.example.smart_healthcare_application.api.response.TimeSlotResponse> result) {
+            public void onSuccess(List<TimeSlotResponse> result) {
                 runOnUiThread(() -> {
                     progressBarTimeslot.setVisibility(View.GONE);
                     
-                    // 1. Reset all local static slots to available (false)
-                    for (TimeSlot slot : timeSlotList) {
-                        slot.setBooked(false);
-                    }
-                    
-                    // 2. Sync with doctor-service data
-                    if (result != null) {
-                        Log.d("BookingActivity", "Fetched " + result.size() + " slots from doctor-service");
-                        for (com.example.smart_healthcare_application.api.response.TimeSlotResponse backendSlot : result) {
-                            // If slot is NOT available, mark it as booked in our local list
-                            if (!backendSlot.isAvailable()) {
-                                String backendStartTime = backendSlot.getStartTime(); // e.g., "08:00:00"
-                                if (backendStartTime != null && backendStartTime.length() >= 5) {
-                                    String shortStartTime = backendStartTime.substring(0, 5); // "08:00"
-                                    
-                                    for (TimeSlot localSlot : timeSlotList) {
-                                        if (localSlot.getStartTime().equals(shortStartTime)) {
-                                            localSlot.setBooked(true);
-                                            Log.d("BookingActivity", "Marked local slot " + shortStartTime + " as Booked");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    // [Adapter Pattern] Chuyển đổi dữ liệu backend → frontend thông qua Adapter
+                    TimeSlotDataAdapter.syncBookingStatus(timeSlotList, result);
                     
                     timeSlotAdapter.notifyDataSetChanged();
                     showTimeslotSection();

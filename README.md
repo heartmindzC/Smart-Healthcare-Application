@@ -13,7 +13,7 @@ Mô tả: Các chuyển trạng thái appointment (confirm, cancel, complete) c�
 Template Method áp dụng:
 Base: AbstractAppointmentStatusHandler
 Template method: changeStatus()
-
+.....
 Các bước chung:
 Validate appointment exists
 Validate current status allows transition
