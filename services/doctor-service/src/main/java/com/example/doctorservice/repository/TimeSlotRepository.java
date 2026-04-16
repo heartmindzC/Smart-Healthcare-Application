@@ -2,7 +2,9 @@ package com.example.doctorservice.repository;
 
 import com.example.doctorservice.model.DayOfWeek;
 import com.example.doctorservice.model.TimeSlot;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -36,6 +38,29 @@ public interface TimeSlotRepository extends JpaRepository<TimeSlot, String> {
         @Param("doctorId") String doctorId,
         @Param("date") LocalDate date, 
         @Param("dayOfWeek") DayOfWeek dayOfWeek
+    );
+
+    /**
+     * Pessimistic lock để tránh race condition khi book slot
+     * Dùng khi user click đặt lịch - lock row ngay để các request khác phải chờ
+     */
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT t FROM TimeSlot t WHERE t.timeSlotId = :timeSlotId")
+    Optional<TimeSlot> findByIdWithLock(@Param("timeSlotId") String timeSlotId);
+
+    /**
+     * Tìm slot với pessimistic lock theo doctor + date + time
+     * Dùng cho việc check & book trong cùng 1 transaction
+     */
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT t FROM TimeSlot t WHERE t.doctorId = :doctorId " +
+           "AND t.specificDate = :specificDate " +
+           "AND t.startTime = :startTime AND t.endTime = :endTime")
+    Optional<TimeSlot> findByDoctorDateTimeWithLock(
+        @Param("doctorId") String doctorId,
+        @Param("specificDate") LocalDate specificDate,
+        @Param("startTime") LocalTime startTime,
+        @Param("endTime") LocalTime endTime
     );
 }
 

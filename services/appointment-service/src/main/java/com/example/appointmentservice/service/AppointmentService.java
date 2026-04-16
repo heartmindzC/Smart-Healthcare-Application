@@ -102,16 +102,21 @@ public class AppointmentService {
             
             // Nếu create thất bại (slot đã tồn tại), thử tìm slot đã có
             if (timeSlotId == null) {
-                // logger.info("Time slot creation failed, trying to find existing slot");
                 timeSlotId = doctorServiceClient.findExistingTimeSlot(request.getDoctorId(), request.getAppointmentDateTime());
             }
 
             // Nếu không tìm được slot nào
             if (timeSlotId == null) {
-                // logger.warn("No time slot found for doctor: {} at: {}", request.getDoctorId(), request.getAppointmentDateTime());
                 throw new AppException(AppointmentErrorCode.TIMESLOT_NOT_AVAILABLE);
             }
 
+            // ========== QUERY-DRIVEN AVAILABILITY CHECK ==========
+            // Logic mới: Check xem có CONFIRMED appointment nào trùng doctor + slot không
+            // - Nếu count > 0 → Slot NOT available (đã có người confirmed)
+            // - Nếu count = 0 → Slot IS available
+            long confirmedCount = appointmentRepository.countConfirmedAppointmentsByDoctorAndSlot(
+                    request.getDoctorId(), timeSlotId);
+            
             Appointment appointment = appointmentMapper.toAppointment(request);
             appointment.setTimeSlotId(timeSlotId);
             appointment.setStatus(AppointmentStatus.PENDING);
@@ -122,18 +127,13 @@ public class AppointmentService {
             // Lưu trước với status PENDING (để có appointmentId)
             appointment = appointmentRepository.save(appointment);
 
-            // Auto-confirm/cancel dựa trên timeslot availability - với lock đang giữ
-            // Check lại availability lần cuối trong lock để tránh race condition
-            if (doctorServiceClient.isTimeSlotAvailable(appointment.getTimeSlotId())) {
+            // Auto-confirm/cancel dựa trên QUERY-DRIVEN availability - với lock đang giữ
+            if (confirmedCount == 0) {
+                // Không có CONFIRMED appointment nào → slot available → CONFIRMED
                 appointment = updateStatus(appointment.getAppointmentId(), AppointmentStatus.CONFIRMED);
-                // Mark as booked NGAY để các request khác không thể chiếm slot này
-                doctorServiceClient.markTimeSlotAsBooked(appointment.getTimeSlotId());
             } else {
+                // Đã có người confirmed → slot not available → CANCELLED
                 appointment = updateStatus(appointment.getAppointmentId(), AppointmentStatus.CANCELLED);
-                doctorServiceClient.markTimeSlotAsBooked(appointment.getTimeSlotId());
-
-                // Giải phóng slot nếu đã bị chiếm bởi request khác (trường hợp đặc biệt)
-                // doctorServiceClient.releaseTimeSlot(appointment.getTimeSlotId());
             }
 
             return appointment;
@@ -169,6 +169,7 @@ public class AppointmentService {
 
     //     return appointmentRepository.save(appointment);
     // }
+
     /**
      * Cập nhật status của appointment sử dụng Template Pattern Handler
      * 
@@ -188,6 +189,21 @@ public class AppointmentService {
         // Lấy handler phù hợp và gọi template method
         AbstractAppointmentStatusHandler handler = handlerFactory.getHandler(newStatus);
         return handler.changeStatus(appointmentId, newStatus);
+    }
+
+    // ========== QUERY-DRIVEN AVAILABILITY METHODS ==========
+    // Dùng cho Doctor Service query availability
+
+    /**
+     * Đếm số CONFIRMED appointments trùng doctor + slot
+     * Logic: Slot IS available KHI và CHỈ KHI count = 0
+     * 
+     * @param doctorId ID của bác sĩ
+     * @param timeSlotId ID của time slot
+     * @return số lượng CONFIRMED appointments (0 hoặc 1)
+     */
+    public long countConfirmedAppointmentsByDoctorAndSlot(String doctorId, String timeSlotId) {
+        return appointmentRepository.countConfirmedAppointmentsByDoctorAndSlot(doctorId, timeSlotId);
     }
 }
 

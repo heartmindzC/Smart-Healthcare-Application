@@ -4,6 +4,7 @@ import com.example.appointmentservice.exception.AppointmentErrorCode;
 import com.example.appointmentservice.model.Appointment;
 import com.example.appointmentservice.model.AppointmentStatus;
 import com.example.appointmentservice.repository.AppointmentRepository;
+import com.example.appointmentservice.service.AppointmentEventPublisher;
 import com.example.appointmentservice.service.TimeSlotLockService;
 import com.example.common_exception.AppException;
 import org.slf4j.Logger;
@@ -37,6 +38,9 @@ public class ConfirmAppointmentHandler extends AbstractAppointmentStatusHandler 
 
     @Autowired
     private TimeSlotLockService timeSlotLockService;
+
+    @Autowired
+    private AppointmentEventPublisher eventPublisher;
 
     @Override
     protected void validateTransition(AppointmentStatus currentStatus, AppointmentStatus newStatus) {
@@ -124,23 +128,9 @@ public class ConfirmAppointmentHandler extends AbstractAppointmentStatusHandler 
             lockId = storedNotes.substring(LOCK_ID_PREFIX.length());
         }
 
-        // Step 1: Mark time slot as booked (not available) in Doctor Service
-        if (timeSlotId != null) {
-            try {
-                boolean success = doctorServiceClient.markTimeSlotAsBooked(timeSlotId);
-                if (!success) {
-                    logger.warn("Failed to mark time slot as booked: {}", timeSlotId);
-                    // Continue to release lock regardless
-                } else {
-                    logger.debug("Successfully marked timeSlot {} as booked", timeSlotId);
-                }
-            } catch (Exception e) {
-                logger.error("Error marking time slot as booked: {}", timeSlotId, e);
-                // Continue to release lock regardless
-            }
-        }
-
-        // Step 2: Release the distributed lock
+        // Step 1: Release the distributed lock
+        // Note: Doctor timeslot update is now handled by DoctorTimeslotUpdateListener (Observer Pattern)
+        // We still release lock here as a safety backup (defensive programming)
         if (lockId != null && timeSlotId != null) {
             try {
                 boolean released = timeSlotLockService.releaseLock(timeSlotId, lockId);
@@ -152,6 +142,14 @@ public class ConfirmAppointmentHandler extends AbstractAppointmentStatusHandler 
             } catch (Exception e) {
                 logger.error("Error releasing lock for timeSlot {}: {}", timeSlotId, e);
             }
+        }
+
+        // Step 2: Publish confirmation event for notification
+        // NotificationListener will send email to patient and doctor
+        try {
+            eventPublisher.publishConfirmed(appointment, lockId);
+        } catch (Exception e) {
+            logger.error("Error publishing confirmation event: {}", e.getMessage());
         }
 
         // Clean up the temporary notes field

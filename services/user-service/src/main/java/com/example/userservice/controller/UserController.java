@@ -3,14 +3,14 @@ package com.example.userservice.controller;
 import com.example.userservice.dto.request.*;
 import com.example.userservice.dto.response.ApiResponse;
 import com.example.userservice.dto.response.UserResponse;
-import com.example.userservice.model.User;
 import com.example.userservice.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -27,7 +27,24 @@ public class UserController {
         return apiResponse;
     }
 
-    @GetMapping("")
+    /**
+     * Endpoint để lấy email và fullname của user.
+     * Dùng cho notification-service gọi khi gửi email appointment.
+     */
+    @GetMapping("/{userId}/email")
+    public ApiResponse<Map<String, String>> getUserEmail(@PathVariable("userId") String userId) {
+        UserResponse user = userService.findByUserId(userId);
+
+        Map<String, String> result = new HashMap<>();
+        result.put("email", user.getEmail());
+        result.put("fullname", user.getFullname());
+
+        return ApiResponse.<Map<String, String>>builder()
+                .result(result)
+                .build();
+    }
+
+    @GetMapping("/all")
     public ApiResponse<List<UserResponse>> findAllUsers() {
         List<UserResponse> response = userService.findAllUsers();
         ApiResponse<List<UserResponse>> apiResponse = ApiResponse.<List<UserResponse>>builder()

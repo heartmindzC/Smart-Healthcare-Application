@@ -232,6 +232,37 @@ public class AppointmentController {
                 .build();
     }
 
+    // ========== QUERY-DRIVEN AVAILABILITY ENDPOINTS ==========
+    // Dùng cho Doctor Service query availability từ Appointment
+
+    /**
+     * Kiểm tra slot có available không dựa trên CONFIRMED appointments
+     * Logic: Slot IS available KHI và CHỈ KHI không có CONFIRMED appointment trùng doctor + slot
+     */
+    @GetMapping("/check-availability")
+    public ApiResponse<Boolean> checkSlotAvailability(
+            @RequestParam String doctorId,
+            @RequestParam String timeSlotId) {
+        long count = appointmentService.countConfirmedAppointmentsByDoctorAndSlot(doctorId, timeSlotId);
+        boolean isAvailable = count == 0;  // 0 CONFIRMED = available
+        return ApiResponse.<Boolean>builder()
+                .result(isAvailable)
+                .build();
+    }
+
+    /**
+     * Đếm số CONFIRMED appointments trùng doctor + slot
+     */
+    @GetMapping("/count-confirmed")
+    public ApiResponse<Long> countConfirmedAppointments(
+            @RequestParam String doctorId,
+            @RequestParam String timeSlotId) {
+        long count = appointmentService.countConfirmedAppointmentsByDoctorAndSlot(doctorId, timeSlotId);
+        return ApiResponse.<Long>builder()
+                .result(count)
+                .build();
+    }
+
     /**
      * Endpoint gửi email xác nhận đặt lịch thành công.
      * FE sẽ gọi user-service để lấy email bệnh nhân, sau đó gọi:
