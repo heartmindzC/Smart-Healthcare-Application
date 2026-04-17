@@ -1,6 +1,6 @@
 package com.example.appointmentservice.listener;
 
-import com.example.appointmentservice.client.NotificationClient;
+import com.example.appointmentservice.service.NotificationService;
 import com.example.appointmentservice.event.AppointmentCancelledEvent;
 import com.example.appointmentservice.event.AppointmentCompletedEvent;
 import com.example.appointmentservice.event.AppointmentConfirmedEvent;
@@ -36,7 +36,7 @@ public class AppointmentNotificationListener {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
 
     @Autowired
-    private NotificationClient notificationClient;
+    private NotificationService notificationClient;
 
     @Autowired
     private AppointmentRepository appointmentRepository;
@@ -91,7 +91,7 @@ public class AppointmentNotificationListener {
 
         } catch (Exception e) {
             // KHÔNG throw - notification không được fail appointment
-            logger.error("[NotificationListener] Failed to send confirmation notifications: {}", e.getMessage());
+            logger.error("[NotificationListener] Failed to send confirmation notifications: {}", e);
         }
     }
 
@@ -129,7 +129,7 @@ public class AppointmentNotificationListener {
                        event.appointmentId());
 
         } catch (Exception e) {
-            logger.error("[NotificationListener] Failed to send cancellation notifications: {}", e.getMessage());
+            logger.error("[NotificationListener] Failed to send cancellation notifications: {}", e);
         }
     }
 
@@ -166,7 +166,7 @@ public class AppointmentNotificationListener {
                        event.appointmentId());
 
         } catch (Exception e) {
-            logger.error("[NotificationListener] Failed to send completion notifications: {}", e.getMessage());
+            logger.error("[NotificationListener] Failed to send completion notifications: {}", e);
         }
     }
 }

@@ -146,11 +146,11 @@ public class ConfirmAppointmentHandler extends AbstractAppointmentStatusHandler 
 
         // Step 2: Publish confirmation event for notification
         // NotificationListener will send email to patient and doctor
-        try {
-            eventPublisher.publishConfirmed(appointment, lockId);
-        } catch (Exception e) {
-            logger.error("Error publishing confirmation event: {}", e.getMessage());
-        }
+        // try {
+        //     eventPublisher.publishConfirmed(appointment, lockId);
+        // } catch (Exception e) {
+        //     logger.error("Error publishing confirmation event: {}", e.getMessage());
+        // }
 
         // Clean up the temporary notes field
         appointment.setNotes(null);
