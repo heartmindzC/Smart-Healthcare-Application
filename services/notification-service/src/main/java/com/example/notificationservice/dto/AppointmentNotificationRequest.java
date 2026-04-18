@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AppointmentNotificationRequest {
+    private String patientEmail;
     private String doctorEmail;
     private String patientName;
     private String doctorName;
@@ -16,4 +17,5 @@ public class AppointmentNotificationRequest {
     private String departmentName;
     private String reason;
     private String appointmentDateTime;
+    private String appointmentId;
 }

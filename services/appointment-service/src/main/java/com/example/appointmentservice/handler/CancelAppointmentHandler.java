@@ -44,19 +44,15 @@ public class CancelAppointmentHandler extends AbstractAppointmentStatusHandler {
         super.validateTransition(currentStatus, newStatus);
 
         if (newStatus != AppointmentStatus.CANCELLED) {
-            throw new AppException(AppointmentErrorCode.STATUS_INVALID,
-                    "Cancel handler chỉ xử lý CANCELLED status");
+            throw new AppException(AppointmentErrorCode.STATUS_INVALID);
         }
 
         if (isTerminalStatus(currentStatus)) {
-            throw new AppException(AppointmentErrorCode.STATUS_INVALID,
-                    "Không thể hủy appointment đã hoàn thành hoặc đã hủy trước đó. Trạng thái hiện tại: "
-                            + currentStatus);
+            throw new AppException(AppointmentErrorCode.STATUS_INVALID);
         }
 
         if (!ALLOWED_PREVIOUS_STATUSES.contains(currentStatus)) {
-            throw new AppException(AppointmentErrorCode.STATUS_INVALID,
-                    "Chỉ PENDING hoặc CONFIRMED appointment mới có thể hủy. Trạng thái hiện tại: " + currentStatus);
+            throw new AppException(AppointmentErrorCode.STATUS_INVALID);
         }
     }
 

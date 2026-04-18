@@ -12,11 +12,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2fb019f-2f45-4ca7-bba2-7a57a7e9864a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_3_26,_21_49_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_3_26__21_49__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_31_3_26__21_44__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_4_26,_22_47_[Changes]/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/BookingActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/BookingActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/models/TimeSlot.java" beforeDir="false" afterPath="$PROJECT_DIR$/ui/patient-ui/app/src/main/java/com/example/smart_healthcare_application/models/TimeSlot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/appointment-service/src/main/java/com/example/appointmentservice/handler/CancelAppointmentHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/appointment-service/src/main/java/com/example/appointmentservice/handler/CancelAppointmentHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/notification-service/src/main/java/com/example/notificationservice/controller/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/src/main/java/com/example/notificationservice/controller/NotificationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/notification-service/src/main/java/com/example/notificationservice/dto/AppointmentNotificationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/src/main/java/com/example/notificationservice/dto/AppointmentNotificationRequest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,6 +226,8 @@
       <workItem from="1774884712867" duration="3577000" />
       <workItem from="1774895087505" duration="7289000" />
       <workItem from="1775314397876" duration="10683000" />
+      <workItem from="1775749642765" duration="1891000" />
+      <workItem from="1776444317230" duration="6703000" />
     </task>
     <servers />
   </component>

@@ -1,0 +1,177 @@
+Index: services/notification-service/src/main/java/com/example/notificationservice/controller/NotificationController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.notificationservice.controller;\n\nimport com.example.notificationservice.command.NotificationCommand;\nimport com.example.notificationservice.command.NotificationInvoker;\nimport com.example.notificationservice.command.SendOtpCommand;\nimport com.example.notificationservice.command.SendEmailCommand;\nimport com.example.notificationservice.dto.AppointmentNotificationRequest;\nimport com.example.notificationservice.dto.OtpNotificationRequest;\nimport com.example.notificationservice.dto.UserRegistrationRequest;\nimport com.example.notificationservice.service.NotificationService;\nimport lombok.RequiredArgsConstructor;\nimport org.springframework.http.ResponseEntity;\nimport org.springframework.web.bind.annotation.*;\n\nimport java.util.HashMap;\nimport java.util.Map;\n\n@RestController\n@RequestMapping(\"/notifications\")\n@RequiredArgsConstructor\npublic class NotificationController {\n\n    private final NotificationService emailService;\n    private final NotificationInvoker notificationInvoker;\n\n    @PostMapping(\"/welcome\")\n    public ResponseEntity<String> sendWelcomeEmail(@RequestBody UserRegistrationRequest request) {\n        // Map<String, Object> variables = new HashMap<>();\n        // variables.put(\"fullName\", request.getFullName());\n        // variables.put(\"userId\", request.getUserId());\n        // variables.put(\"email\", request.getEmail());\n        // variables.put(\"phone\", request.getPhone());\n\n        // emailService.sendHtmlEmail(\n        //         request.getEmail(),\n        //         \"Chào mừng bạn đến với hệ thống Smart Healthcare\",\n        //         \"welcome-email\",\n        //         variables\n        // );\n\n        //Tạo command và truyền dữ liệu vào để service thực thi\n        NotificationCommand command = new SendEmailCommand(emailService, request);\n        //Invoker xử lý\n        notificationInvoker.executeCommand(command);\n        return ResponseEntity.ok(\"Đã tiếp nhận yêu cầu gửi Welcome Email\");\n    }\n\n    @PostMapping(\"/otp\")\n    public ResponseEntity<String> sendOtpEmail(@RequestBody OtpNotificationRequest request) {\n\n        // Map<String, Object> variables = new HashMap<>();\n        // variables.put(\"fullName\", request.getFullName());\n        // variables.put(\"otp\", request.getOtp());\n\n        // emailService.sendHtmlEmail(\n        //         request.getEmail(),\n        //         \"Mã xác thực (OTP) đặt lại mật khẩu - Smart Healthcare\",\n        //         \"otp-email\",\n        //         variables\n        // );\n\n        //Tạo command truyền dữ liệu vào để service thực thi\n        NotificationCommand command = new SendOtpCommand(emailService, request);\n        //Invoker xử lý\n        notificationInvoker.executeCommand(command);\n\n        return ResponseEntity.ok(\"Yêu cầu gửi email OTP đã được xử lý!\");\n    }\n\n    // 2. Gửi Email cho Bệnh nhân khi đặt lịch thành công\n//    @PostMapping(\"/appointment/patient\")\n//    public ResponseEntity<String> sendAppointmentToPatient(@RequestBody AppointmentNotificationRequest request) {\n//        Map<String, Object> variables = createAppointmentVariables(request);\n//        variables.put(\"title\", \"Xác Nhận Đặt Lịch Hẹn\");\n//        variables.put(\"recipientName\", request.getPatientName());\n//        variables.put(\"message\", \"Lịch hẹn khám bệnh của bạn đã được hệ thống xác nhận thành công. Vui lòng đến trước giờ hẹn 15 phút.\");\n//\n//        emailService.sendHtmlEmail(\n//                request.getPatientEmail(),\n//                \"Xác nhận lịch hẹn khám bệnh - Smart Healthcare\",\n//                \"appointment-email\",\n//                variables\n//        );\n//        return ResponseEntity.ok(\"Đã tiếp nhận yêu cầu gửi Email cho Bệnh nhân\");\n//    }\n\n    // 3. Gửi Email cho Bác sĩ khi có người đặt lịch\n    @PostMapping(\"/appointment/doctor\")\n    public ResponseEntity<String> sendAppointmentToDoctor(@RequestBody AppointmentNotificationRequest request) {\n        Map<String, Object> variables = createAppointmentVariables(request);\n        variables.put(\"title\", \"Lịch Khám Bệnh Mới\");\n        variables.put(\"recipientName\", \"Bác sĩ \" + request.getDoctorName());\n        variables.put(\"message\", \"Hệ thống vừa ghi nhận một lịch hẹn khám bệnh mới dành cho bác sĩ.\");\n\n        emailService.sendHtmlEmail(\n                request.getDoctorEmail(),\n                \"Bạn có lịch hẹn khám mới - Smart Healthcare\",\n                \"appointment-email\",\n                variables\n        );\n        return ResponseEntity.ok(\"Đã tiếp nhận yêu cầu gửi Email cho Bác sĩ\");\n    }\n\n    // Hàm phụ trợ để đóng gói dữ liệu lịch hẹn\n    private Map<String, Object> createAppointmentVariables(AppointmentNotificationRequest request) {\n        Map<String, Object> variables = new HashMap<>();\n        variables.put(\"patientName\", request.getPatientName());\n        variables.put(\"doctorName\", request.getDoctorName());\n        variables.put(\"appointmentTime\", request.getAppointmentDateTime());\n        variables.put(\"hospitalName\", request.getHospitalName());\n        variables.put(\"departmentName\", request.getDepartmentName());\n        variables.put(\"reason\", request.getReason());\n        return variables;\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/services/notification-service/src/main/java/com/example/notificationservice/controller/NotificationController.java b/services/notification-service/src/main/java/com/example/notificationservice/controller/NotificationController.java
+--- a/services/notification-service/src/main/java/com/example/notificationservice/controller/NotificationController.java	(revision 58283f5a84efbe3eeeed5dfe438afcdb84d71b30)
++++ b/services/notification-service/src/main/java/com/example/notificationservice/controller/NotificationController.java	(date 1776266630994)
+@@ -1,9 +1,6 @@
+ package com.example.notificationservice.controller;
+ 
+-import com.example.notificationservice.command.NotificationCommand;
+-import com.example.notificationservice.command.NotificationInvoker;
+-import com.example.notificationservice.command.SendOtpCommand;
+-import com.example.notificationservice.command.SendEmailCommand;
++import com.example.notificationservice.command.*;
+ import com.example.notificationservice.dto.AppointmentNotificationRequest;
+ import com.example.notificationservice.dto.OtpNotificationRequest;
+ import com.example.notificationservice.dto.UserRegistrationRequest;
+@@ -12,8 +9,7 @@
+ import org.springframework.http.ResponseEntity;
+ import org.springframework.web.bind.annotation.*;
+ 
+-import java.util.HashMap;
+-import java.util.Map;
++
+ 
+ @RestController
+ @RequestMapping("/notifications")
+@@ -25,18 +21,6 @@
+ 
+     @PostMapping("/welcome")
+     public ResponseEntity<String> sendWelcomeEmail(@RequestBody UserRegistrationRequest request) {
+-        // Map<String, Object> variables = new HashMap<>();
+-        // variables.put("fullName", request.getFullName());
+-        // variables.put("userId", request.getUserId());
+-        // variables.put("email", request.getEmail());
+-        // variables.put("phone", request.getPhone());
+-
+-        // emailService.sendHtmlEmail(
+-        //         request.getEmail(),
+-        //         "Chào mừng bạn đến với hệ thống Smart Healthcare",
+-        //         "welcome-email",
+-        //         variables
+-        // );
+ 
+         //Tạo command và truyền dữ liệu vào để service thực thi
+         NotificationCommand command = new SendEmailCommand(emailService, request);
+@@ -48,17 +32,6 @@
+     @PostMapping("/otp")
+     public ResponseEntity<String> sendOtpEmail(@RequestBody OtpNotificationRequest request) {
+ 
+-        // Map<String, Object> variables = new HashMap<>();
+-        // variables.put("fullName", request.getFullName());
+-        // variables.put("otp", request.getOtp());
+-
+-        // emailService.sendHtmlEmail(
+-        //         request.getEmail(),
+-        //         "Mã xác thực (OTP) đặt lại mật khẩu - Smart Healthcare",
+-        //         "otp-email",
+-        //         variables
+-        // );
+-
+         //Tạo command truyền dữ liệu vào để service thực thi
+         NotificationCommand command = new SendOtpCommand(emailService, request);
+         //Invoker xử lý
+@@ -68,48 +41,18 @@
+     }
+ 
+     // 2. Gửi Email cho Bệnh nhân khi đặt lịch thành công
+-//    @PostMapping("/appointment/patient")
+-//    public ResponseEntity<String> sendAppointmentToPatient(@RequestBody AppointmentNotificationRequest request) {
+-//        Map<String, Object> variables = createAppointmentVariables(request);
+-//        variables.put("title", "Xác Nhận Đặt Lịch Hẹn");
+-//        variables.put("recipientName", request.getPatientName());
+-//        variables.put("message", "Lịch hẹn khám bệnh của bạn đã được hệ thống xác nhận thành công. Vui lòng đến trước giờ hẹn 15 phút.");
+-//
+-//        emailService.sendHtmlEmail(
+-//                request.getPatientEmail(),
+-//                "Xác nhận lịch hẹn khám bệnh - Smart Healthcare",
+-//                "appointment-email",
+-//                variables
+-//        );
+-//        return ResponseEntity.ok("Đã tiếp nhận yêu cầu gửi Email cho Bệnh nhân");
+-//    }
++    @PostMapping("/appointment/patient")
++    public ResponseEntity<String> sendAppointmentToPatient(@RequestBody AppointmentNotificationRequest request) {
++        NotificationCommand command = new SendAppointmentPatientCommand(emailService, request);
++        notificationInvoker.executeCommand(command);
++        return ResponseEntity.ok("Đã tiếp nhận yêu cầu gửi Email cho Bệnh nhân");
++    }
+ 
+     // 3. Gửi Email cho Bác sĩ khi có người đặt lịch
+     @PostMapping("/appointment/doctor")
+     public ResponseEntity<String> sendAppointmentToDoctor(@RequestBody AppointmentNotificationRequest request) {
+-        Map<String, Object> variables = createAppointmentVariables(request);
+-        variables.put("title", "Lịch Khám Bệnh Mới");
+-        variables.put("recipientName", "Bác sĩ " + request.getDoctorName());
+-        variables.put("message", "Hệ thống vừa ghi nhận một lịch hẹn khám bệnh mới dành cho bác sĩ.");
+-
+-        emailService.sendHtmlEmail(
+-                request.getDoctorEmail(),
+-                "Bạn có lịch hẹn khám mới - Smart Healthcare",
+-                "appointment-email",
+-                variables
+-        );
++        NotificationCommand command = new SendAppointmentDoctorCommand(emailService, request);
++        notificationInvoker.executeCommand(command);
+         return ResponseEntity.ok("Đã tiếp nhận yêu cầu gửi Email cho Bác sĩ");
+     }
+-
+-    // Hàm phụ trợ để đóng gói dữ liệu lịch hẹn
+-    private Map<String, Object> createAppointmentVariables(AppointmentNotificationRequest request) {
+-        Map<String, Object> variables = new HashMap<>();
+-        variables.put("patientName", request.getPatientName());
+-        variables.put("doctorName", request.getDoctorName());
+-        variables.put("appointmentTime", request.getAppointmentDateTime());
+-        variables.put("hospitalName", request.getHospitalName());
+-        variables.put("departmentName", request.getDepartmentName());
+-        variables.put("reason", request.getReason());
+-        return variables;
+-    }
+ }
+\ No newline at end of file
+Index: services/appointment-service/src/main/java/com/example/appointmentservice/handler/CompleteAppointmentHandler.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.appointmentservice.handler;\n\nimport com.example.appointmentservice.exception.AppointmentErrorCode;\nimport com.example.appointmentservice.model.Appointment;\nimport com.example.appointmentservice.model.AppointmentStatus;\nimport com.example.appointmentservice.repository.AppointmentRepository;\nimport com.example.common_exception.AppException;\nimport org.springframework.stereotype.Component;\nimport org.springframework.transaction.annotation.Transactional;\n\nimport java.time.LocalDateTime;\nimport java.util.Set;\n\n/**\n * Handler xử lý việc COMPLETE appointment\n * \n * Business Rules:\n * - Chỉ CONFIRMED mới có thể chuyển sang COMPLETED\n * - PENDING, CANCELLED, COMPLETED không thể complete\n * - Khi complete: cập nhật thông tin khám bệnh (nếu có)\n */\n@Component\npublic class CompleteAppointmentHandler extends AbstractAppointmentStatusHandler {\n\n    private static final Set<AppointmentStatus> ALLOWED_PREVIOUS_STATUSES = Set.of(AppointmentStatus.CONFIRMED);\n\n    @Override\n    protected void validateTransition(AppointmentStatus currentStatus, AppointmentStatus newStatus) {\n        super.validateTransition(currentStatus, newStatus);\n\n        if (newStatus != AppointmentStatus.COMPLETED) {\n            throw new AppException(AppointmentErrorCode.STATUS_INVALID,\n                    \"Complete handler chỉ xử lý COMPLETED status\");\n        }\n\n        if (isTerminalStatus(currentStatus)) {\n            throw new AppException(AppointmentErrorCode.STATUS_INVALID,\n                    \"Không thể hoàn thành appointment đã hoàn thành hoặc đã hủy trước đó. Trạng thái hiện tại: \"\n                            + currentStatus);\n        }\n\n        if (!ALLOWED_PREVIOUS_STATUSES.contains(currentStatus)) {\n            throw new AppException(AppointmentErrorCode.STATUS_INVALID,\n                    \"Chỉ CONFIRMED appointment mới có thể hoàn thành. Trạng thái hiện tại: \" + currentStatus);\n        }\n    }\n\n    @Override\n    @Transactional\n    protected Appointment doChangeStatus(String appointmentId, AppointmentStatus newStatus) {\n        Appointment appointment = appointmentRepository.findById(appointmentId)\n                .orElseThrow(() -> new AppException(AppointmentErrorCode.NOT_FOUND));\n\n        appointment.setStatus(AppointmentStatus.COMPLETED);\n        appointment.setUpdatedAt(LocalDateTime.now());\n\n        return appointmentRepository.save(appointment);\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/services/appointment-service/src/main/java/com/example/appointmentservice/handler/CompleteAppointmentHandler.java b/services/appointment-service/src/main/java/com/example/appointmentservice/handler/CompleteAppointmentHandler.java
+--- a/services/appointment-service/src/main/java/com/example/appointmentservice/handler/CompleteAppointmentHandler.java	(revision 58283f5a84efbe3eeeed5dfe438afcdb84d71b30)
++++ b/services/appointment-service/src/main/java/com/example/appointmentservice/handler/CompleteAppointmentHandler.java	(date 1776266253241)
+@@ -29,19 +29,15 @@
+         super.validateTransition(currentStatus, newStatus);
+ 
+         if (newStatus != AppointmentStatus.COMPLETED) {
+-            throw new AppException(AppointmentErrorCode.STATUS_INVALID,
+-                    "Complete handler chỉ xử lý COMPLETED status");
++            throw new AppException(AppointmentErrorCode.STATUS_INVALID);
+         }
+ 
+         if (isTerminalStatus(currentStatus)) {
+-            throw new AppException(AppointmentErrorCode.STATUS_INVALID,
+-                    "Không thể hoàn thành appointment đã hoàn thành hoặc đã hủy trước đó. Trạng thái hiện tại: "
+-                            + currentStatus);
++            throw new AppException(AppointmentErrorCode.STATUS_INVALID);
+         }
+ 
+         if (!ALLOWED_PREVIOUS_STATUSES.contains(currentStatus)) {
+-            throw new AppException(AppointmentErrorCode.STATUS_INVALID,
+-                    "Chỉ CONFIRMED appointment mới có thể hoàn thành. Trạng thái hiện tại: " + currentStatus);
++            throw new AppException(AppointmentErrorCode.STATUS_INVALID);
+         }
+     }
+ 
+Index: services/notification-service/src/main/java/com/example/notificationservice/dto/AppointmentNotificationRequest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.notificationservice.dto;\n\n\nimport lombok.AllArgsConstructor;\nimport lombok.Data;\nimport lombok.NoArgsConstructor;\n\n@Data\n@AllArgsConstructor\n@NoArgsConstructor\npublic class AppointmentNotificationRequest {\n    private String doctorEmail;\n    private String patientName;\n    private String doctorName;\n    private String hospitalName;\n    private String departmentName;\n    private String reason;\n    private String appointmentDateTime;\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/services/notification-service/src/main/java/com/example/notificationservice/dto/AppointmentNotificationRequest.java b/services/notification-service/src/main/java/com/example/notificationservice/dto/AppointmentNotificationRequest.java
+--- a/services/notification-service/src/main/java/com/example/notificationservice/dto/AppointmentNotificationRequest.java	(revision 58283f5a84efbe3eeeed5dfe438afcdb84d71b30)
++++ b/services/notification-service/src/main/java/com/example/notificationservice/dto/AppointmentNotificationRequest.java	(date 1776266494852)
+@@ -10,6 +10,7 @@
+ @NoArgsConstructor
+ public class AppointmentNotificationRequest {
+     private String doctorEmail;
++    private String patientEmail;
+     private String patientName;
+     private String doctorName;
+     private String hospitalName;
