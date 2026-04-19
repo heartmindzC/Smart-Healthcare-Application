@@ -1,9 +1,12 @@
 package com.example.notificationservice.command;
 
+import com.example.notificationservice.client.DoctorServiceClient;
+import com.example.notificationservice.client.PatientServiceClient;
 import com.example.notificationservice.client.UserServiceClient;
 import com.example.notificationservice.service.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.print.Doc;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,13 +16,16 @@ public class SendCompletionDoctorCommand implements NotificationCommand {
     private final NotificationService notificationService;
     private final UserServiceClient userServiceClient;
     private final Map<String, Object> notificationData;
+    private final DoctorServiceClient doctorServiceClient;
 
     public SendCompletionDoctorCommand(NotificationService notificationService,
                                         UserServiceClient userServiceClient,
-                                        Map<String, Object> notificationData) {
+                                        Map<String, Object> notificationData,
+                                       DoctorServiceClient doctorServiceClient) {
         this.notificationService = notificationService;
         this.userServiceClient = userServiceClient;
         this.notificationData = notificationData;
+        this.doctorServiceClient = doctorServiceClient;
     }
 
     @Override
@@ -36,7 +42,11 @@ public class SendCompletionDoctorCommand implements NotificationCommand {
         String doctorEmail = (String) notificationData.get("doctorEmail");
         if (doctorEmail == null || doctorEmail.isBlank()) {
             String doctorId = (String) notificationData.get("doctorId");
-            doctorEmail = userServiceClient.getUserEmail(doctorId).orElse(null);
+            String userId = doctorServiceClient.getUserIdByDoctorId(doctorId);
+            if (userId.isEmpty()) {
+                throw new RuntimeException("User not found");
+            }
+            doctorEmail = userServiceClient.getUserEmail(userId).orElse(null);
         }
 
         if (doctorEmail != null && !doctorEmail.isBlank()) {

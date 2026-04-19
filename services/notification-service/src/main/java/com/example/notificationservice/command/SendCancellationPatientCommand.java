@@ -1,5 +1,6 @@
 package com.example.notificationservice.command;
 
+import com.example.notificationservice.client.PatientServiceClient;
 import com.example.notificationservice.client.UserServiceClient;
 import com.example.notificationservice.service.NotificationService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,13 +14,16 @@ public class SendCancellationPatientCommand implements NotificationCommand {
     private final NotificationService notificationService;
     private final UserServiceClient userServiceClient;
     private final Map<String, Object> notificationData;
+    private final PatientServiceClient patientServiceClient;
 
     public SendCancellationPatientCommand(NotificationService notificationService,
                                            UserServiceClient userServiceClient,
-                                           Map<String, Object> notificationData) {
+                                           Map<String, Object> notificationData,
+                                           PatientServiceClient patientServiceClient) {
         this.notificationService = notificationService;
         this.userServiceClient = userServiceClient;
         this.notificationData = notificationData;
+        this.patientServiceClient = patientServiceClient;
     }
 
     @Override
@@ -37,7 +41,11 @@ public class SendCancellationPatientCommand implements NotificationCommand {
         String patientEmail = (String) notificationData.get("patientEmail");
         if (patientEmail == null || patientEmail.isBlank()) {
             String patientId = (String) notificationData.get("patientId");
-            patientEmail = userServiceClient.getUserEmail(patientId).orElse(null);
+            String userId = patientServiceClient.getUserIdByPatientId(patientId);
+            if (userId.isEmpty()) {
+                throw new RuntimeException("User not found");
+            }
+            patientEmail = userServiceClient.getUserEmail(userId).orElse(null);
         }
 
         if (patientEmail != null && !patientEmail.isBlank()) {

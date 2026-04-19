@@ -46,7 +46,9 @@ public abstract class AppointmentUI extends RecyclerView.ViewHolder {
         for (String format : formats) {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
-                sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                if (isoDate.endsWith("Z") || isoDate.endsWith("z")) {
+                    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                }
                 Date date = sdf.parse(isoDate);
                 if (date != null) return date;
             } catch (Exception ignored) {

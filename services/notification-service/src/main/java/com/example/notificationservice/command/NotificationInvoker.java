@@ -12,9 +12,12 @@ public class NotificationInvoker {
             log.info("Bat dau thuc thi NotificationCommand: {}", command.getClass().getSimpleName());
             command.execute();
             log.info("Thuc thi NotificationCommand thanh cong.");
+        } catch (RuntimeException e) {
+            log.error("Loi khi thuc thi NotificationCommand: {}", e.getMessage());
+            throw e;
         } catch (Exception e) {
-            log.error("Loi khi thuc thi NotificationCommand: ", e);
-            //Có thể thêm logic lưu lại command lỗi để retry
+            log.error("Loi khong xac dinh khi thuc thi NotificationCommand: ", e);
+            throw new RuntimeException("Notification command failed: " + e.getMessage(), e);
         }
     }
 }

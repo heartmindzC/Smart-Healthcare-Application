@@ -78,16 +78,29 @@ public class MedicalHistoryAdapter extends RecyclerView.Adapter<MedicalHistoryAd
 
     private String formatDateString(String isoDate) {
         if (isoDate == null || isoDate.isEmpty()) return "";
-        try {
-            SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
-            isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            Date date = isoFormat.parse(isoDate);
-
-            SimpleDateFormat vnFormat = new SimpleDateFormat("dd/MM/yyyy - HH:mm", Locale.getDefault());
-            return vnFormat.format(date);
-        } catch (Exception e) {
-            return isoDate;
+        String[] formats = {
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                "yyyy-MM-dd'T'HH:mm:ss.SSSXXX",
+                "yyyy-MM-dd'T'HH:mm:ssXXX",
+                "yyyy-MM-dd'T'HH:mm:ss.SSS",
+                "yyyy-MM-dd'T'HH:mm:ss"
+        };
+        for (String format : formats) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
+                if (isoDate.endsWith("Z") || isoDate.endsWith("z")) {
+                    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                }
+                Date date = sdf.parse(isoDate);
+                if (date != null) {
+                    SimpleDateFormat vnFormat = new SimpleDateFormat("dd/MM/yyyy - HH:mm", Locale.getDefault());
+                    return vnFormat.format(date);
+                }
+            } catch (Exception ignored) {
+            }
         }
+        return isoDate;
     }
 
     public static class VisitViewHolder extends RecyclerView.ViewHolder {

@@ -1,11 +1,13 @@
 package com.example.notificationservice.command;
 
+import com.example.notificationservice.client.DoctorServiceClient;
 import com.example.notificationservice.client.UserServiceClient;
 import com.example.notificationservice.service.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 public class SendCancellationDoctorCommand implements NotificationCommand {
@@ -13,13 +15,16 @@ public class SendCancellationDoctorCommand implements NotificationCommand {
     private final NotificationService notificationService;
     private final UserServiceClient userServiceClient;
     private final Map<String, Object> notificationData;
+    private final DoctorServiceClient doctorServiceClient;
 
     public SendCancellationDoctorCommand(NotificationService notificationService,
                                           UserServiceClient userServiceClient,
-                                          Map<String, Object> notificationData) {
+                                          Map<String, Object> notificationData,
+                                          DoctorServiceClient doctorServiceClient) {
         this.notificationService = notificationService;
         this.userServiceClient = userServiceClient;
         this.notificationData = notificationData;
+        this.doctorServiceClient = doctorServiceClient;
     }
 
     @Override
@@ -37,7 +42,11 @@ public class SendCancellationDoctorCommand implements NotificationCommand {
         String doctorEmail = (String) notificationData.get("doctorEmail");
         if (doctorEmail == null || doctorEmail.isBlank()) {
             String doctorId = (String) notificationData.get("doctorId");
-            doctorEmail = userServiceClient.getUserEmail(doctorId).orElse(null);
+            String userId = doctorServiceClient.getUserIdByDoctorId(doctorId);
+            if (userId.isEmpty()) {
+                throw new RuntimeException("User not found");
+            }
+            doctorEmail = userServiceClient.getUserEmail(userId).orElse(null);
         }
 
         if (doctorEmail != null && !doctorEmail.isBlank()) {

@@ -1,5 +1,7 @@
 package com.example.notificationservice.controller;
 
+import com.example.notificationservice.client.DoctorServiceClient;
+import com.example.notificationservice.client.PatientServiceClient;
 import com.example.notificationservice.client.UserServiceClient;
 import com.example.notificationservice.command.NotificationCommand;
 import com.example.notificationservice.command.NotificationInvoker;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+
 @Slf4j
 @RestController
 @RequestMapping("/notifications")
@@ -32,19 +36,33 @@ public class NotificationController {
     private final NotificationService emailService;
     private final NotificationInvoker notificationInvoker;
     private final UserServiceClient userServiceClient;
+    private final DoctorServiceClient doctorServiceClient;
+    private final PatientServiceClient patientServiceClient;
 
     @PostMapping("/welcome")
     public ResponseEntity<String> sendWelcomeEmail(@RequestBody UserRegistrationRequest request) {
-        NotificationCommand command = new SendEmailCommand(emailService, request);
-        notificationInvoker.executeCommand(command);
-        return ResponseEntity.ok("Đã tiếp nhận yêu cầu gửi Welcome Email");
+        try {
+            NotificationCommand command = new SendEmailCommand(emailService, request);
+            notificationInvoker.executeCommand(command);
+            return ResponseEntity.ok("Đã tiếp nhận yêu cầu gửi Welcome Email");
+        } catch (RuntimeException e) {
+            log.error("[NotificationController] Failed to send welcome email: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Gửi Welcome Email thất bại: " + e.getMessage());
+        }
     }
 
     @PostMapping("/otp")
     public ResponseEntity<String> sendOtpEmail(@RequestBody OtpNotificationRequest request) {
-        NotificationCommand command = new SendOtpCommand(emailService, request);
-        notificationInvoker.executeCommand(command);
-        return ResponseEntity.ok("Yêu cầu gửi email OTP đã được xử lý!");
+        try {
+            NotificationCommand command = new SendOtpCommand(emailService, request);
+            notificationInvoker.executeCommand(command);
+            return ResponseEntity.ok("Yêu cầu gửi email OTP đã được xử lý!");
+        } catch (RuntimeException e) {
+            log.error("[NotificationController] Failed to send OTP email: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Gửi email OTP thất bại: " + e.getMessage());
+        }
     }
 
     // ============== APPOINTMENT NOTIFICATIONS ==============
@@ -55,9 +73,15 @@ public class NotificationController {
     @PostMapping("/appointment/patient")
     public ResponseEntity<String> sendAppointmentConfirmationToPatient(@RequestBody Map<String, Object> notificationData) {
         log.info("[NotificationController] Sending appointment confirmation to patient: {}", notificationData);
-        NotificationCommand command = new SendConfirmationPatientCommand(emailService, userServiceClient, notificationData);
-        notificationInvoker.executeCommand(command);
-        return ResponseEntity.ok("Đã gửi email xác nhận cho bệnh nhân");
+        try {
+            NotificationCommand command = new SendConfirmationPatientCommand(emailService, userServiceClient, notificationData, patientServiceClient);
+            notificationInvoker.executeCommand(command);
+            return ResponseEntity.ok("Đã gửi email xác nhận cho bệnh nhân");
+        } catch (RuntimeException e) {
+            log.error("[NotificationController] Failed to send appointment confirmation to patient: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Gửi email xác nhận cho bệnh nhân thất bại: " + e.getMessage());
+        }
     }
 
     /**
@@ -66,9 +90,15 @@ public class NotificationController {
     @PostMapping("/appointment/doctor")
     public ResponseEntity<String> sendAppointmentNotificationToDoctor(@RequestBody Map<String, Object> notificationData) {
         log.info("[NotificationController] Sending appointment notification to doctor: {}", notificationData);
-        NotificationCommand command = new SendConfirmationDoctorCommand(emailService, userServiceClient, notificationData);
-        notificationInvoker.executeCommand(command);
-        return ResponseEntity.ok("Đã gửi email thông báo cho bác sĩ");
+        try {
+            NotificationCommand command = new SendConfirmationDoctorCommand(emailService, userServiceClient, notificationData, doctorServiceClient);
+            notificationInvoker.executeCommand(command);
+            return ResponseEntity.ok("Đã gửi email thông báo cho bác sĩ");
+        } catch (RuntimeException e) {
+            log.error("[NotificationController] Failed to send appointment notification to doctor: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Gửi email thông báo cho bác sĩ thất bại: " + e.getMessage());
+        }
     }
 
     // ============== CANCELLATION NOTIFICATIONS ==============
@@ -79,9 +109,15 @@ public class NotificationController {
     @PostMapping("/appointment/cancel/patient")
     public ResponseEntity<String> sendCancellationToPatient(@RequestBody Map<String, Object> notificationData) {
         log.info("[NotificationController] Sending cancellation to patient: {}", notificationData);
-        NotificationCommand command = new SendCancellationPatientCommand(emailService, userServiceClient, notificationData);
-        notificationInvoker.executeCommand(command);
-        return ResponseEntity.ok("Đã gửi email hủy cho bệnh nhân");
+        try {
+            NotificationCommand command = new SendCancellationPatientCommand(emailService, userServiceClient, notificationData, patientServiceClient);
+            notificationInvoker.executeCommand(command);
+            return ResponseEntity.ok("Đã gửi email hủy cho bệnh nhân");
+        } catch (RuntimeException e) {
+            log.error("[NotificationController] Failed to send cancellation to patient: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Gửi email hủy cho bệnh nhân thất bại: " + e.getMessage());
+        }
     }
 
     /**
@@ -90,9 +126,15 @@ public class NotificationController {
     @PostMapping("/appointment/cancel/doctor")
     public ResponseEntity<String> sendCancellationToDoctor(@RequestBody Map<String, Object> notificationData) {
         log.info("[NotificationController] Sending cancellation to doctor: {}", notificationData);
-        NotificationCommand command = new SendCancellationDoctorCommand(emailService, userServiceClient, notificationData);
-        notificationInvoker.executeCommand(command);
-        return ResponseEntity.ok("Đã gửi email hủy cho bác sĩ");
+        try {
+            NotificationCommand command = new SendCancellationDoctorCommand(emailService, userServiceClient, notificationData, doctorServiceClient);
+            notificationInvoker.executeCommand(command);
+            return ResponseEntity.ok("Đã gửi email hủy cho bác sĩ");
+        } catch (RuntimeException e) {
+            log.error("[NotificationController] Failed to send cancellation to doctor: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Gửi email hủy cho bác sĩ thất bại: " + e.getMessage());
+        }
     }
 
     // ============== COMPLETION NOTIFICATIONS ==============
@@ -103,9 +145,15 @@ public class NotificationController {
     @PostMapping("/appointment/complete/patient")
     public ResponseEntity<String> sendCompletionToPatient(@RequestBody Map<String, Object> notificationData) {
         log.info("[NotificationController] Sending completion to patient: {}", notificationData);
-        NotificationCommand command = new SendCompletionPatientCommand(emailService, userServiceClient, notificationData);
-        notificationInvoker.executeCommand(command);
-        return ResponseEntity.ok("Đã gửi email hoàn thành cho bệnh nhân");
+        try {
+            NotificationCommand command = new SendCompletionPatientCommand(emailService, userServiceClient, notificationData, patientServiceClient);
+            notificationInvoker.executeCommand(command);
+            return ResponseEntity.ok("Đã gửi email hoàn thành cho bệnh nhân");
+        } catch (RuntimeException e) {
+            log.error("[NotificationController] Failed to send completion to patient: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Gửi email hoàn thành cho bệnh nhân thất bại: " + e.getMessage());
+        }
     }
 
     /**
@@ -114,9 +162,15 @@ public class NotificationController {
     @PostMapping("/appointment/complete/doctor")
     public ResponseEntity<String> sendCompletionToDoctor(@RequestBody Map<String, Object> notificationData) {
         log.info("[NotificationController] Sending completion to doctor: {}", notificationData);
-        NotificationCommand command = new SendCompletionDoctorCommand(emailService, userServiceClient, notificationData);
-        notificationInvoker.executeCommand(command);
-        return ResponseEntity.ok("Đã gửi email hoàn thành cho bác sĩ");
+        try {
+            NotificationCommand command = new SendCompletionDoctorCommand(emailService, userServiceClient, notificationData, doctorServiceClient);
+            notificationInvoker.executeCommand(command);
+            return ResponseEntity.ok("Đã gửi email hoàn thành cho bác sĩ");
+        } catch (RuntimeException e) {
+            log.error("[NotificationController] Failed to send completion to doctor: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Gửi email hoàn thành cho bác sĩ thất bại: " + e.getMessage());
+        }
     }
 
     // ============== HELPER METHODS ==============
