@@ -1,0 +1,218 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: usersdb
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker-init/init-databases.sql:/docker-entrypoint-initdb.d/init-databases.sql
+    networks:
+      - healthcare-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123456"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - healthcare-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # User Service
+  user-service:
+    build:
+      context: ./services/user-service
+      dockerfile: Dockerfile
+    container_name: user-service
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/usersdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
+      SPRING_APPLICATION_NAME: user-service
+      SERVER_PORT: 8080
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - healthcare-network
+
+  # Patient Service
+  patient-service:
+    build:
+      context: ./services/patient-service
+      dockerfile: Dockerfile
+    container_name: patient-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_APPLICATION_NAME: patient-service
+      SERVER_PORT: 8081
+    depends_on:
+      - mysql-db
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/patientsdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+    depends_on:
+      mysql-db:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    networks:
+      - healthcare-network
+
+  # Doctor Service
+  doctor-service:
+    build:
+      context: ./services/doctor-service
+      dockerfile: Dockerfile
+    container_name: doctor-service
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_APPLICATION_NAME: doctor-service
+      SERVER_PORT: 8082
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/doctorsdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: 123456
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    networks:
+      - healthcare-network
+
+  # EHR Service
+  ehr-service:
+    build:
+      context: ./services/EHR-service
+      dockerfile: Dockerfile
+    container_name: ehr-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_APPLICATION_NAME: ehr-service
+      SERVER_PORT: 8083
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/ehrdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: 123456
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SERVICES_PATIENT_URL: http://patient-service:8081
+      SERVICES_DOCTOR_URL: http://doctor-service:8082
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      patient-service:
+        condition: service_started
+      doctor-service:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    networks:
+      - healthcare-network
+
+  # Hospital Service
+  hospital-service:
+    build:
+      context: ./services/hospital-service
+      dockerfile: Dockerfile
+    container_name: hospital-service
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_APPLICATION_NAME: hospital-service
+      SERVER_PORT: 8084
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/hospitalsdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: 123456
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    networks:
+      - healthcare-network
+ # Appointment Service
+  appointment-service:
+    build:
+      context: ./services/appointment-service
+      dockerfile: Dockerfile
+    container_name: appointment-service
+    ports:
+      - "8086:8086"
+    environment:
+      SPRING_APPLICATION_NAME: appointment-service
+      SERVER_PORT: 8086
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/appointmentsdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: 123456
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    networks:
+     - healthcare-network
+  # API Gateway Service
+  api-gateway-service:
+    build:
+      context: ./services/api-gateway-service
+      dockerfile: Dockerfile
+    container_name: api-gateway-service
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_APPLICATION_NAME: api-gateway-service
+      SERVER_PORT: 8085
+      USER_SERVICE_URI: http://user-service:8080
+      PATIENT_SERVICE_URI: http://patient-service:8081
+      DOCTOR_SERVICE_URI: http://doctor-service:8082
+      EHR_SERVICE_URI: http://ehr-service:8083
+      HOSPITAL_SERVICE_URI: http://hospital-service:8084
+      APPOINTMENT_SERVICE_URI: http://appointment-service:8086
+    depends_on:
+      user-service:
+        condition: service_started
+      patient-service:
+        condition: service_started
+      doctor-service:
+        condition: service_started
+      ehr-service:
+        condition: service_started
+      hospital-service:
+        condition: service_started
+      appointment-service:
+        condition: service_started
+    networks:
+      - healthcare-network
+
+volumes:
+  mysql-data:
+
+networks:
+  healthcare-network:
+    driver: bridge
+
