@@ -280,21 +280,21 @@ public class EmailService {
                 </body>
                 </html>
                 """;
-
+            
             // Build address section with Google Maps link
             String addressSection = "";
             if (hospitalAddress != null && !hospitalAddress.trim().isEmpty()) {
                 try {
                     String encodedAddress = java.net.URLEncoder.encode(hospitalAddress, "UTF-8");
                     String mapsUrl = "https://www.google.com/maps/search/?api=1&query=" + encodedAddress;
-                    addressSection = "<p><span class=\"label\"> Address:</span> " + hospitalAddress +
-                            " <a href=\"" + mapsUrl + "\" style=\"color: #1E88E5; text-decoration: none;\">[View in Google Maps 🗺️]</a></p>";
+                    addressSection = "<p><span class=\"label\"> Address:</span> " + hospitalAddress + 
+                                   " <a href=\"" + mapsUrl + "\" style=\"color: #1E88E5; text-decoration: none;\">[View in Google Maps 🗺️]</a></p>";
                 } catch (Exception e) {
                     // Fallback without link if encoding fails
                     addressSection = "<p><span class=\"label\"> Address:</span> " + hospitalAddress + "</p>";
                 }
             }
-
+            
             String htmlContent = String.format(htmlTemplate,
                     appointment.getPatientName(),
                     appointment.getPatientName(),
