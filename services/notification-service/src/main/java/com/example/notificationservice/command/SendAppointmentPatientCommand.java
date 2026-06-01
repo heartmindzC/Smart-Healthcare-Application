@@ -11,7 +11,8 @@ public class SendAppointmentPatientCommand implements NotificationCommand {
     private final NotificationService notificationService;
     private final AppointmentNotificationRequest request;
 
-    public SendAppointmentPatientCommand(NotificationService notificationService, AppointmentNotificationRequest request) {
+    public SendAppointmentPatientCommand(NotificationService notificationService,
+            AppointmentNotificationRequest request) {
         this.notificationService = notificationService;
         this.request = request;
     }
@@ -25,16 +26,16 @@ public class SendAppointmentPatientCommand implements NotificationCommand {
         variables.put("hospitalName", request.getHospitalName());
         variables.put("departmentName", request.getDepartmentName());
         variables.put("reason", request.getReason());
-        
+
         variables.put("title", "Xác Nhận Đặt Lịch Hẹn");
         variables.put("patientName", request.getPatientName());
-        variables.put("message", "Lịch hẹn khám bệnh của bạn đã được hệ thống xác nhận thành công. Vui lòng đến trước giờ hẹn 15 phút.");
+        variables.put("message",
+                "Lịch hẹn khám bệnh của bạn đã được hệ thống xác nhận thành công. Vui lòng đến trước giờ hẹn 15 phút.");
 
         notificationService.sendHtmlEmail(
                 request.getPatientEmail(),
                 "Xác nhận lịch hẹn khám bệnh - Smart Healthcare",
                 "appointment-email",
-                variables
-        );
+                variables);
     }
 }

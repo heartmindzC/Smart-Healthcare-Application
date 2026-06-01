@@ -48,7 +48,7 @@ public class UserRepository {
     // call cac endpoint cua api tai day
     public void login(String username, String password, ApiCallback<User> callback) {
         String type = "";
-        if (username.contains("@gmail.com")) {
+        if (username.contains("@")) {
             type = "email";
         }
         else if (username.length() == 10) {

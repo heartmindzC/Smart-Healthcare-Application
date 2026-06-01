@@ -95,7 +95,7 @@ services:
       SPRING_APPLICATION_NAME: doctor-service
       SERVER_PORT: 8082
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/doctorsdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 123456
       USER_SERVICE_URL: http://user-service:8080
     depends_on:
@@ -118,7 +118,7 @@ services:
       SPRING_APPLICATION_NAME: ehr-service
       SERVER_PORT: 8083
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/ehrdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 123456
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
@@ -148,14 +148,14 @@ services:
       SPRING_APPLICATION_NAME: hospital-service
       SERVER_PORT: 8084
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/hospitalsdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 123456
     depends_on:
       mysql-db:
         condition: service_healthy
     networks:
       - healthcare-network
- # Appointment Service
+  # Appointment Service
   appointment-service:
     build:
       context: ./services
@@ -167,7 +167,7 @@ services:
       SPRING_APPLICATION_NAME: appointment-service
       SERVER_PORT: 8086
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/appointmentsdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 123456
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
@@ -180,7 +180,7 @@ services:
         condition: service_healthy
     networks:
       - healthcare-network
-#  notification-service
+  #  notification-service
   notification-service:
     build:
       context: ./services

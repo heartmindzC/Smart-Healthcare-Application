@@ -73,10 +73,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(String username, String password) {
-        Log.d("Login", "Login...");
+        Log.d("Login", "Login..." + username +  " " + password);
         showLoading(true);
         UserRepository userRepository = UserRepository.getInstance();
-        userRepository.login(username, password, new ApiCallback<User>() {
+        userRepository.login(username.trim(), password.trim(), new ApiCallback<User>() {
             @Override
             public void onSuccess(User result) {
                 Log.d("Login", "Login success !!!");

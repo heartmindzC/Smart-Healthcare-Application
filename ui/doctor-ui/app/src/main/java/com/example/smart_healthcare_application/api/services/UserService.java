@@ -19,7 +19,6 @@ public interface UserService {
     @POST("users/login")
     Call<ApiResponse<User>> login(@Body LoginRequest loginRequest);
 
-
     @POST("users/forgot-password")
     Call<ApiResponse<Boolean>> forgotPassword(@Body ForgotPasswordRequest request);
 
