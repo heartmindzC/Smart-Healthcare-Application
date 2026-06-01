@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chào mừng đến với Smart Healthcare</title>
+</head>
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; margin: 0;">
+<div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+
+    <div style="background-color: #009688; color: #ffffff; padding: 25px 20px; text-align: center;">
+        <h1 style="margin: 0; font-size: 24px; letter-spacing: 1px;">SMART HEALTHCARE</h1>
+        <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.9;">Nền tảng Y tế Thông minh & Toàn diện</p>
+    </div>
+
+    <div style="padding: 30px; color: #333333; line-height: 1.6; font-size: 15px;">
+        <p>Xin chào <strong th:text="${fullName}" style="color: #009688; font-size: 16px;">Nguyễn Văn A</strong>,</p>
+        <p>Chúc mừng bạn đã tạo tài khoản thành công! Chúng tôi rất vinh hạnh được đồng hành cùng bạn trong hành trình chăm sóc và bảo vệ sức khỏe.</p>
+
+        <div style="background-color: #f0fdfa; border-left: 4px solid #009688; padding: 15px 20px; margin: 25px 0; border-radius: 0 8px 8px 0;">
+            <h3 style="margin-top: 0; color: #009688; font-size: 16px;">Thông Tin Tài Khoản Của Bạn</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="padding: 5px 0; width: 40%; color: #666;">Họ và tên:</td>
+                    <td style="padding: 5px 0; font-weight: bold;" th:text="${fullName}">Nguyễn Văn A</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px 0; color: #666;">Tên đăng nhập (ID):</td>
+                    <td style="padding: 5px 0; font-weight: bold; color: #d32f2f;" th:text="${userId}">123456789012</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px 0; color: #666;">Số điện thoại:</td>
+                    <td style="padding: 5px 0; font-weight: bold;" th:text="${phone}">0912345678</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px 0; color: #666;">Email:</td>
+                    <td style="padding: 5px 0; font-weight: bold;" th:text="${email}">email@example.com</td>
+                </tr>
+            </table>
+        </div>
+
+        <h3 style="color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">🚀 Hướng Dẫn Đăng Nhập</h3>
+        <ol style="padding-left: 20px; color: #555;">
+            <li style="margin-bottom: 10px;">Mở ứng dụng <strong>Smart Healthcare</strong> trên điện thoại của bạn.</li>
+            <li style="margin-bottom: 10px;">Tại màn hình đăng nhập, nhập <strong>Tên đăng nhập (ID)</strong> vào ô tài khoản.</li>
+            <li style="margin-bottom: 10px;">Nhập mật khẩu bạn đã thiết lập trong quá trình đăng ký.</li>
+            <li style="margin-bottom: 10px;">Nhấn <strong>"Đăng Nhập"</strong> để bắt đầu sử dụng.</li>
+        </ol>
+
+        <h3 style="color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-top: 30px;">🌟 Trải Nghiệm Hệ Sinh Thái Y Tế</h3>
+        <p style="color: #555;">Với tài khoản này, bạn có thể dễ dàng tiếp cận các dịch vụ y tế hiện đại ngay tại nhà:</p>
+        <ul style="padding-left: 20px; color: #555; list-style-type: square;">
+            <li style="margin-bottom: 8px;"><strong>Hồ sơ điện tử (EHR):</strong> Lưu trữ an toàn toàn bộ lịch sử khám chữa bệnh, nhóm máu, dị ứng.</li>
+            <li style="margin-bottom: 8px;"><strong>Đặt lịch thông minh:</strong> Chọn bác sĩ, chuyên khoa và khung giờ khám linh hoạt không cần xếp hàng.</li>
+            <li style="margin-bottom: 8px;"><strong>Đơn thuốc & Xét nghiệm:</strong> Tra cứu kết quả cận lâm sàng và toa thuốc điện tử mọi lúc mọi nơi.</li>
+        </ul>
+
+        <div style="text-align: center; margin: 40px 0 20px 0;">
+            <a href="#" style="background-color: #009688; color: #ffffff; padding: 14px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px; display: inline-block; box-shadow: 0 4px 6px rgba(0,150,136,0.3);">Khám Phá Ứng Dụng Ngay</a>
+        </div>
+    </div>
+
+    <div style="background-color: #eeeeee; padding: 20px; text-align: center; font-size: 12px; color: #777777; border-top: 1px solid #dddddd;">
+        <p style="margin: 0 0 10px 0;"><strong>Trung tâm hỗ trợ khách hàng:</strong> 1900 xxxx | <strong>Email:</strong> support@smarthealthcare.com</p>
+        <p style="margin: 0;">Bạn nhận được email này vì đã đăng ký tài khoản tại Smart Healthcare.</p>
+        <p style="margin: 5px 0 0 0;">Vui lòng không trả lời trực tiếp email tự động này.</p>
+    </div>
+
+</div>
+</body>
+</html>

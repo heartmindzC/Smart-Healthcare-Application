@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mã xác thực OTP - Smart Healthcare</title>
+</head>
+<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 20px; margin: 0;">
+<div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+
+    <div style="background-color: #009688; color: #ffffff; padding: 25px 20px; text-align: center;">
+        <h1 style="margin: 0; font-size: 24px; letter-spacing: 1px;">SMART HEALTHCARE</h1>
+        <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.9;">Yêu cầu đặt lại mật khẩu</p>
+    </div>
+
+    <div style="padding: 30px; color: #333333; line-height: 1.6; font-size: 15px;">
+        <p>Xin chào <strong th:text="${fullName}" style="color: #009688; font-size: 16px;">Nguyễn Văn A</strong>,</p>
+        <p>Hệ thống vừa nhận được yêu cầu đặt lại mật khẩu cho tài khoản ứng dụng Smart Healthcare liên kết với email này.</p>
+        <p>Dưới đây là mã xác thực (OTP) của bạn:</p>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <div style="display: inline-block; background-color: #f0fdfa; border: 2px dashed #009688; border-radius: 8px; padding: 15px 40px;">
+                <span th:text="${otp}" style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #009688; margin: 0;">123456</span>
+            </div>
+        </div>
+
+        <p style="color: #d32f2f; font-weight: bold; text-align: center; font-size: 14px;">
+            ⏰ Mã này chỉ có hiệu lực trong vòng 5 phút.
+        </p>
+
+        <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-top: 30px; font-size: 13px; color: #666;">
+            <strong>Lưu ý bảo mật:</strong> Tuyệt đối không chia sẻ mã OTP này cho bất kỳ ai, kể cả nhân viên y tế hay quản trị viên hệ thống. Nếu bạn không yêu cầu đổi mật khẩu, vui lòng bỏ qua email này.
+        </div>
+    </div>
+
+    <div style="background-color: #eeeeee; padding: 20px; text-align: center; font-size: 12px; color: #777777; border-top: 1px solid #dddddd;">
+        <p style="margin: 0 0 10px 0;"><strong>Trung tâm hỗ trợ khách hàng:</strong> 1900 xxxx | <strong>Email:</strong> support@smarthealthcare.com</p>
+        <p style="margin: 0;">Đây là email gửi tự động, vui lòng không trả lời.</p>
+    </div>
+
+</div>
+</body>
+</html>

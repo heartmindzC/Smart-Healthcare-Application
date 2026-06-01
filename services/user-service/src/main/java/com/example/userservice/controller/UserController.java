@@ -1,12 +1,16 @@
 package com.example.userservice.controller;
 
-import com.example.userservice.dto.*;
+import com.example.userservice.dto.request.*;
+import com.example.userservice.dto.response.ApiResponse;
+import com.example.userservice.dto.response.UserResponse;
 import com.example.userservice.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -14,38 +18,101 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/findUserByUserId/{userId}")
-    public ResponseEntity<UserResponse> findUserByUserId(@PathVariable("userId") String userId) {
-        Optional<UserResponse> user = userService.findByUserId(userId);
-        if (user.isPresent()) {
-            return ResponseEntity.ok(user.get());
-        } else {
-            UserResponse notFoundResponse = new UserResponse();
-            notFoundResponse.setStatus(false);
-            notFoundResponse.setMessage("User not found");
-            notFoundResponse.setResult(null);
-            return ResponseEntity.ok(notFoundResponse);
-        }
+    @GetMapping("/{userId}")
+    public ApiResponse<UserResponse> findUserByUserId(@PathVariable("userId") String userId) {
+        UserResponse user = userService.findByUserId(userId);
+        ApiResponse<UserResponse> apiResponse = ApiResponse.<UserResponse>builder()
+                .result(user)
+                .build();
+        return apiResponse;
     }
-    @GetMapping("/findAllUsers")
-    public ResponseEntity<UserListResponse> findAllUsers() {
-        UserListResponse response = userService.findAllUsers();
-        return ResponseEntity.ok(response);
+
+    /**
+     * Endpoint để lấy email và fullname của user.
+     * Dùng cho notification-service gọi khi gửi email appointment.
+     */
+    @GetMapping("/{userId}/email")
+    public ApiResponse<Map<String, String>> getUserEmail(@PathVariable("userId") String userId) {
+        UserResponse user = userService.findByUserId(userId);
+
+        Map<String, String> result = new HashMap<>();
+        result.put("email", user.getEmail());
+        result.put("fullname", user.getFullname());
+
+        return ApiResponse.<Map<String, String>>builder()
+                .result(result)
+                .build();
+    }
+
+    @GetMapping("/all")
+    public ApiResponse<List<UserResponse>> findAllUsers() {
+        List<UserResponse> response = userService.findAllUsers();
+        ApiResponse<List<UserResponse>> apiResponse = ApiResponse.<List<UserResponse>>builder()
+                .result(response)
+                .build();
+
+        return apiResponse;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@RequestBody RegisterRequest registerRequest) {
+    public ApiResponse<UserResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
         UserResponse response = userService.register(registerRequest);
-        return ResponseEntity.ok(response);
+
+        ApiResponse<UserResponse> apiResponse = ApiResponse.<UserResponse>builder()
+                .result(response)
+                .build();
+
+        return apiResponse;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserResponse> login(@RequestBody LoginRequest loginRequest) {
+    public ApiResponse<UserResponse> login(@RequestBody LoginRequest loginRequest) {
         UserResponse response = userService.login(loginRequest);
-        return ResponseEntity.ok(response);
+        ApiResponse<UserResponse> apiResponse = ApiResponse.<UserResponse>builder()
+                .result(response)
+                .build();
+        return apiResponse;
     }
+
     @PutMapping("/update-password") 
-    public ResponseEntity<UpdatePasswordResponse> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRequest) {
-        UpdatePasswordResponse response = userService.updatePassword(updatePasswordRequest);
-        return ResponseEntity.ok(response); }
+    public ApiResponse<UserResponse> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRequest) {
+        UserResponse response = userService.updatePassword(updatePasswordRequest);
+        ApiResponse<UserResponse>  apiResponse = ApiResponse.<UserResponse>builder()
+                .result(response)
+                .build();
+        return apiResponse;
+    }
+
+    @PutMapping("/{userId}")
+    public ApiResponse<UserResponse> updateUser(@PathVariable("userId") String userId,
+                                                @Valid @RequestBody UserEdittingRequest request) {
+        UserResponse response = userService.editUser(userId, request);
+        return ApiResponse.<UserResponse>builder()
+                .result(response)
+                .build();
+    }
+
+    @PostMapping("/forgot-password")
+    public ApiResponse<Boolean> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        boolean result = userService.processForgotPassword(request);
+        return ApiResponse.<Boolean>builder()
+                .result(result)
+                .build();
+    }
+
+    @PostMapping("/verify-otp")
+    public ApiResponse<Boolean> verifyOtp(@RequestBody VerifyOtpRequest request) {
+        boolean result = userService.verifyOtp(request);
+        return ApiResponse.<Boolean>builder()
+                .result(result)
+                .build();
+    }
+
+    @PostMapping("/reset-password")
+    public ApiResponse<Boolean> resetPassword(@RequestBody ResetPasswordRequest request) {
+        boolean result = userService.resetPassword(request);
+        return ApiResponse.<Boolean>builder()
+                .result(result)
+                .build();
+    }
 }

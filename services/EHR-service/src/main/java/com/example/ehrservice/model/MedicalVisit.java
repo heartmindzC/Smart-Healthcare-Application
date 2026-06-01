@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Date;
 import java.util.List;
@@ -15,14 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 public class MedicalVisit {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long visitId;
+    @UuidGenerator
+    private String visitId;
     
     @Column(nullable = false)
-    private Integer patientId;
+    private String patientId;
     
     @Column(nullable = false)
-    private Integer doctorId;
+    private String doctorId;
     
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)

@@ -9,13 +9,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PrescriptionRepository extends JpaRepository<Prescription, Long> {
-    List<Prescription> findByVisitId(Long visitId);
-    List<Prescription> findByPatientId(Integer patientId);
-    List<Prescription> findByPatientIdOrderByPrescribedDateDesc(Integer patientId);
+public interface PrescriptionRepository extends JpaRepository<Prescription, String> {
+    List<Prescription> findByVisitId(String visitId);
+    List<Prescription> findByPatientId(String patientId);
+    List<Prescription> findByPatientIdOrderByPrescribedDateDesc(String patientId);
     
     @Query("SELECT p FROM Prescription p WHERE p.visitId IN (SELECT v.visitId FROM MedicalVisit v WHERE v.patientId = :patientId)")
-    List<Prescription> findAllByPatientId(@Param("patientId") Integer patientId);
+    List<Prescription> findAllByPatientId(@Param("patientId") String patientId);
 }
 
 

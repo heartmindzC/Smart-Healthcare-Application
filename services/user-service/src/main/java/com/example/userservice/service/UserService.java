@@ -1,179 +1,231 @@
 package com.example.userservice.service;
 
-import com.example.userservice.dto.*;
+import com.example.common_exception.AppException;
+import com.example.userservice.dto.request.*;
+import com.example.userservice.dto.response.UserResponse;
+import com.example.userservice.exception.UserErrorCode;
+import com.example.userservice.mapper.UserMapper;
 import com.example.userservice.model.Role;
 import com.example.userservice.model.User;
 import com.example.userservice.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
-    
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
-    public Optional<UserResponse> findByUserId(String userId) {
-        Optional<User> user = userRepository.findByUserId(userId);
-        return user.map(this::convertToUserResponse);
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final RestTemplate restTemplate;
+    private final UserMapper userMapper;
+    private final List<LoginMethod> loginMethods;
+    private final StringRedisTemplate redisTemplate;
+
+    private final String NOTIFICATION_SERVICE_URL = "http://host.docker.internal:8088/notifications/";
+
+    public UserResponse findByUserId(String userId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new AppException(UserErrorCode.NOT_FOUND));
+        return userMapper.toUserResponse(user);
     }
 
-    public Optional<UserResponse> findByEmail(String email) {
-        Optional<User> user = userRepository.findByEmail(email);
-        return user.map(this::convertToUserResponse);
-    }
-
-    public Optional<UserResponse> findByPhone(String phone) {
-        Optional<User> user = userRepository.findByPhone(phone);
-        return user.map(this::convertToUserResponse);
-    }
-
-    public UserListResponse findAllUsers() {
-        List<User> users = userRepository.findAll();
-        
-        UserListResponse response = new UserListResponse();
-        if (users.isEmpty()) {
-            response.setStatus(false);
-            response.setMessage("No users found");
-            response.setResults(null);
-        } else {
-            response.setStatus(true);
-            response.setMessage("Users found: " + users.size());
-            
-            // Convert List<User> sang List<UserDTO>
-            List<UserDTO> userDTOs = users.stream()
-                .map(this::convertToUserDTO)
+    public List<UserResponse> findAllUsers() {
+        // 3. Rút gọn vòng lặp bằng Stream API
+        return userRepository.findAll().stream()
+                .map(userMapper::toUserResponse)
                 .collect(Collectors.toList());
-            
-            response.setResults(userDTOs);
-        }
-        return response;
     }
 
     public UserResponse register(RegisterRequest registerRequest) {
-        UserResponse response = new UserResponse();
-        
-        // Kiểm tra userId đã tồn tại chưa
-        if (userRepository.findByUserId(registerRequest.getUserId()).isPresent()) {
-            response.setStatus(false);
-            response.setMessage("User ID already exists");
-            response.setResult(null);
-            return response;
+        if (userRepository.existsById(registerRequest.getUserId())) {
+            throw new AppException(UserErrorCode.ID_EXISTS);
         }
-        
-        // Kiểm tra email đã tồn tại chưa
-        if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
-            response.setStatus(false);
-            response.setMessage("Email already exists");
-            response.setResult(null);
-            return response;
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
+            throw new AppException(UserErrorCode.EMAIL_EXISTS);
         }
-        
-        // Kiểm tra phone đã tồn tại chưa
-        if (userRepository.findByPhone(registerRequest.getPhone()).isPresent()) {
-            response.setStatus(false);
-            response.setMessage("Phone number already exists");
-            response.setResult(null);
-            return response;
+        if (userRepository.existsByPhone(registerRequest.getPhone())) {
+            throw new AppException(UserErrorCode.PHONE_EXISTS);
         }
-        
-        // Tạo user mới
-        User newUser = new User();
-        newUser.setUserId(registerRequest.getUserId());
-        newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword())); // Hash password
-        newUser.setPhone(registerRequest.getPhone());
-        newUser.setEmail(registerRequest.getEmail());
-        newUser.setFullname(registerRequest.getFullname());
-        newUser.setAddress(registerRequest.getAddress());
-        newUser.setBirth(registerRequest.getBirth());
-        newUser.setGender(registerRequest.getGender());
-        
-        // Set role là PATIENT cho bệnh nhân
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.PATIENT);
-        newUser.setRoles(roles);
-        
-        // Lưu user vào database
-        User savedUser = userRepository.save(newUser);
-        
-        // Trả về response
-        response.setStatus(true);
-        response.setMessage("Registration successful");
-        response.setResult(convertToUserDTO(savedUser));
-        
+
+        User user = userMapper.toUser(registerRequest);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        Set<Role> roles = (registerRequest.getRoles() != null && !registerRequest.getRoles().isEmpty())
+                ? registerRequest.getRoles()
+                : new HashSet<>(Set.of(Role.PATIENT));
+        user.setRoles(roles);
+
+        UserResponse response = userMapper.toUserResponse(userRepository.save(user));
+
+        sendWelcomeEmail(response.getEmail(), response.getFullname(), response.getPhone(), response.getUserId());
+
         return response;
+    }
+
+    public UserResponse editUser(String userId, UserEdittingRequest request) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new AppException(UserErrorCode.NOT_FOUND));
+
+        if (!user.getEmail().equals(request.getEmail()) && userRepository.existsByEmail(request.getEmail())) {
+            throw new AppException(UserErrorCode.EMAIL_EXISTS);
+        }
+
+        if (!user.getPhone().equals(request.getPhone()) && userRepository.existsByPhone(request.getPhone())) {
+            throw new AppException(UserErrorCode.PHONE_EXISTS);
+        }
+
+        user.setFullname(request.getFullname());
+        user.setPhone(request.getPhone());
+        user.setEmail(request.getEmail());
+        user.setAddress(request.getAddress());
+        user.setBirth(request.getBirth());
+        user.setGender(request.getGender());
+
+        User updatedUser = userRepository.save(user);
+        return userMapper.toUserResponse(updatedUser);
+    }
+
+    private void sendWelcomeEmail(String email, String fullName, String phone, String userId) {
+        try {
+            NotificationRequest requestDto = new NotificationRequest(email, fullName, phone, userId);
+            String url = NOTIFICATION_SERVICE_URL + "welcome";
+            ResponseEntity<String> response = restTemplate.postForEntity(
+                    url,
+                    requestDto,
+                    String.class
+            );
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                log.info("Đã yêu cầu Notification Service gửi email thành công cho: {}", email);
+            } else {
+                log.warn("Notification Service phản hồi mã lỗi: {}", response.getStatusCode());
+            }
+
+        } catch (Exception e) {
+            log.error("Không thể kết nối tới Notification Service: {}", e.getMessage());
+        }
+    }
+
+    public UserResponse updatePassword(UpdatePasswordRequest updatePasswordRequest) {
+        User user = userRepository.findByUserId(updatePasswordRequest.getUserId())
+                .orElseThrow(() -> new AppException(UserErrorCode.NOT_FOUND));
+
+        if (!passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.getPassword())) {
+            throw new AppException(UserErrorCode.PASSWORD_INVALID);
+        }
+
+        user.setPassword(passwordEncoder.encode(updatePasswordRequest.getNewPassword()));
+        userRepository.save(user);
+        return userMapper.toUserResponse(user);
     }
 
     public UserResponse login(LoginRequest loginRequest) {
-        Optional<User> userOptional = userRepository.findByUserId(loginRequest.getUserId());
-        
-        UserResponse response = new UserResponse();
-        
-        if (userOptional.isEmpty()) {
-            response.setStatus(false);
-            response.setMessage("User not found");
-            response.setResult(null);
-            return response;
-        }
-        
-        User user = userOptional.get();
-        
-        // Kiểm tra password: so sánh password từ request với password đã hash trong database
-        if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            response.setStatus(true);
-            response.setMessage("Login successful");
-            response.setResult(convertToUserDTO(user));
-        } else {
-            response.setStatus(false);
-            response.setMessage("Invalid password");
-            response.setResult(null);
-        }
-        
-        return response;
-    }
-    public UpdatePasswordResponse updatePassword(UpdatePasswordRequest updatePasswordRequest) {
-        UpdatePasswordResponse response = new UpdatePasswordResponse();
-        Optional<User> userOpt = userRepository.findByUserId(updatePasswordRequest.getUserId());
-        if (userOpt.isEmpty()) { response.setStatus(false);
-            response.setMessage("User not found");
-            return response; }
-        User user = userOpt.get();
-        if (!passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.getPassword()))
-        { response.setStatus(false);
-            response.setMessage("Invalid old password");
-            return response; }
-        user.setPassword(passwordEncoder.encode(updatePasswordRequest.getNewPassword()));
-        userRepository.save(user); response.setStatus(true);
-        response.setMessage("Password updated successfully");
-        return response; }
+        LoginMethod loginMethod = loginMethods.stream()
+                .filter(s -> s.checkType(loginRequest.getType()))
+                .findFirst()
+                .orElseThrow(() -> new AppException(UserErrorCode.LOGIN_METHOD_INVALID));
 
-    private UserResponse convertToUserResponse(User user) {
-        UserResponse response = new UserResponse();
-        response.setStatus(true);
-        response.setMessage("User found");
-        response.setResult(convertToUserDTO(user));
-        return response;
+        User user = loginMethod.login(loginRequest.getUsername(), loginRequest.getPassword());
+
+        return userMapper.toUserResponse(user);
     }
 
-    private UserDTO convertToUserDTO(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUserId(user.getUserId());
-        userDTO.setPhone(user.getPhone());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setFullname(user.getFullname());
-        userDTO.setAddress(user.getAddress());
-        userDTO.setBirth(user.getBirth());
-        userDTO.setGender(user.getGender());
-        userDTO.setRoles(user.getRoles());
-        return userDTO;
+    // Forgot password
+    // Tao ma otp ngau nhien
+    public String generateOTP() {
+        Random random = new Random();
+        int otp = 100000 + random.nextInt(900000);
+        return String.valueOf(otp);
+    }
+
+    public boolean processForgotPassword(ForgotPasswordRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new AppException(UserErrorCode.NOT_FOUND));
+
+        String otp = generateOTP();
+        String otpKey = "OTP_FORGOT_PW:" + user.getEmail();
+
+        redisTemplate.opsForValue().set(otpKey, otp, 5, TimeUnit.MINUTES);
+
+        return sendOtpEmail(user.getEmail(), user.getFullname(), otp);
+    }
+
+    private boolean sendOtpEmail(String email, String fullName, String otp) {
+        try {
+            SendOTPRequest request = new SendOTPRequest();
+            request.setEmail(email);
+            request.setFullName(fullName);
+            request.setOtp(otp);
+            String url = NOTIFICATION_SERVICE_URL + "otp";
+            ResponseEntity<String> response = restTemplate.postForEntity(
+                    url,
+                    request,
+                    String.class
+            );
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                log.info("Đã yêu cầu Notification Service gửi email thành công cho: {}", email);
+                return true;
+            } else {
+                log.warn("Notification Service phản hồi mã lỗi: {}", response.getStatusCode());
+                throw new AppException(UserErrorCode.SEND_OTP_FAILED);
+            }
+
+        } catch (Exception e) {
+            log.error("Không thể kết nối tới Notification Service: {}", e.getMessage());
+            throw new AppException(UserErrorCode.CONNECTION_REFUSE);
+        }
+    }
+
+    public boolean verifyOtp(VerifyOtpRequest request) {
+        String otpKey = "OTP_FORGOT_PW:" + request.getEmail();
+        String cachedOtp = redisTemplate.opsForValue().get(otpKey);
+
+        if (cachedOtp == null) {
+            throw new AppException(UserErrorCode.OTP_EXPIRED);
+        }
+
+        if (!cachedOtp.equals(request.getOtp())) {
+            throw new AppException(UserErrorCode.OTP_INVALID);
+        }
+
+        // Ma dung thi xoa ma khoi redis
+        redisTemplate.delete(otpKey);
+
+        // tao mot bien cho phep sua trong khoang 5p
+        String verifiedKey = "OTP_VERIFIED:" + request.getEmail();
+        redisTemplate.opsForValue().set(verifiedKey, "true", 5, TimeUnit.MINUTES);
+        return true;
+    }
+
+    public boolean resetPassword(ResetPasswordRequest request) {
+        String verifiedKey = "OTP_VERIFIED:" + request.getEmail();
+
+        String isVerified = redisTemplate.opsForValue().get(verifiedKey);
+
+        if (isVerified == null || !isVerified.equals("true")) {
+            throw new AppException(UserErrorCode.UNAUTHORIZED_RESET);
+        }
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new AppException(UserErrorCode.NOT_FOUND));
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+
+        redisTemplate.delete(verifiedKey);
+        return true;
     }
 }

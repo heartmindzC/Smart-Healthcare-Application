@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Date;
 
@@ -14,18 +15,18 @@ import java.util.Date;
 @AllArgsConstructor
 public class Prescription {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long prescriptionId;
+    @UuidGenerator
+    private String prescriptionId;
     
     @Column(nullable = false)
-    private Long visitId;
+    private String visitId;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "visitId", insertable = false, updatable = false)
     private MedicalVisit visit;
     
     @Column(nullable = false)
-    private Integer patientId;
+    private String patientId;
     
     @Column(nullable = false)
     private String medicationName;

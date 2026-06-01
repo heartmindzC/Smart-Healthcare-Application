@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MedicalVisitRepository extends JpaRepository<MedicalVisit, Long> {
-    List<MedicalVisit> findByPatientId(Integer patientId);
-    List<MedicalVisit> findByPatientIdOrderByVisitDateDesc(Integer patientId);
+public interface MedicalVisitRepository extends JpaRepository<MedicalVisit, String> {
+    List<MedicalVisit> findByPatientId(String patientId);
+    List<MedicalVisit> findByPatientIdOrderByVisitDateDesc(String patientId);
 }
 
 

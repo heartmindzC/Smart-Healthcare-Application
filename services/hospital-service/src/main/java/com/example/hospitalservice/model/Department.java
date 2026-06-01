@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 @Entity
 @Table(name = "departments")
@@ -13,10 +14,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Department {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int departmentId;
+    @UuidGenerator
+    private String departmentId;
     private String departmentName;
     private String departmentPhone;
     private String departmentEmail;
-    private int hospitalId;
+    private String hospitalId;
+
+
+
+    // code show thông tin bác sĩ trước
+    // dùng hospital_id để tìm department
+    // dùng department để tìm doctor
 }

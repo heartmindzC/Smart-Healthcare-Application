@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface DepartmentRepository extends CrudRepository<Department, Integer> {
+public interface DepartmentRepository extends CrudRepository<Department, String> {
     List<Department> findDepartmentByDepartmentName(String departmentName);
-    List<Department> findDepartmentByHospitalId(int hospitalId);
-    Optional<Department> findByDepartmentId(int departmentId);
+    List<Department> findDepartmentByHospitalId(String hospitalId);
+    Optional<Department> findByDepartmentId(String departmentId);
     List<Department> findDepartmentByDepartmentNameContaining(String departmentName);
 }
 

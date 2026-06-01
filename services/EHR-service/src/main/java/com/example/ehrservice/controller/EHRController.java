@@ -15,7 +15,7 @@ public class EHRController {
     private EHRService ehrService;
     
     @GetMapping("/patient/{patientId}")
-    public ResponseEntity<EHRResponse> getEHRByPatientId(@PathVariable Integer patientId) {
+    public ResponseEntity<EHRResponse> getEHRByPatientId(@PathVariable String patientId) {
         try {
             EHRResponse ehr = ehrService.getEHRByPatientId(patientId);
             return ResponseEntity.ok(ehr);

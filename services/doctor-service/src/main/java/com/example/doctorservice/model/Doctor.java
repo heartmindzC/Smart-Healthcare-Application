@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Date;
 
@@ -15,17 +16,16 @@ import java.util.Date;
 @AllArgsConstructor
 public class Doctor {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int doctorId;
+    @UuidGenerator
+    private String doctorId;
     private String userId;
-    private int hospitalId;
+    private String hospitalId;
     private String department;
-    private String fullName; // ho ten
+    private String fullName;
     private Date birth;
     private Date registrationAt;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    private String licenseId; //chung chi hanh nghe
+    private String licenseId;
     private Boolean isActive;
-
 }

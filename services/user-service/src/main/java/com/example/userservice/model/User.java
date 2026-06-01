@@ -13,20 +13,18 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class User {
     @Id
     private String userId;
-    private String password, phone, email, fullname, address;
+    private String password;
+    private String phone;
+    private String fullname;
+    private String address;
     private Date birth;
+    private String email;
     @Enumerated(EnumType.STRING)
     private Gender gender;
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(
-            name = "roles",
-            joinColumns = @JoinColumn(name = "user_id")
-    )
+
     @Column(name = "role")
     private Set<Role> roles;
 }

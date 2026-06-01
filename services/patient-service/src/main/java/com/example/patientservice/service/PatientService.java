@@ -1,8 +1,9 @@
 package com.example.patientservice.service;
 
 
-import com.example.patientservice.dto.PatientRequest;
-import com.example.patientservice.dto.UpdatePatientRequest;
+import com.example.patientservice.dto.request.PatientRequest;
+import com.example.patientservice.dto.request.UpdatePatientRequest;
+import com.example.patientservice.mapper.PatientMapper;
 import com.example.patientservice.model.BloodType;
 import com.example.patientservice.model.Gender;
 import com.example.patientservice.model.Patient;
@@ -15,38 +16,37 @@ import java.util.Optional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class PatientService {
     @Autowired
     private PatientRepo patientRepo;
 
-    public Optional<Patient> findByPatientId(Integer patientId){
+    @Autowired
+    PatientMapper patientMapper;
+
+    public Optional<Patient> findByPatientId(String patientId){
         return patientRepo.findByPatientId(patientId);
     }
-    public Optional<Patient> findByUserId(Integer userId){
-        return patientRepo.findByUserId(userId);
-    }
+
     public Optional<List<Patient>> findByFullName(String fullName){
         return patientRepo.findByFullName(fullName);
     }
-
     
     public List<Patient> findAll(){
         return patientRepo.findAll();
     }
     
-    public Patient findById(int id) {
-        return patientRepo.findById(id).get();
+    public Patient findById(String id) {
+        return patientRepo.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
     }
     
     public Patient findByUserId(String userId) {
-        return patientRepo.findByUserId(userId);
+        return patientRepo.findByUserId(userId).orElseThrow(() -> new RuntimeException("Not found"));
     }
     
     public Patient updatePatientInfoByUserId(String userId, UpdatePatientRequest request) {
-        Patient patient = patientRepo.findByUserId(userId);
+        Patient patient = findByUserId(userId);
         
         if (patient == null) {
             throw new RuntimeException("Patient not found with userId: " + userId);
@@ -58,9 +58,6 @@ public class PatientService {
         }
         if (request.getEmergencyCallingNumber() != null) {
             patient.setEmergencyCallingNumber(request.getEmergencyCallingNumber());
-        }
-        if (request.getJob() != null) {
-            patient.setJob(request.getJob());
         }
         if (request.getBloodType() != null) {
             patient.setBloodType(request.getBloodType());
@@ -74,12 +71,13 @@ public class PatientService {
         
         return patientRepo.save(patient);
     }
+
     public Patient createPatient(PatientRequest request) {
         // Kiểm tra xem patient đã tồn tại với userId này chưa
-        Patient existingPatient = patientRepo.findByUserId(request.getUserId());
-        if (existingPatient != null) {
-            throw new RuntimeException("Patient already exists with userId: " + request.getUserId());
-        }
+//        Patient existingPatient = findByUserId(request.getUserId());
+//        if (existingPatient != null) {
+//            throw new RuntimeException("Patient already exists with userId: " + request.getUserId());
+//        }
         
         // Convert String birth to Date
         Date birthDate = null;
@@ -93,37 +91,11 @@ public class PatientService {
         }
         
         // Tạo patient mới
-        Patient newPatient = new Patient();
-        newPatient.setUserId(request.getUserId());
-        newPatient.setFullName(request.getFullName());
+        Patient newPatient = patientMapper.toPatient(request);
         newPatient.setBirth(birthDate);
-        
-        // Convert String gender to Gender enum
-        if (request.getGender() != null) {
-            try {
-                newPatient.setGender(Gender.valueOf(request.getGender().toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Invalid gender: " + request.getGender());
-            }
-        }
-        
-        newPatient.setInsuranceId(request.getInsuranceId());
-        newPatient.setEmergencyCallingNumber(request.getEmergencyCallingNumber());
-        newPatient.setJob(request.getJob());
-        
-        // Convert String bloodType to BloodType enum
-        if (request.getBloodType() != null) {
-            try {
-                newPatient.setBloodType(BloodType.valueOf(request.getBloodType().toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Invalid blood type: " + request.getBloodType());
-            }
-        }
-        
-        newPatient.setHeights(request.getHeights());
-        newPatient.setWeights(request.getWeights());
+
         newPatient.setRegisteredAt(new Date());
-        newPatient.setIsActive(true); // Set isActive = true
+        newPatient.setIsActive(true);
         
         try {
             Patient savedPatient = patientRepo.save(newPatient);
